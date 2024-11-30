@@ -85,7 +85,7 @@ namespace CinemaApp.Services.Data
             Group? group = await this.groupRepository
                 .GetByIdAsync(id);            
 
-            if (group != null && group.IsDeleted == false)
+            if (group != null && group.IsDeleted == false && await membershipRepository.FirstOrDefaultAsync(m => m.GroupId == id && m.ApplicationUserId == userGuidId) == null!)
             {
                 Membership newMembership = new Membership()
                 {
@@ -96,6 +96,25 @@ namespace CinemaApp.Services.Data
 
                 await this.membershipRepository.AddAsync(newMembership);
             }
+        }
+
+        public async Task<IEnumerable<GroupIndexViewModel>> GetAllAdminGroupsAsync(Guid userId)
+        {
+            IEnumerable<GroupIndexViewModel> groups = await this.groupRepository
+                .GetAllAttached()
+                .Where(g => g.IsDeleted == false && g.AdminId == userId)
+                .Select(c => new GroupIndexViewModel()
+                {
+                    Id = c.Id.ToString(),
+                    Name = c.Name,
+                    Location = c.Location,
+                    Description = c.Description,
+                    CreatedDate = c.CreatedDate.ToString(EntityValidationConstants.Group.ReleaseDateFormat)
+                })
+                .OrderBy(c => c.Location)
+                .ToArrayAsync();
+
+            return groups;
         }
     }
 }

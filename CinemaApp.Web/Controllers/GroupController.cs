@@ -52,7 +52,7 @@ namespace CinemaApp.Web.Controllers
 
             await groupService.AddGroupAsync(model, userGuid.Value);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Admin));
         }
 
         [HttpGet]
@@ -94,6 +94,24 @@ namespace CinemaApp.Web.Controllers
 
             return RedirectToAction(nameof(Index)); // TODO: Redirect to Following page
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Admin()
+        {
+            Guid? userGuid = GetCurrectUserGuidId();
+
+            if (!userGuid.HasValue)
+            {
+                return Unauthorized();
+            }
+
+            IEnumerable<GroupIndexViewModel> groups =
+               await this.groupService.GetAllAdminGroupsAsync(userGuid.Value);
+
+            return this.View(groups);
+        }
+
 
         private Guid GetCurrectUserGuidId()
         {

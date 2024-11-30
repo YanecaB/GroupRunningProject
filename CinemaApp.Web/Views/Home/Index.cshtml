@@ -1,4 +1,74 @@
-﻿<h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
-<p>Explore our list of cinemas and movies.</p>
-<p>Add your favorites and track what you have watched.</p>
+﻿@{
+    ViewData["Title"] = "Welcome";
+    ViewData["Message"] = "Join us for group runs!";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            padding: 50px 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #27ae60;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .intro {
+            background-color: #e9f7ef;
+            border-left: 5px solid #27ae60;
+            padding: 15px;
+            margin-top: 20px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>@ViewData["Title"]</h2>
+        <h3>@ViewData["Message"]</h3>
+        <p>Welcome to the <span class="highlight">first GroupRunning App</span></p>
+        <p>Here you can find a community to run together.</p>
+        <div class="intro">
+            <p>Join us, find your pace, and be part of a running community that keeps you motivated!</p>
+        </div>
+    </div>
+</body>
+</html>

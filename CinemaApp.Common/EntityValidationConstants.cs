@@ -26,6 +26,8 @@
 
             public const int LocationMinLength = 3;
             public const int LocationMaxLength = 85;
+
+            public const string DateFormat = "dd/MM/yyyy";
         }
     }
 }

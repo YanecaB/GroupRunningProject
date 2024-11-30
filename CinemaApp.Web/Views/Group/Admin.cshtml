@@ -5,7 +5,15 @@
     ViewData["Title"] = "Groups";
 }
 
-<div class="container mt-4">  
+<div class="container mt-4">
+    <div class="row">
+        <!-- Sidebar with CreateGroup button -->
+        <div class="col-md-3 mb-4">
+            <div class="d-grid">
+                <a href="@Url.Action("Create", "Group")" class="btn btn-primary btn-lg shadow-sm">+ Create Group</a>
+            </div>
+        </div>
+
         <!-- List of Groups -->
         <div class="col-md-9">
             <div class="card shadow-sm">
@@ -35,9 +43,13 @@
                                             <td>@group.Location</td>
                                             <td>@group.CreatedDate</td>
                                             <td>
-                                                <div class="btn-group" role="group">                                                    
+                                                <div class="btn-group" role="group">
+                                                    <a href="@Url.Action("Edit", "Group", new { id = group.Id })"
+                                                        class="btn btn-sm btn-warning text-white">Edit</a>
                                                     <a href="@Url.Action("Details", "Group", new { id = group.Id })"
-                                                       class="btn btn-sm btn-info text-white">Details</a>                                              
+                                                       class="btn btn-sm btn-info text-white">Details</a>
+                                                    <a href="@Url.Action("Delete", "Group", new { id = group.Id })"
+                                                        class="btn btn-sm btn-danger">Delete</a>
                                                 </div>
                                             </td>
                                         </tr>

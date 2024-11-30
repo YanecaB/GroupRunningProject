@@ -3,11 +3,13 @@ namespace CinemaApp.Web.ViewModels.Event
 {
 	public class EventIndexViewModel
 	{
-		public Guid Id { get; set; }
+		public string Id { get; set; } = null!;
 
 		public string Title { get; set; } = null!;
 
 		public string GroupName { get; set; } = null!;
+
+		public string Date { get; set; } = null!;
 	}
 }
 

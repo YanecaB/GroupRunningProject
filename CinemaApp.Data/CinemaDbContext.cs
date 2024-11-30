@@ -25,7 +25,9 @@
         {
             optionsBuilder.UseSqlServer("Server=localhost;Database=GroupRunning;User ID=sa;Password=awesome1&;Pooling=false;Encrypt=False;");
         }
-                        
+
+        //public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
+
         public virtual DbSet<Group> Groups { get; set; } = null!;
 
         public virtual DbSet<Event> Events { get; set; } = null!;
@@ -39,9 +41,23 @@
         {
             base.OnModelCreating(modelBuilder);
 
+            // Configure relationship between Event and ApplicationUser (Organizer)
+            modelBuilder.Entity<Event>()
+                .HasOne(e => e.ApplicationUser)
+                .WithMany()
+                .HasForeignKey(e => e.OrganizerId)
+                .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+
+            // Configure relationship between Event and Group
+            modelBuilder.Entity<Event>()
+                .HasOne(e => e.Group)
+                .WithMany(g => g.Events) // Ensure the Group model has a collection of Events
+                .HasForeignKey(e => e.GroupId)
+                .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+
             // Configure many-to-many relationship for UsersGroups
             modelBuilder.Entity<Membership>()
-                .HasKey(ug => new { ug.ApplicationUserId, ug.GroupId }); // Composite key
+                .HasKey(ug => new { ug.ApplicationUserId, ug.GroupId });
 
             modelBuilder.Entity<Membership>()
                 .HasOne(ug => ug.ApplicationUser)
@@ -57,7 +73,7 @@
 
             // Configure many-to-many relationship for UsersEvents
             modelBuilder.Entity<ApplicationUserEvent>()
-                .HasKey(ue => new { ue.ApplicationUserId, ue.EventId }); // Composite key
+                .HasKey(ue => new { ue.ApplicationUserId, ue.EventId });
 
             modelBuilder.Entity<ApplicationUserEvent>()
                 .HasOne(ue => ue.ApplicationUser)

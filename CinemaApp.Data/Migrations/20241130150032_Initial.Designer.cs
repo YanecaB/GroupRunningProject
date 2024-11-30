@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaApp.Data.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    [Migration("20241130105737_Initial")]
+    [Migration("20241130150032_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -123,6 +123,12 @@ namespace CinemaApp.Data.Migrations
                     b.Property<int>("Distance")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -137,6 +143,8 @@ namespace CinemaApp.Data.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
 
                     b.HasIndex("OrganizerId");
 
@@ -350,13 +358,21 @@ namespace CinemaApp.Data.Migrations
 
             modelBuilder.Entity("CinemaApp.Data.Models.Event", b =>
                 {
+                    b.HasOne("CinemaApp.Data.Models.Group", "Group")
+                        .WithMany("Events")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("CinemaApp.Data.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("OrganizerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
+
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("CinemaApp.Data.Models.Group", b =>
@@ -454,6 +470,8 @@ namespace CinemaApp.Data.Migrations
 
             modelBuilder.Entity("CinemaApp.Data.Models.Group", b =>
                 {
+                    b.Navigation("Events");
+
                     b.Navigation("Memberships");
                 });
 #pragma warning restore 612, 618

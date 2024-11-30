@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CinemaApp.Services.Data;
 using CinemaApp.Services.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,9 +19,11 @@ namespace CinemaApp.Web.Controllers
             this.eventService = eventService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var events = await eventService.IndexGetAllAsync();
+
+            return this.View(events);
         }
     }
 }

@@ -12,6 +12,8 @@ namespace CinemaApp.Services.Data.Interfaces
         Task<GroupDetailsViewModel> GetGroupDetailsByIdAsync(Guid id);
 
         Task FollowGroupAsync(Guid id, Guid userGuidId);
+
+        Task<IEnumerable<GroupIndexViewModel>> GetAllAdminGroupsAsync(Guid userId);
     }
 }
 

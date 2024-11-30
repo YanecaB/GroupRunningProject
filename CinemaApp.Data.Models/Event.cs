@@ -39,6 +39,8 @@ namespace CinemaApp.Data.Models
         public virtual Group Group { get; set; } = null!;
 
 		public ICollection<ApplicationUserEvent> UsersEvents { get; set; } = new HashSet<ApplicationUserEvent>();
-    }
+
+		public bool IsDeleted { get; set; } = false;
+	}
 }
 
