@@ -1,6 +1,7 @@
 ﻿namespace CinemaApp.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using CinemaApp.Web.Infrastructure.Extensions;    
 
     public class BaseController : Controller
     {
@@ -20,6 +21,12 @@
             }
 
             return true;
+        }
+
+        protected Guid GetCurrectUserGuidId()
+        {
+            // This will throw an exception if User.GetUserIdAsGuid() returns null.
+            return User.GetUserIdAsGuid() ?? throw new InvalidOperationException("User ID is not available.");
         }
     }
 }

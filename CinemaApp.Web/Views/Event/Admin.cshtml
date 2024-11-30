@@ -1,8 +1,8 @@
-﻿@using CinemaApp.Web.ViewModels.Group;
-@model IEnumerable<GroupIndexViewModel>
+﻿@using CinemaApp.Web.ViewModels.Event
+@model IEnumerable<EventIndexViewModel>
 
 @{
-    ViewData["Title"] = "Groups";
+    ViewData["Title"] = "Events";
 }
 
 <!DOCTYPE html>
@@ -63,18 +63,18 @@
 <body>
     <div class="container">
         <div class="row">
-            <!-- Sidebar with CreateGroup button -->
+            <!-- Sidebar with Create Event button -->
             <div class="col-md-3 mb-4">
                 <div class="d-grid">
-                    <a href="@Url.Action("Create", "Group")" class="btn btn-primary btn-lg shadow-sm">+ Create Group</a>
+                    <a href="@Url.Action("Create", "Event")" class="btn btn-primary btn-lg shadow-sm">+ Create Event</a>
                 </div>
             </div>
 
-            <!-- List of Groups -->
+            <!-- List of Events -->
             <div class="col-md-9">
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
-                        <h3 class="card-title mb-0">Groups</h3>
+                        <h3 class="card-title mb-0">@ViewData["Title"]</h3>
                     </div>
                     <div class="card-body">
                         @if (Model.Any())
@@ -83,29 +83,26 @@
                                 <table class="table table-hover align-middle">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                            <th>Location</th>
-                                            <th>Created Date</th>
+                                            <th>Title</th>
+                                            <th>Group Name</th>
+                                            <th>Date</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var group in Model)
+                                        @foreach (var eventItem in Model)
                                         {
                                             <tr>
-                                                <td>@group.Name</td>
-                                                <td>@group.Description</td>
-                                                <td>@group.Location</td>
-                                                <td>@group.CreatedDate</td>
+                                                <td>@eventItem.Title</td>
+                                                <td>@eventItem.GroupName</td>
+                                                <td>@eventItem.Date</td>
                                                 <td>
                                                     <div class="btn-group" role="group">
-                                                        <a href="@Url.Action("Edit", "Group", new { id = group.Id })"
-                                                           class="btn btn-sm btn-warning text-white">Edit</a>
-                                                        <a href="@Url.Action("Details", "Group", new { id = group.Id })"
+                                                        <a href="@Url.Action("Details", "Event", new { id = eventItem.Id })"
                                                            class="btn btn-sm btn-info text-white">Details</a>
-                                                        <a href="@Url.Action("Delete", "Group", new { id = group.Id })"
-                                                           class="btn btn-sm btn-danger">Delete</a>
+                                                        <form asp-action="Join" asp-route-id="@eventItem.Id" method="post" style="display:inline;">
+                                                            <button type="submit" class="btn btn-sm btn-success">Join</button>
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -117,7 +114,7 @@
                         else
                         {
                             <div class="alert alert-info" role="alert">
-                                <p class="mb-0">No groups available. Create a new group to get started.</p>
+                                <p class="mb-0">No events available. Create a new event to get started.</p>
                             </div>
                         }
                     </div>

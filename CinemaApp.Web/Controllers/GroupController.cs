@@ -111,13 +111,6 @@ namespace CinemaApp.Web.Controllers
 
             return this.View(groups);
         }
-
-
-        private Guid GetCurrectUserGuidId()
-        {
-            // This will throw an exception if User.GetUserIdAsGuid() returns null.
-            return User.GetUserIdAsGuid() ?? throw new InvalidOperationException("User ID is not available.");
-        }
     }
 }
 

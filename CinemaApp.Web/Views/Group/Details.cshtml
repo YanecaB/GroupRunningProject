@@ -5,62 +5,134 @@
     ViewData["Title"] = "Group Details";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card shadow-lg">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="card-title mb-0">Group Details</h3>
-                </div>
-                <div class="card-body">
-                    <!-- Group Information -->
-                    <dl class="row">
-                        <!-- Name -->
-                        <div class="mb-3">
-                            <dt class="col-sm-4">Name:</dt>
-                            <dd class="col-sm-8">@Model.Name</dd>
-                        </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+            color: #333;
+            text-align: center;
+        }
 
-                        <!-- Description -->
-                        <div class="mb-3">
-                            <dt class="col-sm-4">Description:</dt>
-                            <dd class="col-sm-8">@Model.Description</dd>
-                        </div>
+        .container {
+            padding: 50px 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+        }
 
-                        <!-- Location -->
-                        <div class="mb-3">
-                            <dt class="col-sm-4">Location:</dt>
-                            <dd class="col-sm-8">@Model.Location</dd>
-                        </div>
+        .card {
+            margin: 20px 0;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
 
-                        <!-- Created Date -->
-                        <div class="mb-3">
-                            <dt class="col-sm-4">Created Date:</dt>
-                            <dd class="col-sm-8">@Model.CreatedDate</dd>
-                        </div>
+        .card-header {
+            background: #6a11cb;
+            background: linear-gradient(to right, #2575fc, #6a11cb);
+            color: #fff;
+            padding: 15px;
+            text-align: left;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
 
-                        <!-- Members Count -->
-                        <div class="mb-3">
-                            <dt class="col-sm-4">Members Count:</dt>
-                            <dd class="col-sm-8">@Model.MembersCount</dd>
-                        </div>
-                    </dl>
+        .card-body {
+            padding: 20px;
+        }
 
-                    <!-- Buttons -->
-                    <div class="d-grid gap-2 mt-4">
-                        <a href="@Url.Action("Index", "Group")" class="btn btn-secondary btn-lg">
-                            <i class="bi bi-arrow-left"></i> Back
-                        </a>
-                        <a asp-controller="Group" asp-action="Follow" asp-route-id="@Model.Id" class="btn btn-primary btn-lg">
-                            <i class="bi bi-person-plus"></i> Follow
-                        </a>
+        dl {
+            text-align: left;
+        }
+
+        dt {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        dd {
+            margin: 0 0 15px 0;
+            color: #555;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: #fff;
+        }
+
+            .btn-secondary:hover {
+                background-color: #7f8c8d;
+            }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+            .btn-primary:hover {
+                background-color: #2980b9;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                Group Details
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <div class="mb-3">
+                        <dt class="col-sm-4">Name:</dt>
+                        <dd class="col-sm-8">@Model.Name</dd>
                     </div>
+                    <div class="mb-3">
+                        <dt class="col-sm-4">Description:</dt>
+                        <dd class="col-sm-8">@Model.Description</dd>
+                    </div>
+                    <div class="mb-3">
+                        <dt class="col-sm-4">Location:</dt>
+                        <dd class="col-sm-8">@Model.Location</dd>
+                    </div>
+                    <div class="mb-3">
+                        <dt class="col-sm-4">Created Date:</dt>
+                        <dd class="col-sm-8">@Model.CreatedDate</dd>
+                    </div>
+                    <div class="mb-3">
+                        <dt class="col-sm-4">Members Count:</dt>
+                        <dd class="col-sm-8">@Model.MembersCount</dd>
+                    </div>
+                </dl>
+                <div class="d-grid gap-2 mt-4">
+                    <a href="@Url.Action("Index", "Group")" class="btn btn-secondary">
+                        &larr; Back
+                    </a>
+                    <a asp-controller="Group" asp-action="Follow" asp-route-id="@Model.Id" class="btn btn-primary">
+                        Follow Group
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+</body>
+</html>

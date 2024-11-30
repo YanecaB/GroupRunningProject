@@ -17,7 +17,7 @@ namespace CinemaApp.Services.Data
         {
             this.eventRepository = eventRepository;            
         }
-
+       
         public async Task<IEnumerable<EventIndexViewModel>> IndexGetAllAsync()
         {
             IEnumerable<EventIndexViewModel> events = await this.eventRepository
@@ -30,6 +30,23 @@ namespace CinemaApp.Services.Data
                     Date = c.Date.ToString(EntityValidationConstants.Event.DateFormat),
                     GroupName = c.Group.Name
                 })                
+                .ToArrayAsync();
+
+            return events;
+        }
+
+        public async Task<IEnumerable<EventIndexViewModel>> GetAllAdminEventsAsync(Guid userId)
+        {
+            IEnumerable<EventIndexViewModel> events = await this.eventRepository
+                .GetAllAttached()
+                .Where(g => g.IsDeleted == false && g.OrganizerId == userId)
+                .Select(c => new EventIndexViewModel()
+                {
+                    Id = c.Id.ToString(),
+                    Title = c.Title,
+                    Date = c.Date.ToString(EntityValidationConstants.Event.DateFormat),
+                    GroupName = c.Group.Name
+                })
                 .ToArrayAsync();
 
             return events;
