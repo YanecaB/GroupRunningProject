@@ -10,4 +10,10 @@
     <ProjectReference Include="..\CinemaApp.Common\CinemaApp.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Group\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Group\" />
+  </ItemGroup>
 </Project>

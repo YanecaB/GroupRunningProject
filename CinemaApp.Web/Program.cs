@@ -6,13 +6,15 @@ namespace CinemaApp.Web
     using Data;
     using Data.Models;
     using Infrastructure.Extensions;
+    using CinemaApp.Services.Data;
+    using CinemaApp.Services.Data.Interfaces;
 
     public class Program
     {
         public static void Main(string[] args)
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-            string connectionString = builder.Configuration.GetConnectionString("Server=localhost;Database=CinemaApp2;User ID=sa;Password=awesome1&;Pooling=false;Encrypt=False;")!;
+            string connectionString = builder.Configuration.GetConnectionString("Server=localhost;Database=GroupRunning;User ID=sa;Password=awesome1&;Pooling=false;Encrypt=False;")!;
 
             // Add services to the container.
             builder.Services
@@ -35,6 +37,19 @@ namespace CinemaApp.Web
             {
                 cfg.LoginPath = "/Identity/Account/Login";
             });
+
+            // add repository            
+
+            // add service
+            //builder.Services.AddScoped<IGroupService, GroupService>();
+            // Add services to the container.
+            //builder.Services.AddScoped<IGroupService, GroupService>();
+
+            //todo:!!!!!!!!!!!!!!!!
+            //TODO: IGroupService dependency cannot be resolved when attempting to instantiate your GroupController. This typically means that IGroupService was not properly registered in the dependency injection (DI) container in your Program.cs file.
+
+            builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
+            builder.Services.RegisterUserDefinedServices(typeof(IGroupService).Assembly);
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();

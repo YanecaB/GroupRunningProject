@@ -1,0 +1,67 @@
+﻿@using CinemaApp.Web.ViewModels.Group;
+@model GroupCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Group";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">Create a New Group</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" asp-controller="Group" method="post">
+                        <!-- Name -->
+                        <div class="mb-3">
+                            <label for="Name" class="form-label">Group Name</label>
+                            <input type="text" asp-for="Name" class="form-control" id="Name" placeholder="Enter group name">
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label for="Description" class="form-label">Description</label>
+                            <textarea asp-for="Description" class="form-control" id="Description" rows="4" placeholder="Enter group description"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <!-- Location -->
+                        <div class="mb-3">
+                            <label for="Location" class="form-label">Location</label>
+                            <input type="text" asp-for="Location" class="form-control" id="Location" placeholder="Enter location">
+                            <span asp-validation-for="Location" class="text-danger"></span>
+                        </div>
+
+                        <!-- Created Date -->
+                        <div class="mb-3">
+                            <label for="CreatedDate" class="form-label">Created Date</label>
+                            <input type="datetime-local" asp-for="CreatedDate" class="form-control" id="CreatedDate">
+                            <span asp-validation-for="CreatedDate" class="text-danger"></span>
+                        </div>
+
+                        <!-- AdminId -->
+                        @*<div class="mb-3">
+                            <label for="AdminId" class="form-label">Admin</label>
+                            <select asp-for="AdminId" asp-items="Model.AdminList" class="form-select" id="AdminId">
+                                <option value="">Select an admin</option>
+                            </select>
+                            <span asp-validation-for="AdminId" class="text-danger"></span>
+                        </div>*@
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">Create Group</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

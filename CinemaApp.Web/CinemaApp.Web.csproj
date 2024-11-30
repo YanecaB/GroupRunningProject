@@ -28,6 +28,15 @@
     <ProjectReference Include="..\CinemaApp.Data\CinemaApp.Data.csproj" />
     <ProjectReference Include="..\CinemaApp.Web.Infrastructure\CinemaApp.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\CinemaApp.Web.ViewModels\CinemaApp.Web.ViewModels.csproj" />
+    <ProjectReference Include="..\CinemaApp.Services.Data\CinemaApp.Services.Data\CinemaApp.Services.Data.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Views\Group\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Group\" />
+  </ItemGroup>
 </Project>

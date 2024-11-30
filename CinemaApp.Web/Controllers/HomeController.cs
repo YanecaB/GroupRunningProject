@@ -19,7 +19,7 @@ namespace CinemaApp.Web.Controllers
             // 1. Using ViewData/ViewBag
             // 2. Pass ViewModel to the View
             ViewData["Title"] = "Home Page";
-            ViewData["Message"] = "Welcome to the Cinema Web App!";
+            ViewData["Message"] = "Welcome to the first app for group running in Bulgaria!";
 
             return View();
         }

@@ -20,4 +20,12 @@
     <ProjectReference Include="..\CinemaApp.Data.Models\CinemaApp.Data.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Repository\" />
+    <None Remove="Repository\Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repository\" />
+    <Folder Include="Repository\Interfaces\" />
+  </ItemGroup>
 </Project>

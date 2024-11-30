@@ -1,15 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using static CinemaApp.Common.EntityValidationConstants.Group;
 
-namespace CinemaApp.Data.Models
+namespace CinemaApp.Web.ViewModels.Group
 {
-    public class Group
-    {
-        [Key]
-        public Guid Id { get; set; }
-
+	public class GroupCreateViewModel
+	{
         [Required]
         [MinLength(NameMinLength)]
         [MaxLength(NameMaxLength)]
@@ -26,14 +22,6 @@ namespace CinemaApp.Data.Models
         public string Location { get; set; } = null!;
 
         public DateTime CreatedDate { get; set; }
-        
-        public Guid AdminId { get; set; }
-        [ForeignKey(nameof(AdminId))]        
-        public virtual ApplicationUser ApplicationUser { get; set; } = null!;
-
-        public bool IsDeleted { get; set; } = false;
-
-        public ICollection<Membership> Memberships { get; set; } = new HashSet<Membership>();
     }
 }
 

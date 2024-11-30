@@ -1,0 +1,71 @@
+﻿@using CinemaApp.Web.ViewModels.Group;
+@model IEnumerable<GroupIndexViewModel>
+
+@{
+    ViewData["Title"] = "Groups";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Sidebar with CreateGroup button -->
+        <div class="col-md-3 mb-4">
+            <div class="d-grid">
+                <a href="@Url.Action("Create", "Group")" class="btn btn-primary btn-lg shadow-sm">+ Create Group</a>
+            </div>
+        </div>
+
+        <!-- List of Groups -->
+        <div class="col-md-9">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">Groups</h3>
+                </div>
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Location</th>
+                                        <th>Created Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var group in Model)
+                                    {
+                                        <tr>
+                                            <td>@group.Name</td>
+                                            <td>@group.Description</td>
+                                            <td>@group.Location</td>
+                                            <td>@group.CreatedDate</td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <a href="@Url.Action("Edit", "Group", new { id = group.Id })"
+                                                       class="btn btn-sm btn-warning text-white">Edit</a>
+                                                    <a href="@Url.Action("Details", "Group", new { id = group.Id })"
+                                                       class="btn btn-sm btn-info text-white">Details</a>
+                                                    <a href="@Url.Action("Delete", "Group", new { id = group.Id })"
+                                                       class="btn btn-sm btn-danger">Delete</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info" role="alert">
+                            <p class="mb-0">No groups available. Create a new group to get started.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
