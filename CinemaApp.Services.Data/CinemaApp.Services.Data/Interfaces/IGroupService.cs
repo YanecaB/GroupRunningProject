@@ -8,6 +8,10 @@ namespace CinemaApp.Services.Data.Interfaces
         Task<IEnumerable<GroupIndexViewModel>> IndexGetAllAsync();
 
         Task AddGroupAsync(GroupCreateViewModel viewModel, Guid adminId);
+
+        Task<GroupDetailsViewModel> GetGroupDetailsByIdAsync(Guid id);
+
+        Task FollowGroupAsync(Guid id, Guid userGuidId);
     }
 }
 

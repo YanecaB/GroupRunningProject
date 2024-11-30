@@ -9,19 +9,20 @@ using CinemaApp.Web.ViewModels.Group;
 
 namespace CinemaApp.Web.Controllers
 {
+    //[Authorize]
     public class GroupController : BaseController
     {
-        private readonly IGroupService cinemaService;
+        private readonly IGroupService groupService;
 
-        public GroupController(IGroupService cinemaService)            
+        public GroupController(IGroupService groupService)            
         {
-            this.cinemaService = cinemaService;
+            this.groupService = groupService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var groups = await cinemaService.IndexGetAllAsync();
+            var groups = await groupService.IndexGetAllAsync();
             
             return this.View(groups);
         }
@@ -42,15 +43,62 @@ namespace CinemaApp.Web.Controllers
                 return View(model);
             }
             
-            Guid? userGuid = User.GetUserIdAsGuid();
-            if (userGuid == null)
+            Guid? userGuid = GetCurrectUserGuidId();
+
+            if (!userGuid.HasValue)
             {
                 return Unauthorized();
             }
-           
-            await cinemaService.AddGroupAsync(model, userGuid.Value);
+
+            await groupService.AddGroupAsync(model, userGuid.Value);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Details(string id)
+        {
+            Guid guidId = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(id, ref guidId);
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            GroupDetailsViewModel groupDetails = await this.groupService
+                .GetGroupDetailsByIdAsync(guidId);
+
+            return this.View(groupDetails);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Follow(string id)
+        {
+            Guid guidId = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(id, ref guidId);
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            Guid? userGuid = GetCurrectUserGuidId();
+
+            if (!userGuid.HasValue)
+            {
+                return Unauthorized();
+            }
+
+            await this.groupService
+                .FollowGroupAsync(guidId, userGuid.Value);
+
+            return RedirectToAction(nameof(Index)); // TODO: Redirect to Following page
+        }
+
+        private Guid GetCurrectUserGuidId()
+        {
+            // This will throw an exception if User.GetUserIdAsGuid() returns null.
+            return User.GetUserIdAsGuid() ?? throw new InvalidOperationException("User ID is not available.");
         }
     }
 }

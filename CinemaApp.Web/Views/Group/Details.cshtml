@@ -1,0 +1,66 @@
+﻿@using CinemaApp.Web.ViewModels.Group;
+@model GroupDetailsViewModel
+
+@{
+    ViewData["Title"] = "Group Details";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">Group Details</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Group Information -->
+                    <dl class="row">
+                        <!-- Name -->
+                        <div class="mb-3">
+                            <dt class="col-sm-4">Name:</dt>
+                            <dd class="col-sm-8">@Model.Name</dd>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <dt class="col-sm-4">Description:</dt>
+                            <dd class="col-sm-8">@Model.Description</dd>
+                        </div>
+
+                        <!-- Location -->
+                        <div class="mb-3">
+                            <dt class="col-sm-4">Location:</dt>
+                            <dd class="col-sm-8">@Model.Location</dd>
+                        </div>
+
+                        <!-- Created Date -->
+                        <div class="mb-3">
+                            <dt class="col-sm-4">Created Date:</dt>
+                            <dd class="col-sm-8">@Model.CreatedDate</dd>
+                        </div>
+
+                        <!-- Members Count -->
+                        <div class="mb-3">
+                            <dt class="col-sm-4">Members Count:</dt>
+                            <dd class="col-sm-8">@Model.MembersCount</dd>
+                        </div>
+                    </dl>
+
+                    <!-- Buttons -->
+                    <div class="d-grid gap-2 mt-4">
+                        <a href="@Url.Action("Index", "Group")" class="btn btn-secondary btn-lg">
+                            <i class="bi bi-arrow-left"></i> Back
+                        </a>
+                        <a asp-controller="Group" asp-action="Follow" asp-route-id="@Model.Id" class="btn btn-primary btn-lg">
+                            <i class="bi bi-person-plus"></i> Follow
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

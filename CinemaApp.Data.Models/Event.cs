@@ -34,7 +34,11 @@ namespace CinemaApp.Data.Models
 
 		public int Distance { get; set; }
 
-        public ICollection<ApplicationUserEvent> UsersEvents { get; set; } = new HashSet<ApplicationUserEvent>();
+		public Guid GroupId { get; set; }
+		[ForeignKey(nameof(GroupId))]
+        public virtual Group Group { get; set; } = null!;
+
+		public ICollection<ApplicationUserEvent> UsersEvents { get; set; } = new HashSet<ApplicationUserEvent>();
     }
 }
 

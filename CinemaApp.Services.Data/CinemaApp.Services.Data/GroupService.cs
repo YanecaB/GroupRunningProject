@@ -12,16 +12,20 @@ namespace CinemaApp.Services.Data
 {
     public class GroupService : BaseService, IGroupService
     {
-        private readonly IRepository<Group, Guid> groupRunningRepository;
+        private readonly IRepository<Group, Guid> groupRepository;
 
-        public GroupService(IRepository<Group, Guid> groupRunningRepository)
+        private readonly IRepository<Membership, object> membershipRepository;
+
+        public GroupService(IRepository<Group, Guid> groupRepository,
+            IRepository<Membership, object> membershipRepository)
         {
-            this.groupRunningRepository = groupRunningRepository;
+            this.groupRepository = groupRepository;
+            this.membershipRepository = membershipRepository;
         }
 
         public async Task<IEnumerable<GroupIndexViewModel>> IndexGetAllAsync()
         {
-            IEnumerable<GroupIndexViewModel> groups = await this.groupRunningRepository
+            IEnumerable<GroupIndexViewModel> groups = await this.groupRepository
                 .GetAllAttached()
                 .Where(g => g.IsDeleted == false)
                 .Select(c => new GroupIndexViewModel()
@@ -50,7 +54,48 @@ namespace CinemaApp.Services.Data
                 AdminId = adminId
             };
 
-            await groupRunningRepository.AddAsync(newGroup);
+            await groupRepository.AddAsync(newGroup);
+        }
+
+        public async Task<GroupDetailsViewModel> GetGroupDetailsByIdAsync(Guid id)
+        {
+            Group? group = await this.groupRepository
+                .GetByIdAsync(id);
+
+            GroupDetailsViewModel? viewModel = null;
+
+            if (group != null && group.IsDeleted == false)
+            {
+                viewModel = new GroupDetailsViewModel()
+                {
+                    Id = group.Id.ToString(),
+                    Name = group.Name,
+                    Description = group.Description,
+                    Location = group.Location,
+                    CreatedDate = group.CreatedDate.ToString(EntityValidationConstants.Group.ReleaseDateFormat),
+                    MembersCount = group.Memberships.Count()
+                };
+            }
+
+            return viewModel;
+        }
+
+        public async Task FollowGroupAsync(Guid id, Guid userGuidId)
+        {
+            Group? group = await this.groupRepository
+                .GetByIdAsync(id);            
+
+            if (group != null && group.IsDeleted == false)
+            {
+                Membership newMembership = new Membership()
+                {
+                    JoinDate = DateTime.Now,
+                    ApplicationUserId = userGuidId,
+                    GroupId = group.Id
+                };
+
+                await this.membershipRepository.AddAsync(newMembership);
+            }
         }
     }
 }

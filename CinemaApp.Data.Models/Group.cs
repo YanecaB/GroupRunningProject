@@ -34,6 +34,8 @@ namespace CinemaApp.Data.Models
         public bool IsDeleted { get; set; } = false;
 
         public ICollection<Membership> Memberships { get; set; } = new HashSet<Membership>();
+
+        public ICollection<Event> Events { get; set; } = new HashSet<Event>();
     }
 }
 

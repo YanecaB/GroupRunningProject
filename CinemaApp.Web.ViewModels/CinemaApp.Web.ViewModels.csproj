@@ -12,8 +12,10 @@
 
   <ItemGroup>
     <None Remove="Group\" />
+    <None Remove="Event\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Group\" />
+    <Folder Include="Event\" />
   </ItemGroup>
 </Project>
