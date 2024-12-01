@@ -107,6 +107,30 @@ namespace CinemaApp.Web.Controllers
             return RedirectToAction(nameof(Index)); // todo: redirect to My schedule
 
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Details(string? id)
+        {
+            Guid guidId = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(id, ref guidId);
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            Guid? userGuid = GetCurrectUserGuidId();
+
+            if (!userGuid.HasValue)
+            {
+                return Unauthorized();
+            }
+
+            EventDetailsViewModel viewModel =
+                await this.eventService.GetEventDetailsByIdAsync(guidId, userGuid.Value);
+
+            return this.View(viewModel);
+        }
     }
 }
 

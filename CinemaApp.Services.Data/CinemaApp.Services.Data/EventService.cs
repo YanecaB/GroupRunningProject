@@ -5,6 +5,7 @@ using CinemaApp.Data.Repository.Interfaces;
 using CinemaApp.Services.Data.Interfaces;
 using CinemaApp.Web.ViewModels.Event;
 using CinemaApp.Web.ViewModels.Group;
+using CinemaApp.Web.ViewModels.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Services.Data
@@ -88,6 +89,44 @@ namespace CinemaApp.Services.Data
                     EventId = eventId
                 });
             }            
+        }
+
+        public async Task<EventDetailsViewModel> GetEventDetailsByIdAsync(Guid id, Guid userGuidId)
+        {
+            var eventEntity = (await this.eventRepository
+                .GetAllAttached()
+                .Include(e => e.UsersEvents)
+                .ThenInclude(ue => ue.ApplicationUser)
+                .ToArrayAsync())
+                .FirstOrDefault(e => e.Id == id);            
+
+            EventDetailsViewModel? viewModel = null;
+           
+            if (eventEntity != null && eventEntity.IsDeleted == false)
+            {
+                var users = eventEntity.UsersEvents
+                 .Where(ue => ue.ApplicationUser != null)
+                 .Select(ue => new ApplicationUserViewModel()
+                 {
+                     Id = ue.ApplicationUserId.ToString(),
+                     UserName = ue.ApplicationUser.UserName,
+                     Email = ue.ApplicationUser.Email
+                 })
+                 .ToList();
+
+                viewModel = new EventDetailsViewModel()
+                {
+                    Id = eventEntity.Id.ToString(),
+                    Title = eventEntity.Title,
+                    Date = eventEntity.Date.ToString(EntityValidationConstants.Event.DateFormat),
+                    Location = eventEntity.Location,
+                    Description = eventEntity.Description,
+                    Distance = eventEntity.Distance,
+                    JoinedUsers = users
+                };
+            }
+
+            return viewModel;
         }
     }
 }

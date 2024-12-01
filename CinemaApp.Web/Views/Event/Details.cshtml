@@ -1,0 +1,184 @@
+﻿@using CinemaApp.Web.ViewModels.Event
+@model EventDetailsViewModel
+
+@{
+    ViewData["Title"] = "Event Details";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            padding: 50px 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .card {
+            margin: 20px 0;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: #6a11cb;
+            background: linear-gradient(to right, #2575fc, #6a11cb);
+            color: #fff;
+            padding: 15px;
+            text-align: left;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        dl {
+            text-align: left;
+        }
+
+        dt {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        dd {
+            margin: 0 0 15px 0;
+            color: #555;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: #fff;
+        }
+
+            .btn-secondary:hover {
+                background-color: #7f8c8d;
+            }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+            .btn-primary:hover {
+                background-color: #2980b9;
+            }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+            .btn-danger:hover {
+                background-color: #c0392b;
+            }
+
+        .users-box {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .user-item {
+            margin-bottom: 15px;
+        }
+
+        .user-name {
+            font-size: 1.2rem;
+            color: #2c3e50;
+        }
+
+        .user-email {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                Event Details
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <div class="mb-3">
+                        <dt class="col-sm-4">Title:</dt>
+                        <dd class="col-sm-8">@Model.Title</dd>
+                    </div>
+                    <div class="mb-3">
+                        <dt class="col-sm-4">Description:</dt>
+                        <dd class="col-sm-8">@Model.Description</dd>
+                    </div>
+                    <div class="mb-3">
+                        <dt class="col-sm-4">Date:</dt>
+                        <dd class="col-sm-8">@Model.Date</dd>
+                    </div>
+                    <div class="mb-3">
+                        <dt class="col-sm-4">Location:</dt>
+                        <dd class="col-sm-8">@Model.Location</dd>
+                    </div>
+                    <div class="mb-3">
+                        <dt class="col-sm-4">Distance:</dt>
+                        <dd class="col-sm-8">@Model.Distance km</dd>
+                    </div>
+                </dl>
+                <div class="d-grid gap-2 mt-4">
+                    <a href="@Url.Action("Index", "Event")" class="btn btn-secondary">
+                        &larr; Back
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="users-box">
+            <h3>Participants</h3>
+            @if (Model.JoinedUsers.Any())
+            {
+                @foreach (var user in Model.JoinedUsers)
+                {
+                    <div class="user-item">
+                        <p class="user-name">@user.UserName</p>
+                        <p class="user-email">Email: @user.Email</p>
+                    </div>
+                    <hr />
+                }
+            }
+            else
+            {
+                <p>No participants registered for this event.</p>
+            }
+        </div>
+    </div>
+</body>
+</html>

@@ -78,21 +78,22 @@ namespace CinemaApp.Services.Data
             var group = groups.FirstOrDefault(g => g.Id == id);
 
             GroupDetailsViewModel? viewModel = null;
-
-            var events = (await this.groupRepository.GetAllAttached().Include(g => g.Events).ToArrayAsync()).FirstOrDefault(g => g.Id == id).Events.Select(e => new EventIndexViewModel()
-            {
-                Id = e.Id.ToString(),
-                Date = e.Date.ToString(EntityValidationConstants.Event.DateFormat),
-                Title = e.Title,
-                GroupName = group.Name,
-                AdminId = e.OrganizerId.ToString()
-            }).ToList();
-
-            int membersCount = group.Memberships.Count();
-
-            var isFollowing = await this.membershipRepository.FirstOrDefaultAsync(m => m.GroupId == id && m.ApplicationUserId == userGuidId);
+                       
             if (group != null && group.IsDeleted == false)
             {
+                var events = (await this.groupRepository.GetAllAttached().Include(g => g.Events).ToArrayAsync()).FirstOrDefault(g => g.Id == id).Events.Select(e => new EventIndexViewModel()
+                {
+                    Id = e.Id.ToString(),
+                    Date = e.Date.ToString(EntityValidationConstants.Event.DateFormat),
+                    Title = e.Title,
+                    GroupName = group.Name,
+                    AdminId = e.OrganizerId.ToString()
+                }).ToList();
+
+                int membersCount = group.Memberships.Count();
+
+                var isFollowing = await this.membershipRepository.FirstOrDefaultAsync(m => m.GroupId == id && m.ApplicationUserId == userGuidId);
+
                 viewModel = new GroupDetailsViewModel()
                 {
                     Id = group.Id.ToString(),

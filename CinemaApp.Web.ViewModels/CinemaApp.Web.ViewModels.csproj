@@ -13,9 +13,11 @@
   <ItemGroup>
     <None Remove="Group\" />
     <None Remove="Event\" />
+    <None Remove="User\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Group\" />
     <Folder Include="Event\" />
+    <Folder Include="User\" />
   </ItemGroup>
 </Project>
