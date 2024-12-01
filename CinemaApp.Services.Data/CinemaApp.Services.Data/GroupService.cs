@@ -59,11 +59,17 @@ namespace CinemaApp.Services.Data
 
         public async Task<GroupDetailsViewModel> GetGroupDetailsByIdAsync(Guid id)
         {
-            Group? group = await this.groupRepository
-                .GetByIdAsync(id);
+            var groups = await this.groupRepository
+                .GetAllAttached()
+                .Include(g => g.Memberships)
+                .ToArrayAsync();
+
+            var group = groups.FirstOrDefault(g => g.Id == id);
 
             GroupDetailsViewModel? viewModel = null;
 
+
+            int membersCount = group.Memberships.Count();
             if (group != null && group.IsDeleted == false)
             {
                 viewModel = new GroupDetailsViewModel()
@@ -73,7 +79,7 @@ namespace CinemaApp.Services.Data
                     Description = group.Description,
                     Location = group.Location,
                     CreatedDate = group.CreatedDate.ToString(EntityValidationConstants.Group.ReleaseDateFormat),
-                    MembersCount = group.Memberships.Count()
+                    MembersCount = membersCount
                 };
             }
 
@@ -91,7 +97,7 @@ namespace CinemaApp.Services.Data
                 {
                     JoinDate = DateTime.Now,
                     ApplicationUserId = userGuidId,
-                    GroupId = group.Id
+                    GroupId = id
                 };
 
                 await this.membershipRepository.AddAsync(newMembership);
