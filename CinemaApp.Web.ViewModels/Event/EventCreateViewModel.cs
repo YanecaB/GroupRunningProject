@@ -20,7 +20,7 @@ namespace CinemaApp.Web.ViewModels.Event
         public string Description { get; set; } = null!;
 
         [Required]
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
 
         [Required]
         [MinLength(DescriptionMinLength)]

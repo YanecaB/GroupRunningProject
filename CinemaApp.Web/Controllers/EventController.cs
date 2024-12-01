@@ -31,7 +31,7 @@ namespace CinemaApp.Web.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Create(string id)
+        public async Task<IActionResult> Create(string? id)
         {
             Guid guidId = Guid.Empty;
             bool isIdValid = this.IsGuidValid(id, ref guidId);

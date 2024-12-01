@@ -16,14 +16,16 @@ namespace CinemaApp.Services.Data
     public class GroupService : BaseService, IGroupService
     {
         private readonly IRepository<Group, Guid> groupRepository;
-
+        private readonly IRepository<Event, Guid> eventRepository;
         private readonly IRepository<Membership, object> membershipRepository;
 
         public GroupService(IRepository<Group, Guid> groupRepository,
-            IRepository<Membership, object> membershipRepository)
+            IRepository<Membership, object> membershipRepository,
+            IRepository<Event, Guid> eventRepository)
         {
             this.groupRepository = groupRepository;
             this.membershipRepository = membershipRepository;
+            this.eventRepository = eventRepository;
         }
 
         public async Task<IEnumerable<GroupIndexViewModel>> IndexGetAllAsync()
@@ -82,7 +84,8 @@ namespace CinemaApp.Services.Data
                 Id = e.Id.ToString(),
                 Date = e.Date.ToString(EntityValidationConstants.Event.DateFormat),
                 Title = e.Title,
-                GroupName = group.Name
+                GroupName = group.Name,
+                AdminId = e.OrganizerId.ToString()
             }).ToList();
 
             int membersCount = group.Memberships.Count();
@@ -148,7 +151,47 @@ namespace CinemaApp.Services.Data
                 .ToArrayAsync();
 
             return groups;
-        }       
+        }
+
+        public async Task<DeleteGroupViewModel?> GetGroupForDeleteByIdAsync(Guid id)
+        {
+            var groupToDelete = await this.groupRepository
+                .GetAllAttached()
+                .Where(g => g.IsDeleted == false)
+                .Select(g => new DeleteGroupViewModel()
+                {
+                    Id = g.Id.ToString(),
+                    Location = g.Location,
+                    Name = g.Name
+                })
+                .FirstOrDefaultAsync(g => g.Id.ToLower() == id.ToString().ToLower());
+
+            return groupToDelete;
+        }
+
+        public async Task<bool> SoftDeleteGroupAsync(Guid id)
+        {
+            Group? groupToDelete = await this.groupRepository
+                .FirstOrDefaultAsync(g => g.Id.ToString().ToLower() == id.ToString().ToLower());
+            if (groupToDelete == null)
+            {
+                return false;
+            }
+
+            var events = await this.eventRepository
+                .GetAllAttached()
+                .Where(e => !e.IsDeleted && e.GroupId.ToString() == id.ToString())
+                .ToArrayAsync();
+
+            foreach (var eventEntity in events)
+            {
+                eventEntity.IsDeleted = true;
+                await this.eventRepository.UpdateAsync(eventEntity);
+            }
+
+            groupToDelete.IsDeleted = true;
+            return await this.groupRepository.UpdateAsync(groupToDelete);
+        }
     }
 }
 

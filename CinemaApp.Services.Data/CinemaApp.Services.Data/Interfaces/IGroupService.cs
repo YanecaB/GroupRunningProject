@@ -16,6 +16,10 @@ namespace CinemaApp.Services.Data.Interfaces
         Task UnFollowGroupAsync(Guid id, Guid userGuidId);
 
         Task<IEnumerable<GroupIndexViewModel>> GetAllAdminGroupsAsync(Guid userId);
+
+        Task<DeleteGroupViewModel?> GetGroupForDeleteByIdAsync(Guid id);
+
+        Task<bool> SoftDeleteGroupAsync(Guid id);
     }
 }
 

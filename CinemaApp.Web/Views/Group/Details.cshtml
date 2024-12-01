@@ -195,28 +195,51 @@
                             </a>
                         }
 
-                        <div class="events-box">
-                            <h3>Group Events</h3>
+                <div class="events-box">
+                    <h3>Group Events</h3>
 
-                            <a asp-controller="Event" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-add-event">
-                                Add Event
-                            </a>
+                    <a asp-controller="Event" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-add-event">
+                        Add Event
+                    </a>
 
-                            @if (Model.Events.Any())
-                            {
-                                @foreach (var eventItem in Model.Events)
-                                {
-                                    <div class="event-item">
-                                        <p class="event-title">@eventItem.Title</p>
-                                        <p class="event-date">Date: @eventItem.Date</p>
-                                    </div>
-                                }
-                            }
-                            else
-                            {
-                                <p>No events available for this group.</p>
-                            }
-                        </div>
+                    @if (Model.Events.Any())
+                    {
+                        @foreach (var eventItem in Model.Events)
+                        {
+                            <div class="event-item">
+                                <h4 class="event-title">@eventItem.Title</h4>
+                                <p><strong>Date:</strong> @eventItem.Date</p>
+                                <p><strong>Group Name:</strong> @eventItem.GroupName</p>
+                                <p><strong>Joined Users:</strong> @eventItem.JoinedUsers</p>
+
+                                <div class="d-flex gap-2">
+                                    <!-- Details Button -->
+                                    <a asp-controller="Event" asp-action="Details" asp-route-id="@eventItem.Id" class="btn btn-primary">
+                                        Details
+                                    </a>
+
+                                    <!-- Change Button -->                                    
+                                    @if (eventItem.AdminId == Model.UserId)
+                                    {
+                                        <a asp-controller="Event" asp-action="Edit" asp-route-id="@eventItem.Id" class="btn btn-secondary">
+                                            Change
+                                        </a>
+                                    }
+                                    
+                                    <!-- Join Button -->
+                                    <a asp-controller="Event" asp-action="Join" asp-route-id="@eventItem.Id" class="btn btn-success">
+                                        Join Event
+                                    </a>
+                                </div>
+                            </div>
+                            <hr />
+                        }
+                    }
+                    else
+                    {
+                        <p>No events available for this group.</p>
+                    }
+                </div>
                     }
                     else
                     {

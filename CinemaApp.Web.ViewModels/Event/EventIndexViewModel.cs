@@ -10,6 +10,10 @@ namespace CinemaApp.Web.ViewModels.Event
 		public string GroupName { get; set; } = null!;
 
 		public string Date { get; set; } = null!;
+
+		public int JoinedUsers { get; set; }
+
+		public string AdminId { get; set; } = null!;
 	}
 }
 

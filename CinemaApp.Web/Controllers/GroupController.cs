@@ -57,7 +57,7 @@ namespace CinemaApp.Web.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(string? id)
         {
             Guid guidId = Guid.Empty;
             bool isIdValid = this.IsGuidValid(id, ref guidId);
@@ -80,7 +80,7 @@ namespace CinemaApp.Web.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Follow(string id)
+        public async Task<IActionResult> Follow(string? id)
         {
             Guid guidId = Guid.Empty;
             bool isIdValid = this.IsGuidValid(id, ref guidId);
@@ -103,7 +103,7 @@ namespace CinemaApp.Web.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Unfollow(string id)
+        public async Task<IActionResult> Unfollow(string? id)
         {
             Guid guidId = Guid.Empty;
             bool isIdValid = this.IsGuidValid(id, ref guidId);
@@ -122,6 +122,51 @@ namespace CinemaApp.Web.Controllers
             await this.groupService.UnFollowGroupAsync(guidId, userGuid.Value);
 
             return RedirectToAction(nameof(Index)); // TODO: Redirect to Following page
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Delete(string? id)
+        {
+            Guid guidId = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(id, ref guidId);
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Admin));
+            }
+
+            DeleteGroupViewModel? groupToDeleteViewModel =
+                await this.groupService.GetGroupForDeleteByIdAsync(guidId);
+
+            if (groupToDeleteViewModel == null)
+            {
+                return this.RedirectToAction(nameof(Admin));
+            }
+
+            return this.View(groupToDeleteViewModel);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> SoftDeleteConfirmed(DeleteGroupViewModel group)
+        {
+            Guid guidId = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(group.Id, ref guidId);
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Admin));
+            }
+
+            bool isDeleted = await this.groupService
+                .SoftDeleteGroupAsync(guidId);
+            if (!isDeleted)
+            {
+                TempData["ErrorMessage"] =
+                    "Unexpected error occurred while trying to delete the group! Please contact system administrator!";
+                return this.RedirectToAction(nameof(Delete), new { id = group.Id });
+            }
+
+            return this.RedirectToAction(nameof(Admin));
         }
 
         [HttpGet]
