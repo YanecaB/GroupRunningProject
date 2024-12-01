@@ -9,9 +9,11 @@ namespace CinemaApp.Services.Data.Interfaces
 
         Task AddGroupAsync(GroupCreateViewModel viewModel, Guid adminId);
 
-        Task<GroupDetailsViewModel> GetGroupDetailsByIdAsync(Guid id);
+        Task<GroupDetailsViewModel> GetGroupDetailsByIdAsync(Guid id, Guid userGuidId);
 
         Task FollowGroupAsync(Guid id, Guid userGuidId);
+
+        Task UnFollowGroupAsync(Guid id, Guid userGuidId);
 
         Task<IEnumerable<GroupIndexViewModel>> GetAllAdminGroupsAsync(Guid userId);
     }

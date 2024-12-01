@@ -7,6 +7,9 @@ using CinemaApp.Services.Data.Interfaces;
 using CinemaApp.Web.ViewModels.Group;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using CinemaApp.Web.ViewModels.Event;
+using CinemaApp.Common;
+using Microsoft.VisualBasic;
 
 namespace CinemaApp.Services.Data
 {
@@ -53,15 +56,21 @@ namespace CinemaApp.Services.Data
                 CreatedDate = viewModel.CreatedDate,
                 AdminId = adminId
             };
-
+           
             await groupRepository.AddAsync(newGroup);
-        }
 
-        public async Task<GroupDetailsViewModel> GetGroupDetailsByIdAsync(Guid id)
+            await membershipRepository.AddAsync(new Membership()
+            {
+                ApplicationUserId = newGroup.AdminId,
+                GroupId = newGroup.Id
+            });
+        }
+        
+        public async Task<GroupDetailsViewModel> GetGroupDetailsByIdAsync(Guid id, Guid userGuidId)
         {
             var groups = await this.groupRepository
                 .GetAllAttached()
-                .Include(g => g.Memberships)
+                .Include(g => g.Memberships)                
                 .ToArrayAsync();
 
             var group = groups.FirstOrDefault(g => g.Id == id);
@@ -70,6 +79,8 @@ namespace CinemaApp.Services.Data
 
 
             int membersCount = group.Memberships.Count();
+
+            var isFollowing = await this.membershipRepository.FirstOrDefaultAsync(m => m.GroupId == id && m.ApplicationUserId == userGuidId);
             if (group != null && group.IsDeleted == false)
             {
                 viewModel = new GroupDetailsViewModel()
@@ -79,7 +90,18 @@ namespace CinemaApp.Services.Data
                     Description = group.Description,
                     Location = group.Location,
                     CreatedDate = group.CreatedDate.ToString(EntityValidationConstants.Group.ReleaseDateFormat),
-                    MembersCount = membersCount
+                    MembersCount = membersCount,
+                    IsFollowing = isFollowing == null ? false : true,
+                    Events = group.Events.Select(e => new EventIndexViewModel()
+                    {
+                        Id = e.Id.ToString(),
+                        Date = e.Date.ToString(EntityValidationConstants.Event.DateFormat),
+                        Title = e.Title,
+                        GroupName = group.Name
+                    })
+                    .ToList(),
+                    AdminId = group.AdminId.ToString(),
+                    UserId = userGuidId.ToString()
                 };
             }
 
@@ -104,6 +126,11 @@ namespace CinemaApp.Services.Data
             }
         }
 
+        public async Task UnFollowGroupAsync(Guid id, Guid userGuidId)
+        {
+            await this.membershipRepository.DeleteAsync(await this.membershipRepository.FirstOrDefaultAsync(m => m.ApplicationUserId == userGuidId && m.GroupId == id));
+        }
+
         public async Task<IEnumerable<GroupIndexViewModel>> GetAllAdminGroupsAsync(Guid userId)
         {
             IEnumerable<GroupIndexViewModel> groups = await this.groupRepository
@@ -121,7 +148,7 @@ namespace CinemaApp.Services.Data
                 .ToArrayAsync();
 
             return groups;
-        }
+        }       
     }
 }
 

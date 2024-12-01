@@ -1,4 +1,6 @@
 ﻿using System;
+using CinemaApp.Web.ViewModels.Event;
+
 namespace CinemaApp.Web.ViewModels.Group
 {
 	public class GroupDetailsViewModel
@@ -14,6 +16,14 @@ namespace CinemaApp.Web.ViewModels.Group
         public string CreatedDate { get; set; } = null!;
 
         public int MembersCount { get; set; }
+
+        public bool IsFollowing { get; set; }
+
+        public IEnumerable<EventIndexViewModel> Events { get; set; } = new List<EventIndexViewModel>();
+
+        public string AdminId { get; set; } = null!;
+
+        public string UserId { get; set; } = null!;
     }
 }
 

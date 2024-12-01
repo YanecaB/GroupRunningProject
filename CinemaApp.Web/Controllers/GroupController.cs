@@ -66,8 +66,15 @@ namespace CinemaApp.Web.Controllers
                 return this.RedirectToAction(nameof(Index));
             }
 
+            Guid? userGuid = GetCurrectUserGuidId();
+
+            if (!userGuid.HasValue)
+            {
+                return Unauthorized();
+            }
+
             GroupDetailsViewModel groupDetails = await this.groupService
-                .GetGroupDetailsByIdAsync(guidId);
+                .GetGroupDetailsByIdAsync(guidId, userGuid.Value);
 
             return this.View(groupDetails);
         }
@@ -95,6 +102,28 @@ namespace CinemaApp.Web.Controllers
             return RedirectToAction(nameof(Index)); // TODO: Redirect to Following page
         }
 
+        [Authorize]
+        public async Task<IActionResult> Unfollow(string id)
+        {
+            Guid guidId = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(id, ref guidId);
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            Guid? userGuid = GetCurrectUserGuidId();
+
+            if (!userGuid.HasValue)
+            {
+                return Unauthorized();
+            }
+
+            await this.groupService.UnFollowGroupAsync(guidId, userGuid.Value);
+
+            return RedirectToAction(nameof(Index)); // TODO: Redirect to Following page
+        }
+
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Admin()
@@ -110,7 +139,7 @@ namespace CinemaApp.Web.Controllers
                await this.groupService.GetAllAdminGroupsAsync(userGuid.Value);
 
             return this.View(groups);
-        }
+        }        
     }
 }
 

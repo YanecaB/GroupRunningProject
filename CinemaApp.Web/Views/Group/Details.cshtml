@@ -1,4 +1,4 @@
-﻿@using CinemaApp.Web.ViewModels.Group;
+﻿@using CinemaApp.Web.ViewModels.Group
 @model GroupDetailsViewModel
 
 @{
@@ -92,6 +92,59 @@
             .btn-primary:hover {
                 background-color: #2980b9;
             }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+            .btn-danger:hover {
+                background-color: #c0392b;
+            }
+
+        .events-box {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .event-item {
+            margin-bottom: 15px;
+        }
+
+        .event-title {
+            font-size: 1.2rem;
+            color: #2c3e50;
+        }
+
+        .event-date {
+            color: #555;
+        }
+
+        .btn-add-event {
+            padding: 10px 15px;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 0;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: #fff;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+
+        .btn-add-event:hover {
+            background: linear-gradient(to right, #feb47b, #ff7e5f);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
     </style>
 </head>
 <body>
@@ -127,9 +180,50 @@
                     <a href="@Url.Action("Index", "Group")" class="btn btn-secondary">
                         &larr; Back
                     </a>
-                    <a asp-controller="Group" asp-action="Follow" asp-route-id="@Model.Id" class="btn btn-primary">
-                        Follow Group
-                    </a>
+                    @if (Model.IsFollowing)
+                    {
+                        @if (Model.AdminId == Model.UserId)
+                        {
+                            <a asp-controller="Group" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                                Delete
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Group" asp-action="Unfollow" asp-route-id="@Model.Id" class="btn btn-danger">
+                                Unfollow Group
+                            </a>
+                        }
+
+                        <div class="events-box">
+                            <h3>Group Events</h3>
+
+                            <a asp-controller="Event" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-add-event">
+                                Add Event
+                            </a>
+
+                            @if (Model.Events.Any())
+                            {
+                                @foreach (var eventItem in Model.Events)
+                                {
+                                    <div class="event-item">
+                                        <p class="event-title">@eventItem.Title</p>
+                                        <p class="event-date">Date: @eventItem.Date</p>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p>No events available for this group.</p>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <a asp-controller="Group" asp-action="Follow" asp-route-id="@Model.Id" class="btn btn-primary">
+                            Follow Group
+                        </a>
+                    }
                 </div>
             </div>
         </div>
