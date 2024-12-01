@@ -1,0 +1,138 @@
+﻿@using CinemaApp.Web.ViewModels.Event
+@model EventCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Event";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            padding: 50px 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .card {
+            margin: 20px 0;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: #6a11cb;
+            background: linear-gradient(to right, #2575fc, #6a11cb);
+            color: #fff;
+            padding: 15px;
+            text-align: left;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 1rem;
+        }
+
+        .text-danger {
+            font-size: 0.9rem;
+            color: #e74c3c;
+        }
+
+        .btn-success {
+            background-color: #27ae60;
+            color: #fff;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-transform: uppercase;
+        }
+
+            .btn-success:hover {
+                background-color: #229954;
+            }
+
+        .d-grid {
+            display: grid;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                Create a New Event
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" asp-controller="Event" method="post">
+                    <div class="mb-3">
+                        <label for="Title" class="form-label">Event Title</label>
+                        <input type="text" asp-for="Title" class="form-control" id="Title" placeholder="Enter event title">
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Description" class="form-label">Description</label>
+                        <textarea asp-for="Description" class="form-control" id="Description" rows="4" placeholder="Enter event description"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Date" class="form-label">Event Date</label>
+                        <input type="datetime-local" asp-for="Date" class="form-control" id="Date">
+                        <span asp-validation-for="Date" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Location" class="form-label">Location</label>
+                        <input type="text" asp-for="Location" class="form-control" id="Location" placeholder="Enter event location">
+                        <span asp-validation-for="Location" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Distance" class="form-label">Distance</label>
+                        <input type="number" asp-for="Distance" class="form-control" id="Distance" placeholder="Enter distance in kilometers">
+                        <span asp-validation-for="Distance" class="text-danger"></span>
+                    </div>
+
+                    <input type="hidden" asp-for="GroupId" />
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-lg">Create Event</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

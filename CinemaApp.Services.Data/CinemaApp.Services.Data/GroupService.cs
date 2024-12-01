@@ -77,6 +77,13 @@ namespace CinemaApp.Services.Data
 
             GroupDetailsViewModel? viewModel = null;
 
+            var events = (await this.groupRepository.GetAllAttached().Include(g => g.Events).ToArrayAsync()).FirstOrDefault(g => g.Id == id).Events.Select(e => new EventIndexViewModel()
+            {
+                Id = e.Id.ToString(),
+                Date = e.Date.ToString(EntityValidationConstants.Event.DateFormat),
+                Title = e.Title,
+                GroupName = group.Name
+            }).ToList();
 
             int membersCount = group.Memberships.Count();
 
@@ -92,14 +99,7 @@ namespace CinemaApp.Services.Data
                     CreatedDate = group.CreatedDate.ToString(EntityValidationConstants.Group.ReleaseDateFormat),
                     MembersCount = membersCount,
                     IsFollowing = isFollowing == null ? false : true,
-                    Events = group.Events.Select(e => new EventIndexViewModel()
-                    {
-                        Id = e.Id.ToString(),
-                        Date = e.Date.ToString(EntityValidationConstants.Event.DateFormat),
-                        Title = e.Title,
-                        GroupName = group.Name
-                    })
-                    .ToList(),
+                    Events = events,
                     AdminId = group.AdminId.ToString(),
                     UserId = userGuidId.ToString()
                 };

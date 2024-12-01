@@ -11,11 +11,14 @@ namespace CinemaApp.Services.Data
 {
     public class EventService : BaseService, IEventService
     {
-        private readonly IRepository<Event, Guid> eventRepository;        
+        private readonly IRepository<Event, Guid> eventRepository;
+        private readonly IRepository<ApplicationUserEvent, object> userEventRepository;
 
-        public EventService(IRepository<Event, Guid> eventRepository)            
+        public EventService(IRepository<Event, Guid> eventRepository,
+            IRepository<ApplicationUserEvent, object> userEventRepository)            
         {
-            this.eventRepository = eventRepository;            
+            this.eventRepository = eventRepository;
+            this.userEventRepository = userEventRepository;
         }
        
         public async Task<IEnumerable<EventIndexViewModel>> IndexGetAllAsync()
@@ -50,6 +53,29 @@ namespace CinemaApp.Services.Data
                 .ToArrayAsync();
 
             return events;
+        }
+
+        public async Task AddEventAsync(EventCreateViewModel viewModel, Guid adminId)
+        {
+            Event newEvent = new Event()
+            {
+                Id = Guid.NewGuid(),
+                Title = viewModel.Title,
+                Date = viewModel.Date,
+                Distance = viewModel.Distance,
+                Location = viewModel.Location,
+                Description = viewModel.Description,
+                OrganizerId = adminId,
+                GroupId = Guid.Parse(viewModel.GroupId)
+            };
+
+            await eventRepository.AddAsync(newEvent);
+
+            await userEventRepository.AddAsync(new ApplicationUserEvent()
+            {
+                ApplicationUserId = adminId,
+                EventId = newEvent.Id
+            });
         }
     }
 }
