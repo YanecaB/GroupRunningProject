@@ -69,6 +69,8 @@ namespace CinemaApp.Web.Controllers
             return RedirectToAction(nameof(Admin));
         }
 
+        [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Admin()
         {
             Guid? userGuid = GetCurrectUserGuidId();
@@ -82,6 +84,28 @@ namespace CinemaApp.Web.Controllers
                await this.eventService.GetAllAdminEventsAsync(userGuid.Value);
 
             return this.View(events);
+        }
+
+        public async Task<IActionResult> Join(string? id)
+        {
+            Guid guidId = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(id, ref guidId);
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            Guid? userGuid = GetCurrectUserGuidId();
+
+            if (!userGuid.HasValue)
+            {
+                return Unauthorized();
+            }
+
+            await this.eventService.JoinEventAsync(guidId, userGuid.Value);
+
+            return RedirectToAction(nameof(Index)); // todo: redirect to My schedule
+
         }
     }
 }

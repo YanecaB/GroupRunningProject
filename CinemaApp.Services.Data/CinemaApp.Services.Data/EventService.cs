@@ -77,6 +77,18 @@ namespace CinemaApp.Services.Data
                 EventId = newEvent.Id
             });
         }
+
+        public async Task JoinEventAsync(Guid eventId, Guid userId)
+        {
+            if (await this.userEventRepository.FirstOrDefaultAsync(ue => ue.EventId == eventId && ue.ApplicationUserId == userId) == null)
+            {
+                await this.userEventRepository.AddAsync(new ApplicationUserEvent()
+                {
+                    ApplicationUserId = userId,
+                    EventId = eventId
+                });
+            }            
+        }
     }
 }
 
