@@ -193,6 +193,36 @@ namespace CinemaApp.Services.Data
             groupToDelete.IsDeleted = true;
             return await this.groupRepository.UpdateAsync(groupToDelete);
         }
+
+        public async Task<GroupEditViewModel?> GetGroupForEditAsync(Guid id)
+        {
+            var group = await this.groupRepository
+                .GetAllAttached()
+                .Where(g => g.IsDeleted == false)
+                .Select(g => new GroupEditViewModel()
+                {
+                    Location = g.Location,
+                    Name = g.Name,
+                    Description = g.Description,
+                    CreatedDate = g.CreatedDate,
+                    Id = g.Id.ToString()
+                })
+                .FirstOrDefaultAsync(g => g.Id == id.ToString());
+
+            return group;
+        }
+
+        public async Task<bool> EditGroupAsync(GroupEditViewModel viewModel)
+        {
+            var group = await this.groupRepository.GetByIdAsync(Guid.Parse(viewModel.Id));
+
+            group.Description = viewModel.Description;
+            group.Location = viewModel.Location;
+            group.CreatedDate = viewModel.CreatedDate;
+            group.Name = viewModel.Name;
+
+            return await this.groupRepository.UpdateAsync(group);
+        }
     }
 }
 

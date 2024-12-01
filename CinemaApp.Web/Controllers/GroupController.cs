@@ -150,6 +150,11 @@ namespace CinemaApp.Web.Controllers
         [Authorize]
         public async Task<IActionResult> SoftDeleteConfirmed(DeleteGroupViewModel group)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.View(group);
+            }
+
             Guid guidId = Guid.Empty;
             bool isIdValid = this.IsGuidValid(group.Id, ref guidId);
             if (!isIdValid)
@@ -184,7 +189,45 @@ namespace CinemaApp.Web.Controllers
                await this.groupService.GetAllAdminGroupsAsync(userGuid.Value);
 
             return this.View(groups);
-        }        
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Edit(string? id)
+        {
+            Guid guidId = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(id, ref guidId);
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            GroupEditViewModel? viewModel = await this.groupService
+                .GetGroupForEditAsync(guidId);
+
+            return this.View(viewModel);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(GroupEditViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return this.View(viewModel);
+            }
+
+            bool isUpdated = await this.groupService
+               .EditGroupAsync(viewModel);
+
+            if (!isUpdated)
+            {
+                ModelState.AddModelError(string.Empty, "Unexpected error occurred while updating the group! Please contact administrator");
+                return this.View(viewModel);
+            }
+
+            return RedirectToAction(nameof(Admin));
+        }
     }
 }
 

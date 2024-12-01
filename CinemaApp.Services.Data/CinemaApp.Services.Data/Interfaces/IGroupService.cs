@@ -9,7 +9,7 @@ namespace CinemaApp.Services.Data.Interfaces
 
         Task AddGroupAsync(GroupCreateViewModel viewModel, Guid adminId);
 
-        Task<GroupDetailsViewModel> GetGroupDetailsByIdAsync(Guid id, Guid userGuidId);
+        Task<GroupDetailsViewModel?> GetGroupDetailsByIdAsync(Guid id, Guid userGuidId);
 
         Task FollowGroupAsync(Guid id, Guid userGuidId);
 
@@ -20,6 +20,10 @@ namespace CinemaApp.Services.Data.Interfaces
         Task<DeleteGroupViewModel?> GetGroupForDeleteByIdAsync(Guid id);
 
         Task<bool> SoftDeleteGroupAsync(Guid id);
+
+        Task<GroupEditViewModel?> GetGroupForEditAsync(Guid id);
+
+        Task<bool> EditGroupAsync(GroupEditViewModel viewModel);
     }
 }
 
