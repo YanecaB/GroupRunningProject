@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using CinemaApp.Web.ViewModels.User;
 using static CinemaApp.Common.EntityValidationConstants.Group;
 
 namespace CinemaApp.Web.ViewModels.Group
@@ -24,6 +25,8 @@ namespace CinemaApp.Web.ViewModels.Group
         public string Location { get; set; } = null!;
 
         public DateTime CreatedDate { get; set; }
+
+        public ICollection<ApplicationUserViewModel> Followers { get; set; } = new List<ApplicationUserViewModel>();
     }
 }
 

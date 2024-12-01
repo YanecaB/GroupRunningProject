@@ -10,6 +10,7 @@ using System.Security.Claims;
 using CinemaApp.Web.ViewModels.Event;
 using CinemaApp.Common;
 using Microsoft.VisualBasic;
+using CinemaApp.Web.ViewModels.User;
 
 namespace CinemaApp.Services.Data
 {
@@ -196,8 +197,10 @@ namespace CinemaApp.Services.Data
 
         public async Task<GroupEditViewModel?> GetGroupForEditAsync(Guid id)
         {
-            var group = await this.groupRepository
+            GroupEditViewModel? group = await this.groupRepository
                 .GetAllAttached()
+                .Include(g => g.Memberships)
+                .ThenInclude(ms => ms.ApplicationUser)
                 .Where(g => g.IsDeleted == false)
                 .Select(g => new GroupEditViewModel()
                 {
@@ -205,7 +208,14 @@ namespace CinemaApp.Services.Data
                     Name = g.Name,
                     Description = g.Description,
                     CreatedDate = g.CreatedDate,
-                    Id = g.Id.ToString()
+                    Id = g.Id.ToString(),
+                    Followers = g.Memberships.Select(m => new ApplicationUserViewModel()
+                    {
+                        UserName = m.ApplicationUser.UserName,
+                        Email = m.ApplicationUser.Email,
+                        Id = m.ApplicationUser.Id.ToString()
+                    })
+                    .ToList()
                 })
                 .FirstOrDefaultAsync(g => g.Id == id.ToString());
 

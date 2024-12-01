@@ -26,8 +26,64 @@
             background-color: rgba(255, 255, 255, 0.9);
             border-radius: 10px;
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            max-width: 900px;
             margin: auto;
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-container {
+            flex: 3;
+        }
+
+        .followers-container {
+            flex: 2;
+            max-height: 500px;
+            overflow-y: auto;
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .followers-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #6a11cb;
+        }
+
+        .follower-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .follower-name {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+
+        .btn-remove {
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-remove:hover {
+            background-color: #c0392b;
         }
 
         .card {
@@ -76,7 +132,9 @@
             resize: vertical;
         }
 
-        .btn {
+        .btn-primary {
+            background-color: #3498db;
+            color: #fff;
             padding: 10px 15px;
             font-size: 1rem;
             border-radius: 5px;
@@ -85,58 +143,85 @@
             cursor: pointer;
         }
 
-        .btn-primary {
-            background-color: #3498db;
-            color: #fff;
+        .btn-primary:hover {
+            background-color: #2980b9;
         }
-
-            .btn-primary:hover {
-                background-color: #2980b9;
-            }
 
         .btn-secondary {
             background-color: #95a5a6;
             color: #fff;
+            padding: 10px 15px;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
         }
 
-            .btn-secondary:hover {
-                background-color: #7f8c8d;
-            }
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="card">
-            <div class="card-header">
-                Edit Group
+        <div class="form-container">
+            <div class="card">
+                <div class="card-header">
+                    Edit Group
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" asp-controller="Group" method="post">
+                        <input asp-for="Id" type="hidden" />
+                        <div>
+                            <label asp-for="Name"></label>
+                            <input asp-for="Name" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Description"></label>
+                            <textarea asp-for="Description" rows="5"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Location"></label>
+                            <input asp-for="Location" />
+                            <span asp-validation-for="Location" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <label asp-for="CreatedDate"></label>
+                            <input asp-for="CreatedDate" type="datetime-local" readonly />
+                        </div>
+                        <div>
+                            <button type="submit" class="btn-primary">Save Changes</button>
+                            <a href="@Url.Action("Index", "Group")" class="btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="card-body">
-                <form asp-action="Edit" asp-controller="Group" method="post">
-                    <div>
-                        <label asp-for="Name"></label>
-                        <input asp-for="Name" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
-                    <div>
-                        <label asp-for="Description"></label>
-                        <textarea asp-for="Description" rows="5"></textarea>
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
-                    <div>
-                        <label asp-for="Location"></label>
-                        <input asp-for="Location" />
-                        <span asp-validation-for="Location" class="text-danger"></span>
-                    </div>
-                    <div>
-                        <label asp-for="CreatedDate"></label>
-                        <input asp-for="CreatedDate" type="datetime-local" readonly />
-                    </div>
-                    <div>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                        <a href="@Url.Action("Index", "Group")" class="btn btn-secondary">Cancel</a>
-                    </div>
-                </form>
+        </div>
+        <div class="followers-container">
+            <div class="followers-header">
+                Followers
             </div>
+            @if (Model.Followers.Any())
+            {
+                @foreach (var follower in Model.Followers)
+                {
+                    <div class="follower-item">
+                        <p class="follower-name">@follower.UserName</p>
+                        <form asp-action="RemoveFollower" asp-controller="Group" method="post" style="margin: 0;">
+                            <input type="hidden" name="groupId" value="@Model.Id" />
+                            <input type="hidden" name="followerId" value="@follower.Id" />
+                            <button type="submit" class="btn-remove">Remove</button>
+                        </form>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No followers available.</p>
+            }
         </div>
     </div>
 </body>
