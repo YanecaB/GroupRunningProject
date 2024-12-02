@@ -73,7 +73,7 @@ namespace CinemaApp.Web.Controllers
                 return Unauthorized();
             }
 
-            GroupDetailsViewModel groupDetails = await this.groupService
+            GroupDetailsViewModel? groupDetails = await this.groupService
                 .GetGroupDetailsByIdAsync(guidId, userGuid.Value);
 
             return this.View(groupDetails);

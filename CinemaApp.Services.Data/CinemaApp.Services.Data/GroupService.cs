@@ -69,7 +69,7 @@ namespace CinemaApp.Services.Data
             });
         }
         
-        public async Task<GroupDetailsViewModel> GetGroupDetailsByIdAsync(Guid id, Guid userGuidId)
+        public async Task<GroupDetailsViewModel?> GetGroupDetailsByIdAsync(Guid id, Guid userGuidId)
         {
             var groups = await this.groupRepository
                 .GetAllAttached()
@@ -82,12 +82,13 @@ namespace CinemaApp.Services.Data
                        
             if (group != null && group.IsDeleted == false)
             {
-                var events = (await this.groupRepository.GetAllAttached().Include(g => g.Events).ToArrayAsync()).FirstOrDefault(g => g.Id == id).Events.Select(e => new EventIndexViewModel()
+                var events = (await this.groupRepository.GetAllAttached().Include(g => g.Events).ThenInclude(e => e.UsersEvents).ToArrayAsync()).FirstOrDefault(g => g.Id == id).Events.Select(e => new EventIndexViewModel()
                 {
                     Id = e.Id.ToString(),
                     Date = e.Date.ToString(EntityValidationConstants.Event.DateFormat),
                     Title = e.Title,
                     GroupName = group.Name,
+                    JoinedUsers = e.UsersEvents.Count(), 
                     AdminId = e.OrganizerId.ToString()
                 }).ToList();
 
