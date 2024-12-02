@@ -1,0 +1,241 @@
+﻿@using CinemaApp.Web.ViewModels.Event
+@model EventEditViewModel
+
+@{
+    ViewData["Title"] = "Edit Event";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            padding: 50px 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: auto;
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-container {
+            flex: 3;
+        }
+
+        .attendees-container {
+            flex: 2;
+            max-height: 500px;
+            overflow-y: auto;
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .attendees-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #6a11cb;
+        }
+
+        .attendee-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .attendee-name {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+
+        .btn-remove {
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+            .btn-remove:hover {
+                background-color: #c0392b;
+            }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: #6a11cb;
+            background: linear-gradient(to right, #2575fc, #6a11cb);
+            color: #fff;
+            padding: 15px;
+            text-align: left;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: left;
+            display: block;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 15px;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+            .btn-primary:hover {
+                background-color: #2980b9;
+            }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: #fff;
+            padding: 10px 15px;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+            .btn-secondary:hover {
+                background-color: #7f8c8d;
+            }
+
+        .container {
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="card">
+                <div class="card-header">
+                    Edit Event
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" asp-controller="Event" method="post">
+                        <input asp-for="Id" type="hidden" />
+                        <div>
+                            <label asp-for="Title"></label>
+                            <input asp-for="Title" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Description"></label>
+                            <textarea asp-for="Description" rows="5"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Location"></label>
+                            <input asp-for="Location" />
+                            <span asp-validation-for="Location" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Date"></label>
+                            <input asp-for="Date" type="datetime-local" />
+                            <span asp-validation-for="Date" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Distance"></label>
+                            <input asp-for="Distance" type="number" />
+                            <span asp-validation-for="Distance" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn-primary">Save Changes</button>
+                            <a href="@Url.Action("Index", "Event")" class="btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="attendees-container">
+            <div class="attendees-header">
+                Attendees
+            </div>
+            @if (Model.JoinedUsers.Any())
+            {
+                @foreach (var attendee in Model.JoinedUsers)
+                {
+                    <div class="attendee-item">
+                        <p class="attendee-name">@attendee.UserName</p>
+                        <form asp-action="RemoveAttendee" asp-controller="Event" method="post" style="margin: 0;">
+                            <input type="hidden" name="eventId" value="@Model.Id" />
+                            <input type="hidden" name="attendeeId" value="@attendee.Id" />
+                            <button type="submit" class="btn-remove">Remove</button>
+                        </form>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No attendees available.</p>
+            }
+        </div>
+    </div>
+</body>
+</html>

@@ -2,7 +2,7 @@
 @model IEnumerable<EventIndexViewModel>
 
 @{
-    ViewData["Title"] = "Events";
+    ViewData["Title"] = "My Events";
 }
 
 <!DOCTYPE html>
@@ -47,6 +47,8 @@
         .card-header {
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
+            background-color: #3498db;
+            color: white;
         }
 
         .table {
@@ -63,17 +65,10 @@
 <body>
     <div class="container">
         <div class="row">
-            <!-- Sidebar with Create Event button -->
-            <div class="col-md-3 mb-4">
-                <div class="d-grid">
-                    <a href="@Url.Action("Create", "Event")" class="btn btn-primary btn-lg shadow-sm">+ Create Event</a>
-                </div>
-            </div>
-
             <!-- List of Events -->
-            <div class="col-md-9">
+            <div class="col-12">
                 <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
+                    <div class="card-header">
                         <h3 class="card-title mb-0">@ViewData["Title"]</h3>
                     </div>
                     <div class="card-body">
@@ -99,9 +94,11 @@
                                                 <td>
                                                     <div class="btn-group" role="group">
                                                         <a href="@Url.Action("Details", "Event", new { id = eventItem.Id })"
-                                                           class="btn btn-sm btn-info text-white">Details</a>
-                                                        <form asp-action="Join" asp-route-id="@eventItem.Id" method="post" style="display:inline;">
-                                                            <button type="submit" class="btn btn-sm btn-success">Join</button>
+                                                           class="btn btn-sm btn-info text-white">Details</a>                                                        
+                                                        <a href="@Url.Action("Edit", "Event", new { id = eventItem.Id })"
+                                                           class="btn btn-sm btn-warning text-white">Change</a>
+                                                        <form asp-action="Delete" asp-route-id="@eventItem.Id" method="post" style="display:inline;">
+                                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                                         </form>
                                                     </div>
                                                 </td>
@@ -114,7 +111,7 @@
                         else
                         {
                             <div class="alert alert-info" role="alert">
-                                <p class="mb-0">No events available. Create a new event to get started.</p>
+                                <p class="mb-0">No events available. Stay tuned for updates!</p>
                             </div>
                         }
                     </div>

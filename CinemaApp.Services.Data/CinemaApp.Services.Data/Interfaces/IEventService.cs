@@ -15,6 +15,10 @@ namespace CinemaApp.Services.Data.Interfaces
         Task JoinEventAsync(Guid eventId, Guid userId);
 
         Task<EventDetailsViewModel> GetEventDetailsByIdAsync(Guid id, Guid userGuidId);
+
+        Task<EventEditViewModel?> GetEventForEditAsync(Guid id);
+
+        Task<bool> EditEventAsync(EventEditViewModel viewModel);
     }
 }
 

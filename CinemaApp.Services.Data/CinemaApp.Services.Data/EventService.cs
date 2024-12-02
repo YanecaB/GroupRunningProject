@@ -128,6 +128,47 @@ namespace CinemaApp.Services.Data
 
             return viewModel;
         }
+
+        public async Task<EventEditViewModel?> GetEventForEditAsync(Guid id)
+        {
+            Event? eventEntity = (await this.eventRepository
+                .GetAllAttached()
+                .Include(e => e.UsersEvents)
+                .ThenInclude(ue => ue.ApplicationUser)
+                .ToArrayAsync())
+                .FirstOrDefault(e => e.Id == id);
+
+            EventEditViewModel? viewModel = null!;
+
+            if (eventEntity != null && eventEntity.IsDeleted == false)
+            {                
+                viewModel = new EventEditViewModel()
+                {
+                    Id = id.ToString(),
+                    Description = eventEntity.Description,
+                    Distance = eventEntity.Distance,
+                    Location = eventEntity.Location,
+                    Title = eventEntity.Title,
+                    Date = eventEntity.Date,
+                    JoinedUsers = eventEntity.UsersEvents.Select(ue => new ApplicationUserViewModel()
+                    {
+                        Id = ue.ApplicationUserId.ToString(),
+                        Email = ue.ApplicationUser.Email,
+                        UserName = ue.ApplicationUser.UserName
+                    })
+                    .ToList()
+                };
+            }
+                
+                
+
+            return viewModel;
+        }
+
+        public async Task<bool> EditEventAsync(EventEditViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

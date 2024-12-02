@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using CinemaApp.Web.ViewModels.User;
 using static CinemaApp.Common.EntityValidationConstants.Event;
 
 namespace CinemaApp.Web.ViewModels.Event
 {
-	public class EventCreateViewModel
+	public class EventEditViewModel
 	{
         public string Id { get; set; } = null!;
 
@@ -20,8 +20,7 @@ namespace CinemaApp.Web.ViewModels.Event
         public string Description { get; set; } = null!;
 
         [Required]
-        [DisplayFormat(DataFormatString = DateFormat, ApplyFormatInEditMode = true)]
-        public DateTime Date { get; set; } = DateTime.Now;        
+        public DateTime Date { get; set; }
 
         [Required]
         [MinLength(DescriptionMinLength)]
@@ -30,7 +29,9 @@ namespace CinemaApp.Web.ViewModels.Event
 
         public int Distance { get; set; }
 
-        public string GroupId { get; set; } = null!;
+        public ICollection<ApplicationUserViewModel> JoinedUsers { get; set; } = new List<ApplicationUserViewModel>();
+
+        //public string GroupId { get; set; } = null!;
     }
 }
 

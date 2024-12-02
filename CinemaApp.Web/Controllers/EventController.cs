@@ -131,6 +131,23 @@ namespace CinemaApp.Web.Controllers
 
             return this.View(viewModel);
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Edit(string? id)
+        {
+            Guid guidId = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(id, ref guidId);
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            EventEditViewModel? viewModel = await this.eventService
+               .GetEventForEditAsync(guidId);
+
+            return this.View(viewModel);
+        }
     }
 }
 

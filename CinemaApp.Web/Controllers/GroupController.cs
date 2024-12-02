@@ -121,14 +121,14 @@ namespace CinemaApp.Web.Controllers
 
             var result = await groupService.RemoveFollowerAsync(groupIdGuid, followerIdGuid);
 
-            if (!result)
-            {
-                TempData["Error"] = "Failed to remove the follower. Please try again.";
-            }
-            else
-            {
-                TempData["Success"] = "Follower removed successfully.";
-            }
+            //if (!result)
+            //{
+            //    TempData["Error"] = "Failed to remove the follower. Please try again.";
+            //}
+            //else
+            //{
+            //    TempData["Success"] = "Follower removed successfully.";
+            //}
 
             return RedirectToAction(nameof(Edit), new { id = groupId });
         }
