@@ -1,5 +1,6 @@
 ﻿using System;
 using CinemaApp.Web.ViewModels.Group;
+using CinemaApp.Web.ViewModels.User;
 
 namespace CinemaApp.Services.Data.Interfaces
 {
@@ -24,6 +25,8 @@ namespace CinemaApp.Services.Data.Interfaces
         Task<GroupEditViewModel?> GetGroupForEditAsync(Guid id);
 
         Task<bool> EditGroupAsync(GroupEditViewModel viewModel);
+
+        Task<bool> RemoveFollowerAsync(Guid groupId, Guid followerId);
     }
 }
 

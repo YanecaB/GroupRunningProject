@@ -38,24 +38,12 @@ namespace CinemaApp.Web
                 cfg.LoginPath = "/Identity/Account/Login";
             });
 
-            // add repository            
-
-            // add service
-            //builder.Services.AddScoped<IGroupService, GroupService>();
-            // Add services to the container.
-            //builder.Services.AddScoped<IGroupService, GroupService>();
-
-            //todo:!!!!!!!!!!!!!!!!
-            //TODO: IGroupService dependency cannot be resolved when attempting to instantiate your GroupController. This typically means that IGroupService was not properly registered in the dependency injection (DI) container in your Program.cs file.
-
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IGroupService).Assembly);
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
-
             
-
             WebApplication app = builder.Build();
             
             // Configure the HTTP request pipeline.

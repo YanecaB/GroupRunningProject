@@ -234,6 +234,14 @@ namespace CinemaApp.Services.Data
 
             return await this.groupRepository.UpdateAsync(group);
         }
+
+        public async Task<bool> RemoveFollowerAsync(Guid groupId, Guid followerId)
+        {
+            var membership = await this.membershipRepository
+                .FirstOrDefaultAsync(ms => ms.GroupId == groupId && ms.ApplicationUserId == followerId);
+
+            return await this.membershipRepository.DeleteAsync(membership);
+        }
     }
 }
 

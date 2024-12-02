@@ -4,6 +4,8 @@ using CinemaApp.Services.Data.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using CinemaApp.Web.Infrastructure.Extensions;
 using CinemaApp.Web.ViewModels.Group;
+using CinemaApp.Web.ViewModels.User;
+using CinemaApp.Services.Data;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -100,6 +102,35 @@ namespace CinemaApp.Web.Controllers
                 .FollowGroupAsync(guidId, userGuid.Value);
 
             return RedirectToAction(nameof(Index)); // TODO: Redirect to Following page
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> RemoveFollower(string groupId, string followerId)
+        {
+            Guid groupIdGuid = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(groupId, ref groupIdGuid);
+
+            Guid followerIdGuid = Guid.Empty;
+            bool isIdValid2 = this.IsGuidValid(followerId, ref followerIdGuid);
+
+            if (!isIdValid && !isIdValid2)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            var result = await groupService.RemoveFollowerAsync(groupIdGuid, followerIdGuid);
+
+            if (!result)
+            {
+                TempData["Error"] = "Failed to remove the follower. Please try again.";
+            }
+            else
+            {
+                TempData["Success"] = "Follower removed successfully.";
+            }
+
+            return RedirectToAction(nameof(Edit), new { id = groupId });
         }
 
         [Authorize]
