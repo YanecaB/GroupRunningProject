@@ -190,6 +190,56 @@ namespace CinemaApp.Web.Controllers
 
             return RedirectToAction(nameof(Edit), new { id = eventId });
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Delete(string? id)
+        {
+            Guid guidId = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(id, ref guidId);
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Admin));
+            }
+
+            DeleteEventViewModel? eventToDeleteViewModel =
+                await this.eventService.GetEventForDeleteByIdAsync(guidId);
+
+            if (eventToDeleteViewModel == null)
+            {
+                return this.RedirectToAction(nameof(Admin));
+            }
+
+            return this.View(eventToDeleteViewModel);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> SoftDeleteConfirmed(DeleteEventViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return this.View(viewModel);
+            }
+
+            Guid eventId = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(viewModel.Id, ref eventId);
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Admin));
+            }
+
+            bool isDeleted = await this.eventService
+                .SoftDeleteEventAsync(eventId);
+            if (!isDeleted)
+            {
+                TempData["ErrorMessage"] =
+                    "Unexpected error occurred while trying to delete the event! Please contact system administrator!";
+                return this.RedirectToAction(nameof(Delete), new { id = viewModel.Id });
+            }
+
+            return this.RedirectToAction(nameof(Admin));
+        }
     }
 }
 

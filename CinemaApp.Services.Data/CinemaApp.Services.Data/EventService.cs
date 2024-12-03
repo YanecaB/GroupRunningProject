@@ -42,7 +42,7 @@ namespace CinemaApp.Services.Data
         public async Task<IEnumerable<EventIndexViewModel>> GetAllAdminEventsAsync(Guid userId)
         {
             IEnumerable<EventIndexViewModel> events = await this.eventRepository
-                .GetAllAttached()
+                .GetAllAttached()                
                 .Where(g => g.IsDeleted == false && g.OrganizerId == userId)
                 .Select(c => new EventIndexViewModel()
                 {
@@ -95,6 +95,7 @@ namespace CinemaApp.Services.Data
         {
             var eventEntity = (await this.eventRepository
                 .GetAllAttached()
+                .Where(e => e.IsDeleted == false)
                 .Include(e => e.UsersEvents)
                 .ThenInclude(ue => ue.ApplicationUser)
                 .ToArrayAsync())
@@ -133,6 +134,7 @@ namespace CinemaApp.Services.Data
         {
             Event? eventEntity = (await this.eventRepository
                 .GetAllAttached()
+                .Where(e => e.IsDeleted == false)
                 .Include(e => e.UsersEvents)
                 .ThenInclude(ue => ue.ApplicationUser)
                 .ToArrayAsync())
@@ -158,9 +160,7 @@ namespace CinemaApp.Services.Data
                     })
                     .ToList()
                 };
-            }
-                
-                
+            }                                
 
             return viewModel;
         }
@@ -183,6 +183,36 @@ namespace CinemaApp.Services.Data
             return await this.userEventRepository
                 .DeleteAsync(await this.userEventRepository.
                 FirstOrDefaultAsync(ue => ue.EventId == eventId && ue.ApplicationUserId == anttendee));
+        }
+
+        public async Task<bool> SoftDeleteEventAsync(Guid id)
+        {
+            Event? eventToDelete = await this.eventRepository                
+                .FirstOrDefaultAsync(e => e.Id.ToString().ToLower() == id.ToString().ToLower());
+
+            if (eventToDelete == null)
+            {
+                return false;
+            }
+
+            eventToDelete.IsDeleted = true;
+            return await this.eventRepository.UpdateAsync(eventToDelete);
+        }
+
+        public async Task<DeleteEventViewModel?> GetEventForDeleteByIdAsync(Guid id)
+        {
+            var eventToDelete = await this.eventRepository
+                .GetAllAttached()
+                .Where(g => g.IsDeleted == false)
+                .Select(g => new DeleteEventViewModel()
+                {
+                    Id = g.Id.ToString(),
+                    Location = g.Location,
+                    Title = g.Title
+                })
+                .FirstOrDefaultAsync(g => g.Id.ToLower() == id.ToString().ToLower());
+
+            return eventToDelete;
         }
     }
 }

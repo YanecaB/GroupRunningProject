@@ -1,0 +1,111 @@
+﻿@using CinemaApp.Web.ViewModels.Event;
+@model DeleteEventViewModel
+
+@{
+    ViewData["Title"] = "Delete Event";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            padding: 50px 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .card-header {
+            background: #c31432;
+            background: linear-gradient(to right, #c31432, #240b36);
+            color: #fff;
+            padding: 15px;
+            text-align: left;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .alert {
+            padding: 15px;
+            background-color: #ffe6e6;
+            border-left: 5px solid #e74c3c;
+            color: #e74c3c;
+            text-align: left;
+            font-style: italic;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            margin: 5px;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+            .btn-danger:hover {
+                background-color: #c0392b;
+            }
+
+        .btn-secondary {
+            background-color: #7f8c8d;
+            color: #fff;
+        }
+
+            .btn-secondary:hover {
+                background-color: #636e72;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                Delete Event
+            </div>
+            <div class="card-body">
+                <div class="alert">
+                    <p>Are you sure you want to delete the event <strong>@Model.Title</strong> located at <strong>@Model.Location</strong>?</p>
+                    <p>This action cannot be undone.</p>
+                </div>
+                <form asp-action="SoftDeleteConfirmed" method="post">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <a href="@Url.Action("Index", "Event")" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

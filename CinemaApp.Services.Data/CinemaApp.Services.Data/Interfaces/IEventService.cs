@@ -21,6 +21,10 @@ namespace CinemaApp.Services.Data.Interfaces
         Task<bool> EditEventAsync(EventEditViewModel viewModel);
 
         Task<bool> RemoveAnttendeeAsync(Guid eventId, Guid anttendee);
+
+        Task<bool> SoftDeleteEventAsync(Guid id);
+
+        Task<DeleteEventViewModel?> GetEventForDeleteByIdAsync(Guid id);
     }
 }
 

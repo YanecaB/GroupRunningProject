@@ -94,12 +94,11 @@
                                                 <td>
                                                     <div class="btn-group" role="group">
                                                         <a href="@Url.Action("Details", "Event", new { id = eventItem.Id })"
-                                                           class="btn btn-sm btn-info text-white">Details</a>                                                        
+                                                           class="btn btn-sm btn-info text-white">Details</a>
                                                         <a href="@Url.Action("Edit", "Event", new { id = eventItem.Id })"
-                                                           class="btn btn-sm btn-warning text-white">Change</a>
-                                                        <form asp-action="Delete" asp-route-id="@eventItem.Id" method="post" style="display:inline;">
-                                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                                        </form>
+                                                           class="btn btn-sm btn-warning text-white">Change</a>                                                        
+                                                        <a href="@Url.Action("Delete", "Event", new { id = eventItem.Id })"
+                                                           class="btn btn-sm btn-danger">Delete</a>
                                                     </div>
                                                 </td>
                                             </tr>

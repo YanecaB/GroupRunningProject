@@ -73,6 +73,7 @@ namespace CinemaApp.Services.Data
         {
             var groups = await this.groupRepository
                 .GetAllAttached()
+                .Where(g => g.IsDeleted == false)
                 .Include(g => g.Memberships)                
                 .ToArrayAsync();
 
@@ -82,7 +83,7 @@ namespace CinemaApp.Services.Data
                        
             if (group != null && group.IsDeleted == false)
             {
-                var events = (await this.groupRepository.GetAllAttached().Include(g => g.Events).ThenInclude(e => e.UsersEvents).ToArrayAsync()).FirstOrDefault(g => g.Id == id).Events.Select(e => new EventIndexViewModel()
+                var events = (await this.groupRepository.GetAllAttached().Where(g => g.IsDeleted == false).Include(g => g.Events).ThenInclude(e => e.UsersEvents).ToArrayAsync()).FirstOrDefault(g => g.Id == id).Events.Select(e => new EventIndexViewModel()
                 {
                     Id = e.Id.ToString(),
                     Date = e.Date.ToString(EntityValidationConstants.Event.DateFormat),
@@ -176,13 +177,14 @@ namespace CinemaApp.Services.Data
         {
             Group? groupToDelete = await this.groupRepository
                 .FirstOrDefaultAsync(g => g.Id.ToString().ToLower() == id.ToString().ToLower());
+
             if (groupToDelete == null)
             {
                 return false;
             }
 
             var events = await this.eventRepository
-                .GetAllAttached()
+                .GetAllAttached()                
                 .Where(e => !e.IsDeleted && e.GroupId.ToString() == id.ToString())
                 .ToArrayAsync();
 
@@ -200,6 +202,7 @@ namespace CinemaApp.Services.Data
         {
             GroupEditViewModel? group = await this.groupRepository
                 .GetAllAttached()
+                .Where(g => g.IsDeleted == false)
                 .Include(g => g.Memberships)
                 .ThenInclude(ms => ms.ApplicationUser)
                 .Where(g => g.IsDeleted == false)
