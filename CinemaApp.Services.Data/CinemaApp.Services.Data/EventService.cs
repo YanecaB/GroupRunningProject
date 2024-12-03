@@ -177,6 +177,13 @@ namespace CinemaApp.Services.Data
 
             return await this.eventRepository.UpdateAsync(eventEntity);
         }
+
+        public async Task<bool> RemoveAnttendeeAsync(Guid eventId, Guid anttendee)
+        {            
+            return await this.userEventRepository
+                .DeleteAsync(await this.userEventRepository.
+                FirstOrDefaultAsync(ue => ue.EventId == eventId && ue.ApplicationUserId == anttendee));
+        }
     }
 }
 

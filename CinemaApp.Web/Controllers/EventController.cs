@@ -6,6 +6,7 @@ using CinemaApp.Services.Data;
 using CinemaApp.Services.Data.Interfaces;
 using CinemaApp.Web.ViewModels.Event;
 using CinemaApp.Web.ViewModels.Group;
+using CinemaApp.Web.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -168,6 +169,26 @@ namespace CinemaApp.Web.Controllers
             }
 
             return RedirectToAction(nameof(Admin));
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> RemoveAttendee(string eventId, string attendeeId)
+        {
+            Guid eventIdGuid = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(eventId, ref eventIdGuid);
+
+            Guid attendeeIdGuid = Guid.Empty;
+            bool isIdValid2 = this.IsGuidValid(attendeeId, ref attendeeIdGuid);
+
+            if (!isIdValid && !isIdValid2)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            var result = await eventService.RemoveAnttendeeAsync(eventIdGuid, attendeeIdGuid);
+
+            return RedirectToAction(nameof(Edit), new { id = eventId });
         }
     }
 }
