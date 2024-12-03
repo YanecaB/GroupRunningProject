@@ -148,6 +148,27 @@ namespace CinemaApp.Web.Controllers
 
             return this.View(viewModel);
         }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(EventEditViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return this.View(viewModel);
+            }
+
+            bool isUpdated = await this.eventService
+               .EditEventAsync(viewModel);
+
+            if (!isUpdated)
+            {
+                ModelState.AddModelError(string.Empty, "Unexpected error occurred while updating the event! Please contact administrator");
+                return this.View(viewModel);
+            }
+
+            return RedirectToAction(nameof(Admin));
+        }
     }
 }
 

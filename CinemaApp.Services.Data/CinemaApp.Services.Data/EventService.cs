@@ -167,7 +167,15 @@ namespace CinemaApp.Services.Data
 
         public async Task<bool> EditEventAsync(EventEditViewModel viewModel)
         {
-            throw new NotImplementedException();
+            var eventEntity = await this.eventRepository.GetByIdAsync(Guid.Parse(viewModel.Id));
+
+            eventEntity.Description = viewModel.Description;
+            eventEntity.Location = viewModel.Location;
+            eventEntity.Date = viewModel.Date;
+            eventEntity.Title = viewModel.Title;
+            eventEntity.Distance = viewModel.Distance;
+
+            return await this.eventRepository.UpdateAsync(eventEntity);
         }
     }
 }
