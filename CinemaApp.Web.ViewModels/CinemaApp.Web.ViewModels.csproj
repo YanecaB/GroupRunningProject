@@ -14,10 +14,12 @@
     <None Remove="Group\" />
     <None Remove="Event\" />
     <None Remove="User\" />
+    <None Remove="Schedule\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Group\" />
     <Folder Include="Event\" />
     <Folder Include="User\" />
+    <Folder Include="Schedule\" />
   </ItemGroup>
 </Project>

@@ -36,9 +36,11 @@
   <ItemGroup>
     <None Remove="Views\Group\" />
     <None Remove="Views\Event\" />
+    <None Remove="Views\Schedule\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Group\" />
     <Folder Include="Views\Event\" />
+    <Folder Include="Views\Schedule\" />
   </ItemGroup>
 </Project>
