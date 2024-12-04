@@ -13,7 +13,9 @@ namespace CinemaApp.Web.ViewModels.Event
 
 		public int JoinedUsers { get; set; }
 
-		public string AdminId { get; set; } = null!;
+		public string AdminId { get; set; } = null!;		
+
+		public bool IsJoined { get; set; }
 	}
 }
 

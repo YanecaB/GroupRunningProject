@@ -25,7 +25,15 @@ namespace CinemaApp.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var events = await eventService.IndexGetAllAsync();
+            Guid? userGuid = GetCurrectUserGuidId();
+
+            if (!userGuid.HasValue)
+            {
+                return Unauthorized();
+            }
+
+            var events = await eventService
+                .IndexGetAllAsync(userGuid.Value);
 
             return this.View(events);
         }
@@ -239,6 +247,30 @@ namespace CinemaApp.Web.Controllers
             }
 
             return this.RedirectToAction(nameof(Admin));
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Unjoin(string eventId)
+        {
+            Guid eventIdGuid = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(eventId, ref eventIdGuid);
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            Guid? userGuid = GetCurrectUserGuidId();
+
+            if (!userGuid.HasValue)
+            {
+                return Unauthorized();
+            }
+
+            await this.eventService
+                .UnjoinEventAsync(eventIdGuid, userGuid.Value);
+
+            return this.RedirectToAction(nameof(Index));
         }
     }
 }

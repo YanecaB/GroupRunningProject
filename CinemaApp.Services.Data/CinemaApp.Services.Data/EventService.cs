@@ -22,17 +22,20 @@ namespace CinemaApp.Services.Data
             this.userEventRepository = userEventRepository;
         }
        
-        public async Task<IEnumerable<EventIndexViewModel>> IndexGetAllAsync()
+        public async Task<IEnumerable<EventIndexViewModel>> IndexGetAllAsync(Guid userId)
         {
             IEnumerable<EventIndexViewModel> events = await this.eventRepository
                 .GetAllAttached()
+                .Include(e => e.UsersEvents)                
                 .Where(g => g.IsDeleted == false)
                 .Select(c => new EventIndexViewModel()
                 {
                     Id = c.Id.ToString(),
                     Title = c.Title,                                        
                     Date = c.Date.ToString(EntityValidationConstants.Event.DateFormat),
-                    GroupName = c.Group.Name
+                    GroupName = c.Group.Name,
+                    JoinedUsers = c.UsersEvents.Count,
+                    IsJoined = c.UsersEvents.Any(ue => ue.ApplicationUserId == userId)                    
                 })                
                 .ToArrayAsync();
 
@@ -213,6 +216,13 @@ namespace CinemaApp.Services.Data
                 .FirstOrDefaultAsync(g => g.Id.ToLower() == id.ToString().ToLower());
 
             return eventToDelete;
+        }
+
+        public async Task UnjoinEventAsync(Guid eventId, Guid userId)
+        {
+            var userEvent = await this.userEventRepository.FirstOrDefaultAsync(ue => ue.ApplicationUserId == userId && ue.EventId == eventId);
+
+            await this.userEventRepository.DeleteAsync(userEvent);
         }
     }
 }

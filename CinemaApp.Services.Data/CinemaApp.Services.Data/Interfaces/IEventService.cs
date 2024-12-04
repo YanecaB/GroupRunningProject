@@ -6,13 +6,15 @@ namespace CinemaApp.Services.Data.Interfaces
 {
 	public interface IEventService
 	{
-        Task<IEnumerable<EventIndexViewModel>> IndexGetAllAsync();
+        Task<IEnumerable<EventIndexViewModel>> IndexGetAllAsync(Guid userId);
 
         Task<IEnumerable<EventIndexViewModel>> GetAllAdminEventsAsync(Guid userId);
 
         Task AddEventAsync(EventCreateViewModel viewModel, Guid adminId);
 
         Task JoinEventAsync(Guid eventId, Guid userId);
+
+        Task UnjoinEventAsync(Guid eventId, Guid userId);
 
         Task<EventDetailsViewModel> GetEventDetailsByIdAsync(Guid id, Guid userGuidId);
 
