@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,4 +17,10 @@
     <ProjectReference Include="..\CinemaApp.Services.Data\CinemaApp.Services.Data\CinemaApp.Services.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="BackgroundTasks\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BackgroundTasks\" />
+  </ItemGroup>
 </Project>

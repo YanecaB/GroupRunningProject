@@ -17,5 +17,8 @@
 
         public virtual ICollection<ApplicationUserEvent> ApplicationUserEvents { get; set; }
             = new HashSet<ApplicationUserEvent>();
+
+        public virtual ICollection<Notification> Notifications { get; set; }
+            = new HashSet<Notification>();
     }
 }

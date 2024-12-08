@@ -42,6 +42,7 @@
     <None Remove="Areas\Admin\Views\" />
     <None Remove="Areas\Admin\Views\Home\" />
     <None Remove="Areas\Admin\Views\UserManagement\" />
+    <None Remove="Views\Notification\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Group\" />
@@ -53,5 +54,6 @@
     <Folder Include="Areas\Admin\Views\Home\" />
     <Folder Include="Areas\Admin\Views\UserManagement\" />
     <Folder Include="Areas\Admin\Views\UserManagement\" />
+    <Folder Include="Views\Notification\" />
   </ItemGroup>
 </Project>
