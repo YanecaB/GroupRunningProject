@@ -59,6 +59,33 @@ namespace CinemaApp.Web.Areas.Admin.Controllers
 
             return this.RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Unban(string? id)
+        {
+            Guid guidId = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(id, ref guidId);
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            bool userExists = await this.userService
+                .UserExistsByIdAsync(guidId);
+            if (!userExists)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            bool unbanResult = await this.userService
+                .UnBanUserByIdAsync(guidId);
+            if (!unbanResult)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            return this.RedirectToAction(nameof(Index));
+        }
     }
 }
 

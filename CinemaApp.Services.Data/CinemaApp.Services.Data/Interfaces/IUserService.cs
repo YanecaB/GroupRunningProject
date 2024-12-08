@@ -9,7 +9,9 @@ namespace CinemaApp.Services.Data.Interfaces
 
 		Task<bool> BanUserByIdAsync(Guid userId);
 
-		Task<bool> UserExistsByIdAsync(Guid id);
+        Task<bool> UnBanUserByIdAsync(Guid userId);
+
+        Task<bool> UserExistsByIdAsync(Guid id);
     }
 }
 

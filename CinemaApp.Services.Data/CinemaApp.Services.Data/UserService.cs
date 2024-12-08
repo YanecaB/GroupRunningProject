@@ -64,12 +64,33 @@ namespace CinemaApp.Services.Data
             return true;
         }
 
+        public async Task<bool> UnBanUserByIdAsync(Guid userId)
+        {
+            var userToBan = await this.userManager.FindByIdAsync(userId.ToString());
+
+            if (userToBan == null)
+            {
+                return false;
+            }
+
+            userToBan.IsBanned = false;
+
+            var result = await this.userManager.UpdateAsync(userToBan);
+
+            if (!result.Succeeded)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public async Task<bool> UserExistsByIdAsync(Guid id)
         {
             ApplicationUser? user = await this.userManager
                 .FindByIdAsync(id.ToString());
 
             return user != null;
-        }
+        }        
     }
 }
