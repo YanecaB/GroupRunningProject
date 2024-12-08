@@ -1,0 +1,119 @@
+﻿@using CinemaApp.Web.ViewModels.User;
+@model ApplicationUserDetailsViewModel
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+            .section h3 {
+                margin-bottom: 10px;
+                color: #27ae60;
+            }
+
+        .details {
+            margin-bottom: 15px;
+        }
+
+            .details p {
+                margin: 5px 0;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>@ViewData["Title"]</h2>
+
+        <div class="section">
+            <h3>User Information</h3>
+            <div class="details">
+                <p><strong>Id:</strong> @Model.Id</p>
+                <p><strong>Email:</strong> @Model.Email</p>
+                <p><strong>Banned:</strong> @(Model.IsBanned ? "Yes" : "No")</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Memberships</h3>
+            @if (Model.Memberships.Any())
+            {
+                <ul>
+                    @foreach (var membership in Model.Memberships)
+                    {
+                        <li>@membership</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No memberships found.</p>
+            }
+        </div>
+
+        <div class="section">
+            <h3>User Events</h3>
+            @if (Model.UserEvents.Any())
+            {
+                <ul>
+                    @foreach (var userEvent in Model.UserEvents)
+                    {
+                        <li>@userEvent</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No events found.</p>
+            }
+        </div>
+
+        <div class="section">
+            <h3>Notifications</h3>
+            @if (Model.Notifications.Any())
+            {
+                <ul>
+                    @foreach (var notification in Model.Notifications)
+                    {
+                        <li>@notification</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No notifications found.</p>
+            }
+        </div>
+    </div>
+</body>
+</html>
