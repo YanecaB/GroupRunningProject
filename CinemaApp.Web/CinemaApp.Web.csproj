@@ -37,10 +37,21 @@
     <None Remove="Views\Group\" />
     <None Remove="Views\Event\" />
     <None Remove="Views\Schedule\" />
+    <None Remove="Areas\Admin\" />
+    <None Remove="Areas\Admin\Controllers\" />
+    <None Remove="Areas\Admin\Views\" />
+    <None Remove="Areas\Admin\Views\Home\" />
+    <None Remove="Areas\Admin\Views\UserManagement\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Group\" />
     <Folder Include="Views\Event\" />
     <Folder Include="Views\Schedule\" />
+    <Folder Include="Areas\Admin\" />
+    <Folder Include="Areas\Admin\Controllers\" />
+    <Folder Include="Areas\Admin\Views\" />
+    <Folder Include="Areas\Admin\Views\Home\" />
+    <Folder Include="Areas\Admin\Views\UserManagement\" />
+    <Folder Include="Areas\Admin\Views\UserManagement\" />
   </ItemGroup>
 </Project>

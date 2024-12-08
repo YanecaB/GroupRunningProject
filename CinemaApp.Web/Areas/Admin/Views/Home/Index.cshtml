@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            padding: 50px 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #c0392b;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .admin-intro {
+            background-color: #fbeee6;
+            border-left: 5px solid #e67e22;
+            padding: 15px;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        .actions {
+            margin-top: 30px;
+        }
+
+            .actions a {
+                display: inline-block;
+                text-decoration: none;
+                background-color: #3498db;
+                color: #fff;
+                padding: 10px 20px;
+                border-radius: 5px;
+                font-size: 1.1rem;
+                margin: 5px;
+                transition: background-color 0.3s ease;
+            }
+
+                .actions a:hover {
+                    background-color: #2980b9;
+                }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>@ViewData["Title"]</h2>
+        <h3>@ViewData["Message"]</h3>
+        <p>Welcome to the <span class="highlight">Admin Dashboard</span>.</p>
+        <p>Here you can manage users, review activity, and configure settings for the app.</p>
+        <div class="admin-intro">
+            <p>Use the tools below to keep the community running smoothly and ensure everything is on track!</p>
+        </div>
+
+        <div class="actions">
+            <a asp-area="Admin" asp-controller="UserManagement" asp-action="Index" class="btn btn-info mt-auto w-100">
+                Manage Users
+            </a>
+            <a asp-area="Admin" asp-controller="EventsManagement" asp-action="Index" class="btn btn-info mt-auto w-100">
+                View Runs
+            </a>
+            @*<a asp-area="Admin" asp-controller="EventsManagement" asp-action="Index" class="btn btn-info mt-auto w-100">
+                App Settings
+            </a>*@
+        </div>
+    </div>
+</body>
+</html>
