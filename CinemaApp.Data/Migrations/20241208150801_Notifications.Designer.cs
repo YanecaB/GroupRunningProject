@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaApp.Data.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    [Migration("20241208123002_AddedIsBannedForApplicationUser")]
-    partial class AddedIsBannedForApplicationUser
+    [Migration("20241208150801_Notifications")]
+    partial class Notifications
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

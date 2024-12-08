@@ -26,8 +26,6 @@
             optionsBuilder.UseSqlServer("Server=localhost;Database=GroupRunning;User ID=sa;Password=awesome1&;Pooling=false;Encrypt=False;");
         }
 
-        //public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
-
         public virtual DbSet<Group> Groups { get; set; } = null!;
 
         public virtual DbSet<Event> Events { get; set; } = null!;
@@ -35,6 +33,8 @@
         public virtual DbSet<Membership> Memberships { get; set; } = null!;
 
         public virtual DbSet<ApplicationUserEvent> UsersEvents { get; set; } = null!;
+
+        public virtual DbSet<Notification> Notifications { get; set; } = null!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

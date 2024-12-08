@@ -29,5 +29,13 @@
 
             public const string DateFormat = "dd/MM/yyyy";
         }
+
+        public static class Notification
+        {
+            public const int MessageMinLength = 10;
+            public const int MessageMaxLength = 500;
+
+            public const string DateFormat = "dd/MM/yyyy";
+        }
     }
 }

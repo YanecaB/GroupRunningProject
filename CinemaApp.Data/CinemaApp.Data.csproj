@@ -23,9 +23,15 @@
   <ItemGroup>
     <None Remove="Repository\" />
     <None Remove="Repository\Interfaces\" />
+    <None Remove="Seeding\" />
+    <None Remove="Seeding\Data\" />
+    <None Remove="Seeding\DataTransferObjects\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repository\" />
     <Folder Include="Repository\Interfaces\" />
+    <Folder Include="Seeding\" />
+    <Folder Include="Seeding\Data\" />
+    <Folder Include="Seeding\DataTransferObjects\" />
   </ItemGroup>
 </Project>
