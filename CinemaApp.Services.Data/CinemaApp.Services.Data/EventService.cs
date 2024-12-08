@@ -224,6 +224,11 @@ namespace CinemaApp.Services.Data
 
             await this.userEventRepository.DeleteAsync(userEvent);
         }
+
+        public async Task<bool> EventExistsByIdAsync(Guid id)
+        {
+            return await this.eventRepository.FirstOrDefaultAsync(e => e.Id == id) != null;
+        }
     }
 }
 

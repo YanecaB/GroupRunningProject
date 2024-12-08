@@ -43,7 +43,8 @@ namespace CinemaApp.Services.Data
                         Id = e.Id.ToString(),
                         Title = e.Title
                     })
-                    .ToArrayAsync()
+                    .ToArrayAsync(),
+                Id = id.ToString()
             };
 
             return schedule;

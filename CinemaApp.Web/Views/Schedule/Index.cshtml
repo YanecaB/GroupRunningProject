@@ -203,8 +203,8 @@
                                         <td>@joinedEvent.Title</td>
                                         <td>
                                             <a href="@Url.Action("Details", "Event", new { id = joinedEvent.Id })" class="btn btn-details">Details</a>
-                                            <form asp-action="Remove" asp-controller="Event" method="post" style="display: inline;">
-                                                <input type="hidden" name="eventId" value="@joinedEvent.Id" />
+                                            <form asp-action="Remove" asp-controller="Schedule" method="post" style="display: inline;">
+                                                <input type="hidden" name="eventId" value="@joinedEvent.Id" />                                                                                              
                                                 <button type="submit" class="btn btn-remove">Remove</button>
                                             </form>
                                         </td>

@@ -245,6 +245,11 @@ namespace CinemaApp.Services.Data
 
             return await this.membershipRepository.DeleteAsync(membership);
         }
+
+        public async Task<bool> GroupExistsByIdAsync(Guid id)
+        {
+            return await this.groupRepository.FirstOrDefaultAsync(g => g.Id == id) != null;
+        }
     }
 }
 

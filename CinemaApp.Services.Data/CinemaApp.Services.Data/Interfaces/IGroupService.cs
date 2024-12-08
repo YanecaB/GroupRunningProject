@@ -27,6 +27,8 @@ namespace CinemaApp.Services.Data.Interfaces
         Task<bool> EditGroupAsync(GroupEditViewModel viewModel);
 
         Task<bool> RemoveFollowerAsync(Guid groupId, Guid followerId);
+
+        Task<bool> GroupExistsByIdAsync(Guid id);
     }
 }
 

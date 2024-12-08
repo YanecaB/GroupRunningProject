@@ -6,6 +6,7 @@ using CinemaApp.Web.Infrastructure.Extensions;
 using CinemaApp.Web.ViewModels.Group;
 using CinemaApp.Web.ViewModels.User;
 using CinemaApp.Services.Data;
+using System;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -68,6 +69,11 @@ namespace CinemaApp.Web.Controllers
                 return this.RedirectToAction(nameof(Index));
             }
 
+            if (!await this.groupService.GroupExistsByIdAsync(guidId))
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
             Guid? userGuid = GetCurrectUserGuidId();
 
             if (!userGuid.HasValue)
@@ -87,6 +93,11 @@ namespace CinemaApp.Web.Controllers
             Guid guidId = Guid.Empty;
             bool isIdValid = this.IsGuidValid(id, ref guidId);
             if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            if (!await this.groupService.GroupExistsByIdAsync(guidId))
             {
                 return this.RedirectToAction(nameof(Index));
             }
@@ -119,6 +130,11 @@ namespace CinemaApp.Web.Controllers
                 return this.RedirectToAction(nameof(Index));
             }
 
+            if (!await this.groupService.GroupExistsByIdAsync(groupIdGuid))
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
             var result = await groupService.RemoveFollowerAsync(groupIdGuid, followerIdGuid);
 
             //if (!result)
@@ -143,6 +159,11 @@ namespace CinemaApp.Web.Controllers
                 return this.RedirectToAction(nameof(Index));
             }
 
+            if (!await this.groupService.GroupExistsByIdAsync(guidId))
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
             Guid? userGuid = GetCurrectUserGuidId();
 
             if (!userGuid.HasValue)
@@ -162,6 +183,11 @@ namespace CinemaApp.Web.Controllers
             Guid guidId = Guid.Empty;
             bool isIdValid = this.IsGuidValid(id, ref guidId);
             if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Admin));
+            }
+
+            if (!await this.groupService.GroupExistsByIdAsync(guidId))
             {
                 return this.RedirectToAction(nameof(Admin));
             }
@@ -229,6 +255,11 @@ namespace CinemaApp.Web.Controllers
             Guid guidId = Guid.Empty;
             bool isIdValid = this.IsGuidValid(id, ref guidId);
             if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            if (!await this.groupService.GroupExistsByIdAsync(guidId))
             {
                 return this.RedirectToAction(nameof(Index));
             }

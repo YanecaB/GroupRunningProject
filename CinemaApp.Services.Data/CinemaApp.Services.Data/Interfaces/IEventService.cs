@@ -27,6 +27,8 @@ namespace CinemaApp.Services.Data.Interfaces
         Task<bool> SoftDeleteEventAsync(Guid id);
 
         Task<DeleteEventViewModel?> GetEventForDeleteByIdAsync(Guid id);
+
+        Task<bool> EventExistsByIdAsync(Guid id);
     }
 }
 

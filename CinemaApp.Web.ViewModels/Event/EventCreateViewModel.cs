@@ -7,7 +7,7 @@ namespace CinemaApp.Web.ViewModels.Event
 {
 	public class EventCreateViewModel
 	{
-        public string Id { get; set; } = null!;
+        public string? Id { get; set; }
 
         [Required]
         [MinLength(TitleMinLength)]

@@ -9,6 +9,7 @@ using CinemaApp.Web.ViewModels.Group;
 using CinemaApp.Web.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -104,6 +105,11 @@ namespace CinemaApp.Web.Controllers
                 return this.RedirectToAction(nameof(Index));
             }
 
+            if (!await this.eventService.EventExistsByIdAsync(guidId))
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
             Guid? userGuid = GetCurrectUserGuidId();
 
             if (!userGuid.HasValue)
@@ -128,6 +134,11 @@ namespace CinemaApp.Web.Controllers
                 return this.RedirectToAction(nameof(Index));
             }
 
+            if (!await this.eventService.EventExistsByIdAsync(guidId))
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
             Guid? userGuid = GetCurrectUserGuidId();
 
             if (!userGuid.HasValue)
@@ -148,6 +159,11 @@ namespace CinemaApp.Web.Controllers
             Guid guidId = Guid.Empty;
             bool isIdValid = this.IsGuidValid(id, ref guidId);
             if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            if (!await this.eventService.EventExistsByIdAsync(guidId))
             {
                 return this.RedirectToAction(nameof(Index));
             }
@@ -194,6 +210,11 @@ namespace CinemaApp.Web.Controllers
                 return this.RedirectToAction(nameof(Index));
             }
 
+            if (!await this.eventService.EventExistsByIdAsync(eventIdGuid))
+            {
+                return RedirectToAction(nameof(Edit), new { id = eventId });
+            }
+
             var result = await eventService.RemoveAnttendeeAsync(eventIdGuid, attendeeIdGuid);
 
             return RedirectToAction(nameof(Edit), new { id = eventId });
@@ -206,6 +227,11 @@ namespace CinemaApp.Web.Controllers
             Guid guidId = Guid.Empty;
             bool isIdValid = this.IsGuidValid(id, ref guidId);
             if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Admin));
+            }
+
+            if (!await this.eventService.EventExistsByIdAsync(guidId))
             {
                 return this.RedirectToAction(nameof(Admin));
             }
@@ -256,6 +282,11 @@ namespace CinemaApp.Web.Controllers
             Guid eventIdGuid = Guid.Empty;
             bool isIdValid = this.IsGuidValid(eventId, ref eventIdGuid);
             if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            if (!await this.eventService.EventExistsByIdAsync(eventIdGuid))
             {
                 return this.RedirectToAction(nameof(Index));
             }
