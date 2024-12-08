@@ -6,5 +6,6 @@
         public const string NoImageUrl = "/images/1.jpg";
 
         public const string AdminRoleName = "Admin";
+        public const string UserRoleName = "User";
     }
 }

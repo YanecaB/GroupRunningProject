@@ -72,6 +72,18 @@
                     adminRole = await roleManager.FindByNameAsync(AdminRoleName);
                 }
 
+                bool roleExists2 = await roleManager.RoleExistsAsync(UserRoleName);                 
+                if (!roleExists2)
+                {
+                    IdentityRole<Guid>? userRole = new IdentityRole<Guid>(UserRoleName);
+
+                    IdentityResult result = await roleManager.CreateAsync(userRole);
+                    if (!result.Succeeded)
+                    {
+                        throw new InvalidOperationException($"Error occurred while creating the {UserRoleName} role!");
+                    }
+                }
+
                 ApplicationUser? adminUser = await userManager.FindByEmailAsync(email);
                 if (adminUser == null)
                 {
