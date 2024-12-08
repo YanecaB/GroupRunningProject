@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Services.Data
 {
-    public class ScheduleService : IScheduleService
+    public class ScheduleService : BaseService, IScheduleService
     {        
         private readonly IRepository<Event, Guid> eventRepository;
         private readonly IRepository<ApplicationUserEvent, object> userEventRepository;

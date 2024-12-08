@@ -10,6 +10,8 @@
             this.Id = Guid.NewGuid();
         }
 
+        public bool IsBanned { get; set; } = false;
+
         public virtual ICollection<Membership> Memberships { get; set; }
             = new HashSet<Membership>();
 

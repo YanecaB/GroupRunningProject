@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using CinemaApp.Services.Data.Interfaces;
+using CinemaApp.Web.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,12 +16,48 @@ namespace CinemaApp.Web.Areas.Admin.Controllers
 
     [Area(AdminRoleName)]
     [Authorize(Roles = AdminRoleName)]
-    public class UserManagementController : Controller
+    public class UserManagementController : BaseController
     {
-        // GET: /<controller>/
-        public IActionResult Index()
+        private readonly IUserService userService;
+
+        public UserManagementController(IUserService userService)
         {
-            return View();
+            this.userService = userService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var users = await this.userService.GetAllUsersAsync();
+
+            return this.View(users);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Ban(string? id)
+        {
+            Guid guidId = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(id, ref guidId);
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            bool userExists = await this.userService
+                .UserExistsByIdAsync(guidId);
+            if (!userExists)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            bool banResult = await this.userService
+                .BanUserByIdAsync(guidId);
+            if (!banResult)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            return this.RedirectToAction(nameof(Index));
         }
     }
 }
