@@ -40,6 +40,11 @@ namespace CinemaApp.Services.Data
 
                 foreach (var userId in joinedUsers)
                 {
+                    if (await this.notificationRepository.FirstOrDefaultAsync(n => n.EventId == eventEntity.Id && n.UserId == userId) != null)
+                    {
+                        continue;
+                    }
+
                     var notification = new Notification
                     {
                         Id = Guid.NewGuid(),
@@ -60,6 +65,7 @@ namespace CinemaApp.Services.Data
                 .GetAllAttached()
                 .Include(n => n.Event)
                 .Where(n => n.UserId == userId)
+                .OrderByDescending(n => n.Date)
                 .Select(n => new NotificationViewModel()
                 {
                     Message = n.Message,
@@ -67,7 +73,7 @@ namespace CinemaApp.Services.Data
                     Id = n.Id.ToString(),
                     EventName = n.Event.Title,
                     EventId = n.EventId.ToString()
-                })
+                })                
                 .ToArrayAsync();
 
             return allNotificationOfTheCurrentUser;

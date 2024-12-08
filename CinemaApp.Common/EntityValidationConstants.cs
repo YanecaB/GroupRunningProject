@@ -35,7 +35,8 @@
             public const int MessageMinLength = 10;
             public const int MessageMaxLength = 500;
 
-            public const string DateFormat = "dd/MM/yyyy";
+            public const string DateFormat = "dd/MM/yyyy HH:mm";
+
 
             public const string Message = "Reminder: The event {0} is happening tomorrow!";
         }
