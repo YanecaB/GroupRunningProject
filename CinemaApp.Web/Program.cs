@@ -9,7 +9,8 @@ namespace CinemaApp.Web
     using CinemaApp.Services.Data;
     using CinemaApp.Services.Data.Interfaces;
     using static Common.ApplicationConstants;
-    using CinemaApp.Web.Infrastructure.BackgroundTasks;    
+    using CinemaApp.Web.Infrastructure.BackgroundTasks;
+    using Microsoft.AspNetCore.Mvc;
 
     public class Program
     {
@@ -54,17 +55,21 @@ namespace CinemaApp.Web
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IGroupService).Assembly);
 
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews(cfg =>
+            {
+                cfg.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
             builder.Services.AddRazorPages();
 
             // Register the background task as a hosted service
             builder.Services.AddScoped<INotificationService, NotificationService>();
             builder.Services.AddHostedService<NotificationScheduler>();
 
+
             //// Register the notification service
             //builder.Services.AddScoped<INotificationService, NotificationService>();
             WebApplication app = builder.Build();
-            
+           
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {

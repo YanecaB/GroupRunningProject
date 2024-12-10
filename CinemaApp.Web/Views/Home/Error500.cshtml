@@ -1,0 +1,86 @@
+﻿@{
+    Layout = null; // No shared layout
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 - Internal Server Error</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #ff5e57, #ffbd69);
+            color: #fff;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .content {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            max-width: 700px;
+        }
+
+        .error-icon {
+            font-size: 5rem;
+        }
+
+        .display-1 {
+            text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.8);
+        }
+
+        .lead {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+        }
+
+        .btn-hover-effect {
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            background-color: #f39c12;
+            border-color: #e67e22;
+            color: #fff;
+            font-weight: bold;
+        }
+
+            .btn-hover-effect:hover {
+                transform: scale(1.1);
+                background-color: #d35400;
+            }
+
+        .nacho-quote {
+            font-style: italic;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            color: #f1c40f;
+        }
+
+        .nacho-mask {
+            font-size: 6rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="nacho-mask">🤼</div>
+        <h1 class="display-1 fw-bold text-warning">500</h1>
+        <p class="lead">It looks like the server tried a high-flying move and crashed!</p>
+        <p class="mb-4">"Sometimes you wear stretchy pants. Sometimes servers fail. Today is one of those days."</p>
+        <a href="/" class="btn btn-lg btn-hover-effect">
+            <i class="bi bi-house-door"></i> Back to Home
+        </a>
+        <div class="nacho-quote">
+            "Don't worry, everything will be fixed with the power of Lucha Libre!"
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
