@@ -20,7 +20,15 @@ namespace CinemaApp.Web
             string adminEmail = builder.Configuration.GetValue<string>("Administrator:Email")!;
             string adminUsername = builder.Configuration.GetValue<string>("Administrator:Username")!;
             string adminPassword = builder.Configuration.GetValue<string>("Administrator:Password")!;
-
+            string usersJsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                builder.Configuration.GetValue<string>("Seed:UsersJson")!);
+            string groupsJsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+            builder.Configuration.GetValue<string>("Seed:GroupsJson")!);
+            string membershipsJsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+           builder.Configuration.GetValue<string>("Seed:MembershipsJson")!);
+            string eventsJsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+           builder.Configuration.GetValue<string>("Seed:EventsJson")!);
+            
             // Add services to the container.
             builder.Services
                 .AddDbContext<CinemaDbContext>(options =>
@@ -93,7 +101,11 @@ namespace CinemaApp.Web
 
             if (app.Environment.IsDevelopment())
             {
-                app.SeedAdministrator(adminEmail, adminUsername, adminPassword);                
+                app.SeedAdministrator(adminEmail, adminUsername, adminPassword);
+                app.SeedUsers(usersJsonPath);
+                app.SeedGroups(groupsJsonPath);
+                app.SeedMemberships(membershipsJsonPath);
+                app.SeedEvents(eventsJsonPath);
             }
 
             app.MapControllerRoute(

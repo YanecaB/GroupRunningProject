@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaApp.Data.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    [Migration("20241208151011_Notifications2")]
-    partial class Notifications2
+    [Migration("20241210125855_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -446,7 +446,7 @@ namespace CinemaApp.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("CinemaApp.Data.Models.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("Notifications")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -512,6 +512,8 @@ namespace CinemaApp.Data.Migrations
                     b.Navigation("ApplicationUserEvents");
 
                     b.Navigation("Memberships");
+
+                    b.Navigation("Notifications");
                 });
 
             modelBuilder.Entity("CinemaApp.Data.Models.Event", b =>

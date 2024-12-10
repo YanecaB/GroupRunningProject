@@ -18,10 +18,10 @@ namespace CinemaApp.Services.Data
     {
         private readonly IRepository<Group, Guid> groupRepository;
         private readonly IRepository<Event, Guid> eventRepository;
-        private readonly IRepository<Membership, object> membershipRepository;
+        private readonly IRepository<Membership, Guid> membershipRepository;
 
         public GroupService(IRepository<Group, Guid> groupRepository,
-            IRepository<Membership, object> membershipRepository,
+            IRepository<Membership, Guid> membershipRepository,
             IRepository<Event, Guid> eventRepository)
         {
             this.groupRepository = groupRepository;
@@ -124,6 +124,7 @@ namespace CinemaApp.Services.Data
             {
                 Membership newMembership = new Membership()
                 {
+                    Id = Guid.NewGuid(),
                     JoinDate = DateTime.Now,
                     ApplicationUserId = userGuidId,
                     GroupId = id

@@ -12,12 +12,12 @@ namespace CinemaApp.Services.Data
 	public class UserService : BaseService, IUserService
 	{
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IRepository<Membership, object> membershipRepository;
+        private readonly IRepository<Membership, Guid> membershipRepository;
         private readonly IRepository<Event, Guid> eventRepository;
         private readonly IRepository<ApplicationUserEvent, object> userEventRepository;
 
         public UserService(UserManager<ApplicationUser> userManager,
-            IRepository<Membership, object> membershipRepository,
+            IRepository<Membership, Guid> membershipRepository,
             IRepository<Event, Guid> eventRepository,
             IRepository<ApplicationUserEvent, object> userEventRepository)           
         {

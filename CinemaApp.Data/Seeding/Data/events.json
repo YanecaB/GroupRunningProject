@@ -1,0 +1,32 @@
+﻿[
+  {
+    "Id": "bcfa87f2-038c-4464-9f36-eef5ca7c04a2",
+    "Title": "Morning Marathon",
+    "Description": "A marathon event for runners of all levels to enjoy a scenic route and community spirit.",
+    "Date": "2024-12-15T06:30:00Z",
+    "Location": "Central Park, New York",
+    "OrganizerId": "7b242b58-cd6b-4fd9-a3de-29c795527093",
+    "Distance": 42,
+    "GroupId": "e3edd800-9da8-4955-89bd-25469b59ac3d"
+  },
+  {
+    "Id": "e0a995a0-67c5-4f70-b3dd-fab1d05c85c6",
+    "Title": "Evening Jog Meet",
+    "Description": "A relaxed evening jog through the park, perfect for unwinding after a busy day.",
+    "Date": "2024-12-17T18:00:00Z",
+    "Location": "Sunset Boulevard, Los Angeles",
+    "OrganizerId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "Distance": 5,
+    "GroupId": "e3edd800-9da8-4955-89bd-25469b59ac3d"
+  },
+  {
+    "Id": "e11c9139-da91-49de-8a0c-8da3ec220a96",
+    "Title": "Weekend 10K Run",
+    "Description": "A friendly 10K race to get your weekend started with some fitness and fun.",
+    "Date": "2024-12-23T08:00:00Z",
+    "Location": "Golden Gate Park, San Francisco",
+    "OrganizerId": "7b242b58-cd6b-4fd9-a3de-29c795527093",
+    "Distance": 10,
+    "GroupId": "95865a98-7985-40cf-80c1-7ee4cb61f24e"
+  }
+]

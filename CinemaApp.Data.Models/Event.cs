@@ -32,6 +32,7 @@ namespace CinemaApp.Data.Models
 		[ForeignKey(nameof(OrganizerId))]
         public virtual ApplicationUser ApplicationUser { get; set; } = null!;
 
+		[Required]
 		public int Distance { get; set; }
 
 		public Guid GroupId { get; set; }

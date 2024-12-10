@@ -1,0 +1,32 @@
+﻿[
+  {
+    "Id": "5e06a809-6954-4ccd-b368-3af1133153a6",
+    "ApplicationUserId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "GroupId": "089d31fe-18ff-4f24-8d76-cbab61c7c61a"
+  },
+  {
+    "Id": "5425e0b7-ca86-46af-8174-1be3f49e38db",
+    "ApplicationUserId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "GroupId": "e3edd800-9da8-4955-89bd-25469b59ac3d"
+  },
+  {
+    "Id": "47299d31-8a75-4a4c-9cf6-8e61fffcd1de",
+    "ApplicationUserId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "GroupId": "95865a98-7985-40cf-80c1-7ee4cb61f24e"
+  },
+  {
+    "Id": "2e82955a-0cb6-471b-866c-6409fc80580f",
+    "ApplicationUserId": "7b242b58-cd6b-4fd9-a3de-29c795527093",
+    "GroupId": "089d31fe-18ff-4f24-8d76-cbab61c7c61a"
+  },
+  {
+    "Id": "663f4d73-f4a7-49a8-93fa-a54964c0ede9",
+    "ApplicationUserId": "7b242b58-cd6b-4fd9-a3de-29c795527093",
+    "GroupId": "e3edd800-9da8-4955-89bd-25469b59ac3d"
+  },
+  {
+    "Id": "7cf84601-580e-42c4-b661-ec2af0a3f630",
+    "ApplicationUserId": "7b242b58-cd6b-4fd9-a3de-29c795527093",
+    "GroupId": "95865a98-7985-40cf-80c1-7ee4cb61f24e"
+  }
+]

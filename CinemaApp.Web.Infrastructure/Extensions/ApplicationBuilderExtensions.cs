@@ -1,6 +1,7 @@
 ﻿namespace CinemaApp.Web.Infrastructure.Extensions
 {
     using CinemaApp.Data.Models;
+    using CinemaApp.Data.Seeding;
     using Data;
 
     using Microsoft.AspNetCore.Builder;
@@ -126,6 +127,66 @@
             }
 
             return applicationUser;
+        }
+
+        public static IApplicationBuilder SeedUsers(this IApplicationBuilder app, string jsonPath)
+        {
+            using IServiceScope serviceScope = app.ApplicationServices.CreateAsyncScope();
+            IServiceProvider serviceProvider = serviceScope.ServiceProvider;
+
+            Task.Run(async () =>
+            {
+                await DbSeeder.SeedUsersAsync(serviceProvider, jsonPath);
+            })
+                .GetAwaiter()
+                .GetResult();
+
+            return app;
+        }
+
+        public static IApplicationBuilder SeedGroups(this IApplicationBuilder app, string jsonPath)
+        {
+            using IServiceScope serviceScope = app.ApplicationServices.CreateAsyncScope();
+            IServiceProvider serviceProvider = serviceScope.ServiceProvider;
+
+            Task.Run(async () =>
+            {
+                await DbSeeder.SeedGroupsAsync(serviceProvider, jsonPath);
+            })
+                .GetAwaiter()
+                .GetResult();
+
+            return app;
+        }
+
+        public static IApplicationBuilder SeedMemberships(this IApplicationBuilder app, string jsonPath)
+        {
+            using IServiceScope serviceScope = app.ApplicationServices.CreateAsyncScope();
+            IServiceProvider serviceProvider = serviceScope.ServiceProvider;
+
+            Task.Run(async () =>
+            {
+                await DbSeeder.SeedMembershipsAsync(serviceProvider, jsonPath);
+            })
+                .GetAwaiter()
+                .GetResult();
+
+            return app;
+        }
+
+        public static IApplicationBuilder SeedEvents(this IApplicationBuilder app, string jsonPath)
+        {
+            using IServiceScope serviceScope = app.ApplicationServices.CreateAsyncScope();
+            IServiceProvider serviceProvider = serviceScope.ServiceProvider;
+
+            Task.Run(async () =>
+            {
+                await DbSeeder.SeedEventsAsync(serviceProvider, jsonPath);
+            })
+                .GetAwaiter()
+                .GetResult();
+
+            return app;
         }
     }
 }

@@ -1,0 +1,26 @@
+﻿[
+  {
+    "Id": "089d31fe-18ff-4f24-8d76-cbab61c7c61a",
+    "Name": "Running Enthusiasts",
+    "Description": "A group for people who love to run and participate in marathons.",
+    "Location": "Central Park, New York",
+    "CreatedDate": "2024-12-10T08:00:00Z",
+    "AdminId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+  },
+  {
+    "Id": "e3edd800-9da8-4955-89bd-25469b59ac3d",
+    "Name": "Evening Joggers",
+    "Description": "For those who prefer running in the evening to unwind after work.",
+    "Location": "Sunset Boulevard, Los Angeles",
+    "CreatedDate": "2024-12-10T08:15:00Z",
+    "AdminId": "7b242b58-cd6b-4fd9-a3de-29c795527093"
+  },
+  {
+    "Id": "95865a98-7985-40cf-80c1-7ee4cb61f24e",
+    "Name": "Weekend Warriors",
+    "Description": "A group for those who only run on weekends but still take it seriously.",
+    "Location": "Golden Gate Park, San Francisco",
+    "CreatedDate": "2024-12-10T09:30:00Z",
+    "AdminId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+  }
+]
