@@ -6,7 +6,7 @@ namespace CinemaApp.Services.Data.Interfaces
 {
 	public interface IGroupService
 	{
-        Task<IEnumerable<GroupIndexViewModel>> IndexGetAllAsync();
+        Task<IEnumerable<GroupIndexViewModel>> IndexGetAllAsync(string? searchQuery = null);
 
         Task AddGroupAsync(GroupCreateViewModel viewModel, Guid adminId);
 

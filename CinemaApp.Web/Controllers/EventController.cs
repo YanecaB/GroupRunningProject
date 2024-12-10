@@ -25,7 +25,7 @@ namespace CinemaApp.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? searchQuery = null)
         {
             IEnumerable<EventIndexViewModel> events = null!;
 
@@ -39,13 +39,15 @@ namespace CinemaApp.Web.Controllers
                 }
 
                 events = await eventService
-                .IndexGetAllAsync(userGuid.Value);
+                .IndexGetAllAsync(userGuid.Value, searchQuery);
             }
             else
             {
                 events = await eventService
-                .IndexGetAllAsync(null);
-            }         
+                .IndexGetAllAsync(null, searchQuery);
+            }
+
+            ViewData["SearchQuery"] = searchQuery;
 
             return this.View(events);
         }

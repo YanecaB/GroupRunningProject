@@ -29,8 +29,8 @@ namespace CinemaApp.Services.Data
             this.eventRepository = eventRepository;
         }
 
-        public async Task<IEnumerable<GroupIndexViewModel>> IndexGetAllAsync()
-        {
+        public async Task<IEnumerable<GroupIndexViewModel>> IndexGetAllAsync(string? searchQuery = null)
+        {            
             IEnumerable<GroupIndexViewModel> groups = await this.groupRepository
                 .GetAllAttached()
                 .Where(g => g.IsDeleted == false)
@@ -44,6 +44,11 @@ namespace CinemaApp.Services.Data
                 })
                 .OrderBy(c => c.Location)
                 .ToArrayAsync();
+
+            if (searchQuery != null)
+            {
+                groups = groups.Where(g => g.Name.ToLower().Contains(searchQuery.ToLower()));
+            }
 
             return groups;
         }        

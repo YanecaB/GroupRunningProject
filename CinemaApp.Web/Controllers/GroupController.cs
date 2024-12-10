@@ -23,10 +23,12 @@ namespace CinemaApp.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? searchQuery = null)
         {
-            var groups = await groupService.IndexGetAllAsync();
-            
+            var groups = await groupService.IndexGetAllAsync(searchQuery);
+
+            ViewData["SearchQuery"] = searchQuery;
+
             return this.View(groups);
         }
 
