@@ -24,17 +24,28 @@ namespace CinemaApp.Web.Controllers
             this.eventService = eventService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            Guid? userGuid = GetCurrectUserGuidId();
+            IEnumerable<EventIndexViewModel> events = null!;
 
-            if (!userGuid.HasValue)
+            if (User.Identity.IsAuthenticated)
             {
-                return Unauthorized();
-            }
+                Guid? userGuid = GetCurrectUserGuidId();
 
-            var events = await eventService
+                if (!userGuid.HasValue)
+                {
+                    return Unauthorized();
+                }
+
+                events = await eventService
                 .IndexGetAllAsync(userGuid.Value);
+            }
+            else
+            {
+                events = await eventService
+                .IndexGetAllAsync(null);
+            }         
 
             return this.View(events);
         }

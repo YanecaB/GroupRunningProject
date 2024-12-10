@@ -145,19 +145,22 @@
                                         <td>@eventItem.Date</td>
                                         <td>
                                             <a href="@Url.Action("Details", "Event", new { id = eventItem.Id })" class="btn btn-info">Details</a>
-                                             
-                                            @if (eventItem.IsJoined)
+
+                                            @if (User.Identity.IsAuthenticated)
                                             {
-                                                <form asp-action="Unjoin" asp-controller="Event" method="post" style="display:inline;">
-                                                    <input type="hidden" name="eventId" value="@eventItem.Id" />                                                   
-                                                    <button type="submit" class="btn btn-remove">Unjoin</button>
-                                                </form>
-                                            }
-                                            else
-                                            {
-                                                <form asp-action="Join" asp-route-id="@eventItem.Id" method="post" style="display:inline;">
-                                                    <button type="submit" class="btn btn-success">Join</button>
-                                                </form>
+                                                @if (eventItem.IsJoined)
+                                                {
+                                                    <form asp-action="Unjoin" asp-controller="Event" method="post" style="display:inline;">
+                                                        <input type="hidden" name="eventId" value="@eventItem.Id" />
+                                                        <button type="submit" class="btn btn-remove">Unjoin</button>
+                                                    </form>
+                                                }
+                                                else
+                                                {
+                                                    <form asp-action="Join" asp-route-id="@eventItem.Id" method="post" style="display:inline;">
+                                                        <button type="submit" class="btn btn-success">Join</button>
+                                                    </form>
+                                                }
                                             }
                                         </td>
                                     </tr>

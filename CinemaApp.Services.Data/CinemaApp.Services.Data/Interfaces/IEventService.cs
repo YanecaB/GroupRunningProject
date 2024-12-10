@@ -6,7 +6,7 @@ namespace CinemaApp.Services.Data.Interfaces
 {
 	public interface IEventService
 	{
-        Task<IEnumerable<EventIndexViewModel>> IndexGetAllAsync(Guid userId);
+        Task<IEnumerable<EventIndexViewModel>> IndexGetAllAsync(Guid? userId, string? searchQuery = null);
 
         Task<IEnumerable<EventIndexViewModel>> GetAllAdminEventsAsync(Guid userId);
 
@@ -28,7 +28,7 @@ namespace CinemaApp.Services.Data.Interfaces
 
         Task<DeleteEventViewModel?> GetEventForDeleteByIdAsync(Guid id);
 
-        Task<bool> EventExistsByIdAsync(Guid id);
+        Task<bool> EventExistsByIdAsync(Guid id);        
     }
 }
 

@@ -22,24 +22,31 @@ namespace CinemaApp.Services.Data
             this.userEventRepository = userEventRepository;
         }
        
-        public async Task<IEnumerable<EventIndexViewModel>> IndexGetAllAsync(Guid userId)
+        public async Task<IEnumerable<EventIndexViewModel>> IndexGetAllAsync(Guid? userId, string? searchQuery = null)
         {
-            IEnumerable<EventIndexViewModel> events = await this.eventRepository
+            IQueryable<Event> events = this.eventRepository
                 .GetAllAttached()
-                .Include(e => e.UsersEvents)                
-                .Where(g => g.IsDeleted == false)
-                .Select(c => new EventIndexViewModel()
-                {
-                    Id = c.Id.ToString(),
-                    Title = c.Title,                                        
-                    Date = c.Date.ToString(EntityValidationConstants.Event.DateFormat),
-                    GroupName = c.Group.Name,
-                    JoinedUsers = c.UsersEvents.Count,
-                    IsJoined = c.UsersEvents.Any(ue => ue.ApplicationUserId == userId)                    
-                })                
-                .ToArrayAsync();
+                .Include(e => e.UsersEvents)
+                .Where(g => g.IsDeleted == false);
 
-            return events;
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                searchQuery = searchQuery.ToLower().Trim();
+
+                events = events.Where(e => e.Title.ToLower().Contains(searchQuery));
+            }
+
+            return await events
+                .Select(e => new EventIndexViewModel()
+                {
+                    Id = e.Id.ToString(),
+                    Title = e.Title,                                        
+                    Date = e.Date.ToString(EntityValidationConstants.Event.DateFormat),
+                    GroupName = e.Group.Name,
+                    JoinedUsers = e.UsersEvents.Count,
+                    IsJoined = e.UsersEvents.Any(ue => ue.ApplicationUserId == userId)              
+                })                
+                .ToArrayAsync();            
         }
 
         public async Task<IEnumerable<EventIndexViewModel>> GetAllAdminEventsAsync(Guid userId)
