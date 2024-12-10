@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using CinemaApp.Common;
 using CinemaApp.Data.Models;
 using CinemaApp.Data.Repository.Interfaces;
@@ -22,12 +23,12 @@ namespace CinemaApp.Services.Data
             this.userEventRepository = userEventRepository;
         }
        
-        public async Task<IEnumerable<EventIndexViewModel>> IndexGetAllAsync(Guid? userId, string? searchQuery = null)
+        public async Task<(IEnumerable<EventIndexViewModel>, int)> IndexGetAllAsync(Guid? userId, string? searchQuery = null, int pageNumber = 1, int pageSize = 2)
         {
             IQueryable<Event> events = this.eventRepository
                 .GetAllAttached()
                 .Include(e => e.UsersEvents)
-                .Where(g => g.IsDeleted == false);
+                .Where(e => e.IsDeleted == false);
 
             if (!string.IsNullOrWhiteSpace(searchQuery))
             {
@@ -36,7 +37,14 @@ namespace CinemaApp.Services.Data
                 events = events.Where(e => e.Title.ToLower().Contains(searchQuery));
             }
 
-            return await events
+            int totalEvent = await events.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalEvent / (double)pageSize);
+                        
+            events = events
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize);
+
+            return (await events
                 .Select(e => new EventIndexViewModel()
                 {
                     Id = e.Id.ToString(),
@@ -46,7 +54,7 @@ namespace CinemaApp.Services.Data
                     JoinedUsers = e.UsersEvents.Count,
                     IsJoined = e.UsersEvents.Any(ue => ue.ApplicationUserId == userId)              
                 })                
-                .ToArrayAsync();            
+                .ToArrayAsync(), totalPages);            
         }
 
         public async Task<IEnumerable<EventIndexViewModel>> GetAllAdminEventsAsync(Guid userId)

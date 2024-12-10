@@ -6,7 +6,10 @@ namespace CinemaApp.Services.Data.Interfaces
 {
 	public interface IEventService
 	{
-        Task<IEnumerable<EventIndexViewModel>> IndexGetAllAsync(Guid? userId, string? searchQuery = null);
+        Task<(IEnumerable<EventIndexViewModel>, int)> IndexGetAllAsync(Guid? userId,
+            string? searchQuery = null,
+            int pageNumber = 1,
+            int pageSize = 2);
 
         Task<IEnumerable<EventIndexViewModel>> GetAllAdminEventsAsync(Guid userId);
 

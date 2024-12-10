@@ -25,10 +25,11 @@ namespace CinemaApp.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string? searchQuery = null)
+        public async Task<IActionResult> Index(string? searchQuery = null, int pageNumber = 1)
         {
             IEnumerable<EventIndexViewModel> events = null!;
-
+            int totalPages = 0;
+            
             if (User.Identity.IsAuthenticated)
             {
                 Guid? userGuid = GetCurrectUserGuidId();
@@ -38,16 +39,19 @@ namespace CinemaApp.Web.Controllers
                     return Unauthorized();
                 }
 
-                events = await eventService
-                .IndexGetAllAsync(userGuid.Value, searchQuery);
+                (events, totalPages) = await eventService
+                .IndexGetAllAsync(userGuid.Value, searchQuery, pageNumber);
             }
             else
             {
-                events = await eventService
-                .IndexGetAllAsync(null, searchQuery);
+                (events, totalPages) = await eventService
+                .IndexGetAllAsync(null, searchQuery, pageNumber);
             }
 
             ViewData["SearchQuery"] = searchQuery;
+            ViewData["CurrentPage"] = pageNumber;
+            ViewData["TotalPages"] = totalPages;
+            ViewData["CurrentPage"] = pageNumber;
 
             return this.View(events);
         }

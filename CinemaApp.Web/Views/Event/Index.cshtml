@@ -134,7 +134,7 @@
                            name="searchQuery"
                            class="form-control"
                            placeholder="Search by title..."
-                           value="@ViewData["SearchQuery"]"/>           
+                           value="@ViewData["SearchQuery"]" />
                     <button type="submit" class="btn btn-primary">
                         Search
                     </button>
@@ -196,5 +196,42 @@
             </div>
         </div>
     </div>
+
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination">
+            @if ((int)ViewData["CurrentPage"] > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-pageNumber="@((int)ViewData["CurrentPage"] - 1)"
+                       asp-route-searchQuery="@ViewData["SearchQuery"]">
+                        Previous
+                    </a>
+                </li>
+            }
+
+            @for (int i = 1; i <= (int)ViewData["TotalPages"]; i++)
+            {
+                <li class="page-item @(i == (int)ViewData["CurrentPage"] ? "active" : "")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-pageNumber="@i"
+                       asp-route-searchQuery="@ViewData["SearchQuery"]">
+                        @i
+                    </a>
+                </li>
+            }
+
+            @if ((int)ViewData["CurrentPage"] < (int)ViewData["TotalPages"])
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-pageNumber="@((int)ViewData["CurrentPage"] + 1)"
+                       asp-route-searchQuery="@ViewData["SearchQuery"]">
+                        Next
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
 </body>
 </html>
