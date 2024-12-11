@@ -100,9 +100,20 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = await _signInManager.UserManager.FindByNameAsync(Input.Username);
+                    if (user != null && user.IsBanned)
+                    {
+                        // If the user is banned, log them out and show a message
+                        await _signInManager.SignOutAsync();
+                        ModelState.AddModelError(string.Empty, "Your account has been banned. Please contact support.");
+                        return Page();
+                    }
+
+                    // If the user is not banned, proceed as usual
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
+
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
