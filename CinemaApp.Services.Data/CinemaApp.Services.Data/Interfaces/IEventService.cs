@@ -9,7 +9,7 @@ namespace CinemaApp.Services.Data.Interfaces
         Task<(IEnumerable<EventIndexViewModel>, int)> IndexGetAllAsync(Guid? userId,
             string? searchQuery = null,
             int pageNumber = 1,
-            int pageSize = 2);
+            int pageSize = 2); // the pageSize is set to 2 for easier testing of the Pagination :)
 
         Task<IEnumerable<EventIndexViewModel>> GetAllAdminEventsAsync(Guid userId);
 

@@ -5,7 +5,7 @@ namespace CinemaApp.Services.Data.Interfaces
 {
 	public interface IRankListService
 	{
-		Task<ICollection<RankListUserViewModel>> GetAllUsersOrderedByRunnedDistanceAsync();
+		Task<RankListUserPaginationViewModel> GetAllUsersOrderedByRunnedDistanceAsync(Guid? userId, int pageNumber = 1, int pageSize = 2);
 
 		Task DeletePassedEventsAndRunnedDistanceToTheParticipants();
     }

@@ -7,6 +7,7 @@ using CinemaApp.Services.Data.Interfaces;
 using CinemaApp.Web.ViewModels.Event;
 using CinemaApp.Web.ViewModels.Group;
 using CinemaApp.Web.ViewModels.User;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Services.Data
@@ -68,7 +69,8 @@ namespace CinemaApp.Services.Data
                     Id = c.Id.ToString(),
                     Title = c.Title,
                     Date = c.Date.ToString(EntityValidationConstants.Event.DateFormat),
-                    GroupName = c.Group.Name
+                    GroupName = c.Group.Name,
+                    IsPassed = c.IsPassed
                 })
                 .ToArrayAsync();
 
@@ -76,7 +78,7 @@ namespace CinemaApp.Services.Data
         }
 
         public async Task AddEventAsync(EventCreateViewModel viewModel, Guid adminId)
-        {
+        {    
             Event newEvent = new Event()
             {
                 Id = Guid.NewGuid(),
@@ -188,7 +190,7 @@ namespace CinemaApp.Services.Data
             
             return viewModel;
         }
-
+        
         public async Task<bool> EditEventAsync(EventEditViewModel viewModel)
         {
             var eventEntity = await this.eventRepository.GetByIdAsync(Guid.Parse(viewModel.Id));

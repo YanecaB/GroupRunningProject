@@ -18,7 +18,7 @@ namespace CinemaApp.Web.Infrastructure.BackgroundTasks
         public Task StartAsync(CancellationToken cancellationToken)
         {
             // Run the first notification check immediately, then schedule it to repeat daily.
-            _timer = new Timer(GenerateNotifications, null, TimeSpan.Zero, TimeSpan.FromHours(12));
+            _timer = new Timer(GenerateNotifications, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
             return Task.CompletedTask;
         }
 

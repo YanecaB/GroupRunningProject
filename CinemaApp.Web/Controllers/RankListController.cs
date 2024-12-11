@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CinemaApp.Services.Data;
 using CinemaApp.Services.Data.Interfaces;
+using CinemaApp.Web.ViewModels.RankList;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,12 +21,22 @@ namespace CinemaApp.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber = 1)
         {
-            var users = await this.rankListService
-                .GetAllUsersOrderedByRunnedDistanceAsync();
+            Guid? userGuid = GetCurrectUserGuidId();
+            if (!userGuid.HasValue)
+            {
+                return Unauthorized();
+            }
 
-            return View(users);
+            RankListUserPaginationViewModel usersInfo = await this.rankListService
+            .GetAllUsersOrderedByRunnedDistanceAsync(userGuid, pageNumber);
+            
+            ViewData["CurrentPage"] = pageNumber;
+            ViewData["TotalPages"] = usersInfo.TotalPages;
+            ViewData["CurrentPage"] = pageNumber;
+
+            return View(usersInfo);
         }
     }
 }

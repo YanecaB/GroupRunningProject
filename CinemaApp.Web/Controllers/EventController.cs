@@ -113,6 +113,8 @@ namespace CinemaApp.Web.Controllers
             return this.View(events);
         }
 
+        [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Join(string? id)
         {
             Guid guidId = Guid.Empty;

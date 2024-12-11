@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CinemaApp.Web.ViewModels.RankList.RankListUserViewModel>
+﻿@using CinemaApp.Web.ViewModels.RankList;
+@model RankListUserPaginationViewModel
 
 @{
     ViewData["Title"] = "Rank List";
@@ -133,65 +134,101 @@
         <h2>@ViewData["Title"]</h2>
 
         <div class="podium">
-            @if (Model.Count() >= 3)
+            @if (Model.Second != null)
             {
                 <div class="podium-place second">
                     <div class="place-number">#2</div>
                     <div class="user-details">
-                        @Model.ElementAt(1).UserName <br />
-                        @Model.ElementAt(1).RunnedDistance km
-                    </div>
-                </div>
-                <div class="podium-place first">
-                    <div class="place-number">#1</div>
-                    <div class="user-details">
-                        @Model.ElementAt(0).UserName <br />
-                        @Model.ElementAt(0).RunnedDistance km
-                    </div>
-                </div>
-                <div class="podium-place third">
-                    <div class="place-number">#3</div>
-                    <div class="user-details">
-                        @Model.ElementAt(2).UserName <br />
-                        @Model.ElementAt(2).RunnedDistance km
+                        @Model.Second.UserName <br />
+                        @Model.Second.RunnedDistance km
                     </div>
                 </div>
             }
-            else
+
+            @if (Model.First != null)
             {
-                <p>Not enough users for a podium.</p>
+                <div class="podium-place first">
+                    <div class="place-number">#1</div>
+                    <div class="user-details">
+                        @Model.First.UserName <br />
+                        @Model.First.RunnedDistance km
+                    </div>
+                </div>
+            }
+
+            @if (Model.Third != null)
+            {
+                <div class="podium-place third">
+                    <div class="place-number">#3</div>
+                        <div class="user-details">
+                        @Model.Third.UserName <br />
+                        @Model.Third.RunnedDistance km
+                    </div>
+                </div>
             }
         </div>
 
         <div class="rank-list-section">
             <ul class="rank-list">
-                @foreach (var user in Model.Skip(3))
+                @foreach (var user in Model.Users)
                 {
                     <li class="rank-item">
                         <span>@user.UserName</span>
                         <span>@user.RunnedDistance km</span>
-                        <spane>#@(Model.ToList().FindIndex(u => u.Id == user.Id) + 1)</spane>
+                        <span>#@(((int)ViewData["CurrentPage"] - 1) * Model.PageSize.Value + Model.Users.ToList().IndexOf(user) + 4)</span>
                     </li>
                 }
             </ul>
 
             <div class="my-stats">
-                @{
-                    var currentUser = Model.FirstOrDefault(u => u.UserName == User.Identity.Name);
-                    if (currentUser != null)
+                @{                    
+                    if (Model.CurrentUser != null)
                     {
-                        var rank = Model.ToList().FindIndex(u => u.Id == currentUser.Id) + 1;
-                        <p><strong>Your Position:</strong> #@rank</p>
-                        <p><strong>Username:</strong> @currentUser.UserName</p>
-                        <p><strong>Total Distance:</strong> @currentUser.RunnedDistance km</p>
+                        <p><strong>Your Position:</strong> @(Model.CurrentUserRank.HasValue ? $"#{Model.CurrentUserRank}" : "N/A")</p>
+                        <p><strong>Username:</strong> @Model.CurrentUser.UserName</p>
+                        <p><strong>Total Distance:</strong> @Model.CurrentUser.RunnedDistance km</p>
                     }
                     else
                     {
-                        <p>You are not ranked yet. Start running!</p>
+                        <p>You are at the top 3</p>
                     }
                 }
             </div>
         </div>
     </div>
+
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination">
+            @if ((int)ViewData["CurrentPage"] > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-pageNumber="@((int)ViewData["CurrentPage"] - 1)">
+                        Previous
+                    </a>
+                </li>
+            }
+
+            @for (int i = 1; i <= (int)ViewData["TotalPages"]; i++)
+            {
+                <li class="page-item @(i == (int)ViewData["CurrentPage"] ? "active" : "")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-pageNumber="@i">
+                        @i
+                    </a>
+                </li>
+            }
+
+            @if ((int)ViewData["CurrentPage"] < (int)ViewData["TotalPages"])
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-pageNumber="@((int)ViewData["CurrentPage"] + 1)">                       
+                        Next
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
 </body>
 </html>

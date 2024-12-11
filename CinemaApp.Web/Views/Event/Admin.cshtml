@@ -95,8 +95,13 @@
                                                     <div class="btn-group" role="group">
                                                         <a href="@Url.Action("Details", "Event", new { id = eventItem.Id })"
                                                            class="btn btn-sm btn-info text-white">Details</a>
-                                                        <a href="@Url.Action("Edit", "Event", new { id = eventItem.Id })"
-                                                           class="btn btn-sm btn-warning text-white">Change</a>                                                        
+
+                                                        @if (eventItem.IsPassed == false)
+                                                        {
+                                                            <a href="@Url.Action("Edit", "Event", new { id = eventItem.Id })"
+                                                               class="btn btn-sm btn-warning text-white">Change</a>
+                                                        }
+
                                                         <a href="@Url.Action("Delete", "Event", new { id = eventItem.Id })"
                                                            class="btn btn-sm btn-danger">Delete</a>
                                                     </div>
