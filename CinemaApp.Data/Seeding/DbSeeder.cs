@@ -12,6 +12,8 @@ using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 
 using static CinemaApp.Common.EntityValidationConstants.Group;
+using Group = CinemaApp.Data.Models.Group;
+using Event = CinemaApp.Data.Models.Event;
 
 namespace CinemaApp.Data.Seeding
 {
@@ -159,6 +161,7 @@ namespace CinemaApp.Data.Seeding
                 {
                     if (!IsValid(membershipDto))
                     {
+
                         continue;
                     }
 

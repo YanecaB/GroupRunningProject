@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaApp.Data.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    [Migration("20241211151542_Initial")]
+    [Migration("20241211211720_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -140,8 +140,8 @@ namespace CinemaApp.Data.Migrations
 
                     b.Property<string>("Location")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(85)
+                        .HasColumnType("nvarchar(85)");
 
                     b.Property<Guid>("OrganizerId")
                         .HasColumnType("uniqueidentifier");
