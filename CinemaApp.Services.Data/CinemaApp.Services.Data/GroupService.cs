@@ -18,7 +18,7 @@ namespace CinemaApp.Services.Data
     {
         private readonly IRepository<Group, Guid> groupRepository;
         private readonly IRepository<Event, Guid> eventRepository;
-        private readonly IRepository<Membership, Guid> membershipRepository;
+        private readonly IRepository<Membership, Guid> membershipRepository;        
 
         public GroupService(IRepository<Group, Guid> groupRepository,
             IRepository<Membership, Guid> membershipRepository,
@@ -26,7 +26,7 @@ namespace CinemaApp.Services.Data
         {
             this.groupRepository = groupRepository;
             this.membershipRepository = membershipRepository;
-            this.eventRepository = eventRepository;
+            this.eventRepository = eventRepository;            
         }
 
         public async Task<IEnumerable<GroupIndexViewModel>> IndexGetAllAsync(string? searchQuery = null)

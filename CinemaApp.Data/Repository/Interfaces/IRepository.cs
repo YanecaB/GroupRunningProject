@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using CinemaApp.Data.Models;
 
 namespace CinemaApp.Data.Repository.Interfaces
 {
@@ -34,6 +35,8 @@ namespace CinemaApp.Data.Repository.Interfaces
         bool Update(TType item);
 
         Task<bool> UpdateAsync(TType item);
+
+        //void FirstOrDefaultAsync(Func<Membership, bool> func);
     }
 }
 
