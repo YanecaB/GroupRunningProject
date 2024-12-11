@@ -29,9 +29,7 @@ namespace CinemaApp.Web.ViewModels.Event
 
         public int Distance { get; set; }
 
-        public ICollection<ApplicationUserViewModel> JoinedUsers { get; set; } = new List<ApplicationUserViewModel>();
-
-        //public string GroupId { get; set; } = null!;
+        public ICollection<ApplicationUserViewModel> JoinedUsers { get; set; } = new List<ApplicationUserViewModel>();        
     }
 }
 

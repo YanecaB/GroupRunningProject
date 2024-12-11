@@ -16,6 +16,8 @@ namespace CinemaApp.Web.ViewModels.Event
 		public string AdminId { get; set; } = null!;		
 
 		public bool IsJoined { get; set; }
+
+		public bool IsPassed { get; set; }
 	}
 }
 

@@ -37,49 +37,13 @@ namespace CinemaApp.Services.Data
                 .ToListAsync();
         }
 
-        /*
-
-        var upcomingEvents = await this.eventRepository
-                .GetAllAttached()
-                .Where(e => e.Date.Date == DateTime.Now.AddDays(1).Date)
-                .ToListAsync();
-
-            foreach (var eventEntity in upcomingEvents)
-            {
-                var joinedUsers = await this.userEventRepository
-                    .GetAllAttached()
-                    .Where(ue => ue.EventId == eventEntity.Id)
-                    .Select(ue => ue.ApplicationUserId)
-                    .ToListAsync();
-
-                foreach (var userId in joinedUsers)
-                {
-                    if (await this.notificationRepository.FirstOrDefaultAsync(n => n.EventId == eventEntity.Id && n.UserId == userId) != null)
-                    {
-                        continue;
-                    }
-
-                    var notification = new Notification
-                    {
-                        Id = Guid.NewGuid(),
-                        Message = string.Format(Message, eventEntity.Title),
-                        Date = DateTime.Now,
-                        UserId = userId,
-                        EventId = eventEntity.Id
-                    };
-
-                    await this.notificationRepository.AddAsync(notification);
-                }
-            }
-         
-         */
         public async Task DeletePassedEventsAndRunnedDistanceToTheParticipants()
         {
             var passedEvents = await this.eventRepository
                 .GetAllAttached()
                 .Include(e => e.UsersEvents)
                 .ThenInclude(ue => ue.ApplicationUser)
-                .Where(e => e.Date < DateTime.Now && e.IsDeleted == false)
+                .Where(e => e.Date < DateTime.Now && e.IsDeleted == false && e.IsPassed == false)
                 .ToListAsync();
 
             foreach (var passedEvent in passedEvents)
@@ -93,7 +57,7 @@ namespace CinemaApp.Services.Data
                     }
                 }
 
-                passedEvent.IsDeleted = true;
+                passedEvent.IsPassed = true;
                 await this.eventRepository.UpdateAsync(passedEvent);
             }
         }

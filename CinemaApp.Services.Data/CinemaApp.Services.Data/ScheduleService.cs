@@ -32,7 +32,8 @@ namespace CinemaApp.Services.Data
                     .Select(ue => new EventViewModel()
                     {
                         Id = ue.EventId.ToString(),
-                        Title = ue.Event.Title
+                        Title = ue.Event.Title,
+                        IsPassed = ue.Event.IsPassed
                     })
                     .ToArrayAsync(),
                 MyEvents = await this.eventRepository
@@ -41,7 +42,8 @@ namespace CinemaApp.Services.Data
                     .Select(e => new EventViewModel()
                     {
                         Id = e.Id.ToString(),
-                        Title = e.Title
+                        Title = e.Title,
+                        IsPassed = e.IsPassed
                     })
                     .ToArrayAsync(),
                 Id = id.ToString()

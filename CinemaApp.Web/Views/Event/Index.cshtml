@@ -164,7 +164,7 @@
                                         <td>
                                             <a href="@Url.Action("Details", "Event", new { id = eventItem.Id })" class="btn btn-info">Details</a>
 
-                                            @if (User.Identity.IsAuthenticated)
+                                            @if (User.Identity.IsAuthenticated && eventItem.IsPassed == false)
                                             {
                                                 @if (eventItem.IsJoined)
                                                 {

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaApp.Data.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    [Migration("20241211135136_Initial")]
+    [Migration("20241211151542_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -133,6 +133,9 @@ namespace CinemaApp.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPassed")
                         .HasColumnType("bit");
 
                     b.Property<string>("Location")

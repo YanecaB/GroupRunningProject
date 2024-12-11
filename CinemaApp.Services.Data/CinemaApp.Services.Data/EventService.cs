@@ -52,7 +52,8 @@ namespace CinemaApp.Services.Data
                     Date = e.Date.ToString(EntityValidationConstants.Event.DateFormat),
                     GroupName = e.Group.Name,
                     JoinedUsers = e.UsersEvents.Count,
-                    IsJoined = e.UsersEvents.Any(ue => ue.ApplicationUserId == userId)              
+                    IsJoined = e.UsersEvents.Any(ue => ue.ApplicationUserId == userId),
+                    IsPassed = e.IsPassed
                 })                
                 .ToArrayAsync(), totalPages);            
         }
@@ -158,6 +159,11 @@ namespace CinemaApp.Services.Data
                 .ToArrayAsync())
                 .FirstOrDefault(e => e.Id == id);
 
+            if (eventEntity.IsPassed)
+            {
+                return null;
+            }
+
             EventEditViewModel? viewModel = null!;
 
             if (eventEntity != null && eventEntity.IsDeleted == false)
@@ -176,10 +182,10 @@ namespace CinemaApp.Services.Data
                         Email = ue.ApplicationUser.Email,
                         UserName = ue.ApplicationUser.UserName
                     })
-                    .ToList()
+                    .ToList()                    
                 };
-            }                                
-
+            }
+            
             return viewModel;
         }
 

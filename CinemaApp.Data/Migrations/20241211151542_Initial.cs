@@ -193,7 +193,8 @@ namespace CinemaApp.Data.Migrations
                     OrganizerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Distance = table.Column<int>(type: "int", nullable: false),
                     GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    IsPassed = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

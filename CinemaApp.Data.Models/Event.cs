@@ -42,6 +42,8 @@ namespace CinemaApp.Data.Models
 		public ICollection<ApplicationUserEvent> UsersEvents { get; set; } = new HashSet<ApplicationUserEvent>();
 
 		public bool IsDeleted { get; set; } = false;
+
+		public bool IsPassed { get; set; } = false;
 	}
 }
 
