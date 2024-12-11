@@ -1,0 +1,197 @@
+﻿@model IEnumerable<CinemaApp.Web.ViewModels.RankList.RankListUserViewModel>
+
+@{
+    ViewData["Title"] = "Rank List";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            padding: 30px 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .podium {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            margin: 40px 0;
+        }
+
+        .podium-place {
+            position: relative;
+            padding: 10px;
+            text-align: center;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .first {
+            background: #ffd700;
+            height: 150px;
+            width: 120px;
+        }
+
+        .second {
+            background: #c0c0c0;
+            height: 120px;
+            width: 120px;
+        }
+
+        .third {
+            background: #cd7f32;
+            height: 100px;
+            width: 120px;
+        }
+
+        .place-number {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 50%;
+        }
+
+        .user-details {
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+
+        .rank-list-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 30px;
+        }
+
+        .rank-list {
+            list-style-type: none;
+            padding: 0;
+            flex: 3;
+        }
+
+        .rank-item {
+            background: #f4f4f4;
+            margin: 10px auto;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 800px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .my-stats {
+            flex: 1;
+            margin-left: 20px;
+            background-color: #27ae60;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 1.2rem;
+        }
+
+            .my-stats p {
+                margin: 10px 0;
+                font-size: 1rem;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>@ViewData["Title"]</h2>
+
+        <div class="podium">
+            @if (Model.Count() >= 3)
+            {
+                <div class="podium-place second">
+                    <div class="place-number">#2</div>
+                    <div class="user-details">
+                        @Model.ElementAt(1).UserName <br />
+                        @Model.ElementAt(1).RunnedDistance km
+                    </div>
+                </div>
+                <div class="podium-place first">
+                    <div class="place-number">#1</div>
+                    <div class="user-details">
+                        @Model.ElementAt(0).UserName <br />
+                        @Model.ElementAt(0).RunnedDistance km
+                    </div>
+                </div>
+                <div class="podium-place third">
+                    <div class="place-number">#3</div>
+                    <div class="user-details">
+                        @Model.ElementAt(2).UserName <br />
+                        @Model.ElementAt(2).RunnedDistance km
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p>Not enough users for a podium.</p>
+            }
+        </div>
+
+        <div class="rank-list-section">
+            <ul class="rank-list">
+                @foreach (var user in Model.Skip(3))
+                {
+                    <li class="rank-item">
+                        <span>@user.UserName</span>
+                        <span>@user.RunnedDistance km</span>
+                        <spane>#@(Model.ToList().FindIndex(u => u.Id == user.Id) + 1)</spane>
+                    </li>
+                }
+            </ul>
+
+            <div class="my-stats">
+                @{
+                    var currentUser = Model.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                    if (currentUser != null)
+                    {
+                        var rank = Model.ToList().FindIndex(u => u.Id == currentUser.Id) + 1;
+                        <p><strong>Your Position:</strong> #@rank</p>
+                        <p><strong>Username:</strong> @currentUser.UserName</p>
+                        <p><strong>Total Distance:</strong> @currentUser.RunnedDistance km</p>
+                    }
+                    else
+                    {
+                        <p>You are not ranked yet. Start running!</p>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</body>
+</html>

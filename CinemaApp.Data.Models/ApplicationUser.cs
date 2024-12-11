@@ -12,6 +12,8 @@
 
         public bool IsBanned { get; set; } = false;
 
+        public int RunnedDistance { get; set; } = 0;
+
         public virtual ICollection<Membership> Memberships { get; set; }
             = new HashSet<Membership>();
 

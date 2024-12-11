@@ -44,6 +44,7 @@
     <None Remove="Areas\Admin\Views\UserManagement\" />
     <None Remove="Views\Notification\" />
     <None Remove="Areas\Identity\Controllers\" />
+    <None Remove="Views\RankList\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Group\" />
@@ -57,5 +58,6 @@
     <Folder Include="Areas\Admin\Views\UserManagement\" />
     <Folder Include="Views\Notification\" />
     <Folder Include="Areas\Identity\Controllers\" />
+    <Folder Include="Views\RankList\" />
   </ItemGroup>
 </Project>

@@ -16,6 +16,7 @@
     <None Remove="User\" />
     <None Remove="Schedule\" />
     <None Remove="Notification\" />
+    <None Remove="RankList\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Group\" />
@@ -23,5 +24,6 @@
     <Folder Include="User\" />
     <Folder Include="Schedule\" />
     <Folder Include="Notification\" />
+    <Folder Include="RankList\" />
   </ItemGroup>
 </Project>

@@ -64,7 +64,7 @@ namespace CinemaApp.Web
             // Register the background task as a hosted service
             builder.Services.AddScoped<INotificationService, NotificationService>();
             builder.Services.AddHostedService<NotificationScheduler>();
-
+            builder.Services.AddHostedService<RemovePassedEventsAndAddRunnedDistance>();
 
             //// Register the notification service
             //builder.Services.AddScoped<INotificationService, NotificationService>();
