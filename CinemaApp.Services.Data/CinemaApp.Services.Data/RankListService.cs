@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Services.Data
 {
+    using static CinemaApp.Common.EntityValidationConstants.RankList;
+
     public class RankListService : BaseService, IRankListService
     {
         private readonly UserManager<ApplicationUser> userManager;
@@ -25,7 +27,7 @@ namespace CinemaApp.Services.Data
             this.userEventRepository = userEventRepository;
         }
 
-        public async Task<RankListUserPaginationViewModel> GetAllUsersOrderedByRunnedDistanceAsync(Guid? userId, int pageNumber = 1, int pageSize = 2)
+        public async Task<RankListUserPaginationViewModel> GetAllUsersOrderedByRunnedDistanceAsync(Guid? userId, int pageNumber = 1, int pageSize = PageSizeConstant)
         {
             RankListUserPaginationViewModel rankListAllInfo = new RankListUserPaginationViewModel();
 

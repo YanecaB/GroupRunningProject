@@ -1,7 +1,9 @@
 ﻿using System;
 namespace CinemaApp.Web.ViewModels.RankList
 {
-	public class RankListUserPaginationViewModel
+    using static CinemaApp.Common.EntityValidationConstants.RankList;
+
+    public class RankListUserPaginationViewModel
 	{
 		public ICollection<RankListUserViewModel> Users { get; set; } = null!;
 
@@ -10,10 +12,12 @@ namespace CinemaApp.Web.ViewModels.RankList
         public RankListUserViewModel? Second { get; set; }
 
         public RankListUserViewModel? Third { get; set; }
-
+        
         public int? PageNumber { get; set; } = 1;
 
-        public int? PageSize { get; set; } = 2;
+        public int? PageSize { get; set; } = PageSizeConstant;
+
+        public int? UserNumber { get; set; } = 4 - PageSizeConstant;
 
         public int? TotalPages { get; set; }
 

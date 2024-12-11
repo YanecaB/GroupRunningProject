@@ -174,8 +174,9 @@
                 {
                     <li class="rank-item">
                         <span>@user.UserName</span>
-                        <span>@user.RunnedDistance km</span>
-                        <span>#@(((int)ViewData["CurrentPage"] - 1) * Model.PageSize.Value + Model.Users.ToList().IndexOf(user) + 4)</span>
+                        <span>@user.RunnedDistance km</span>                        
+                        <span>#@(Model.UserNumber + Model.Users.ToList().IndexOf(user))</span>
+
                     </li>
                 }
             </ul>

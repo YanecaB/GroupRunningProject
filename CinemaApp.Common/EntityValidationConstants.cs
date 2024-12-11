@@ -40,5 +40,10 @@
 
             public const string Message = "Reminder: The event {0} is happening tomorrow!";
         }
+
+        public static class RankList
+        {
+            public const int PageSizeConstant = 2;
+        }
     }
 }
