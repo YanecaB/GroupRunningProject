@@ -64,7 +64,7 @@ namespace CinemaApp.Services.Data
             var allNotificationOfTheCurrentUser = await this.notificationRepository
                 .GetAllAttached()
                 .Include(n => n.Event)
-                .Where(n => n.UserId == userId)
+                .Where(n => n.UserId == userId && n.Event.IsDeleted == false)
                 .OrderByDescending(n => n.Date)
                 .Select(n => new NotificationViewModel()
                 {

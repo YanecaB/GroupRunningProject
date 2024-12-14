@@ -28,7 +28,7 @@ namespace CinemaApp.Services.Data
                 JoinedEvents = await this.userEventRepository
                     .GetAllAttached()
                     .Include(ue => ue.Event)
-                    .Where(ue => ue.ApplicationUserId == id)
+                    .Where(ue => ue.ApplicationUserId == id && ue.Event.IsDeleted == false)
                     .Select(ue => new EventViewModel()
                     {
                         Id = ue.EventId.ToString(),

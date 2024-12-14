@@ -88,7 +88,7 @@ namespace CinemaApp.Services.Data
                        
             if (group != null && group.IsDeleted == false)
             {
-                var events = (await this.groupRepository.GetAllAttached().Where(g => g.IsDeleted == false).Include(g => g.Events).ThenInclude(e => e.UsersEvents).ToArrayAsync()).FirstOrDefault(g => g.Id == id).Events.Select(e => new EventIndexViewModel()
+                var events = (await this.groupRepository.GetAllAttached().Where(g => g.IsDeleted == false).Include(g => g.Events).ThenInclude(e => e.UsersEvents).ToArrayAsync()).FirstOrDefault(g => g.Id == id).Events.Where(e => e.IsDeleted == false).Select(e => new EventIndexViewModel()
                 {
                     Id = e.Id.ToString(),
                     Date = e.Date.ToString(EntityValidationConstants.Event.DateFormat),
