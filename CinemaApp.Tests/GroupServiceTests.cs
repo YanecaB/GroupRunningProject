@@ -10,7 +10,8 @@ using CinemaApp.Web.ViewModels.Group;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using MockQueryable;
 using Moq;
-using static CinemaApp.Common.EntityValidationMessages;
+//using static CinemaApp.Common.EntityValidationMessages;
+
 
 namespace CinemaApp.Tests
 {
