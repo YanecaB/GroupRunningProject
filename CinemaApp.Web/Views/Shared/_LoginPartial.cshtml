@@ -17,22 +17,9 @@
                 <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
             </form>
         </li>
-
-            /*
-            
-
-                <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-controller="Account" asp-action="Details" title="Manage">Hello, @UserManager.GetUserName(User)!</a>
-
-            <form id="manageForm" class="form-inline" asp-area="Identity" asp-controller="Account" asp-action="Details" asp-route-id="@UserManager.GetUserId(User).ToString()">
-                <button id="manageButton" type="submit" class="nav-link btn btn-link text-dark border-0">
-                    Hello, @UserManager.GetUserName(User)!
-                </button>
-            </form>
-
-            */
-        }
-        else
-        {
+    }
+    else
+    {
         <li class="nav-item">
             <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>

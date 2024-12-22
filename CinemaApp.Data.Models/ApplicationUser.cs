@@ -10,6 +10,8 @@
             this.Id = Guid.NewGuid();
         }
 
+        public string? Bio { get; set; }
+
         public bool IsBanned { get; set; } = false;
 
         public int RunnedDistance { get; set; } = 0;
@@ -22,5 +24,8 @@
 
         public virtual ICollection<Notification> Notifications { get; set; }
             = new HashSet<Notification>();
+
+        public virtual ICollection<ApplicationUser> Friends { get; set; }
+            = new HashSet<ApplicationUser>();
     }
 }

@@ -45,5 +45,10 @@
         {
             public const int PageSizeConstant = 2;
         }
+
+        public static class ApplicationUser
+        {
+            public const string EmptyBioMessage = "The Bio is empty! :o";
+        }
     }
 }
