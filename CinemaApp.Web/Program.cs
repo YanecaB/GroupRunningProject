@@ -24,11 +24,11 @@ namespace CinemaApp.Web
             string usersJsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                 builder.Configuration.GetValue<string>("Seed:UsersJson")!);
             string groupsJsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-            builder.Configuration.GetValue<string>("Seed:GroupsJson")!);
+                builder.Configuration.GetValue<string>("Seed:GroupsJson")!);
             string membershipsJsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-           builder.Configuration.GetValue<string>("Seed:MembershipsJson")!);
+                builder.Configuration.GetValue<string>("Seed:MembershipsJson")!);
             string eventsJsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-           builder.Configuration.GetValue<string>("Seed:EventsJson")!);
+                builder.Configuration.GetValue<string>("Seed:EventsJson")!);
             
             // Add services to the container.
             builder.Services

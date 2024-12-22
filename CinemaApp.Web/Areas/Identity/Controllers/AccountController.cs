@@ -14,9 +14,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace CinemaApp.Web.Areas.Identity.Controllers
 {
     using static Common.ApplicationConstants;
-    
+
     //[Authorize(Roles = UserRoleName)]
-    public class AccountController : Controller
+    [Area("Identity")]    
+    public class AccountController : BaseController
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -26,12 +27,12 @@ namespace CinemaApp.Web.Areas.Identity.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(Guid id)
+        public async Task<IActionResult> Details(string? id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
-            if (user == null)
+            if (user == null && this.GetCurrectUserGuidId().ToString().ToLower() != id.ToLower())
             {
-                return NotFound();
+                return NotFound("User not found! :O");
             }
 
             var viewModel = new ApplicationUserDetailsViewModel
@@ -44,7 +45,7 @@ namespace CinemaApp.Web.Areas.Identity.Controllers
                 Notifications = user.Notifications.Select(n => n.Message).ToList()
             };
 
-            return View(viewModel);
+            return this.View(viewModel);
         }
     }
 }
