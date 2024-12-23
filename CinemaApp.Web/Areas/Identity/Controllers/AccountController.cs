@@ -10,8 +10,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace CinemaApp.Web.Areas.Identity.Controllers
 {
     using static CinemaApp.Common.EntityValidationConstants.ApplicationUser;
@@ -27,6 +25,7 @@ namespace CinemaApp.Web.Areas.Identity.Controllers
             _userManager = userManager;
         }
 
+        //todo: move this to a service
         [HttpGet]
         public async Task<IActionResult> Details(string? id)
         {
@@ -55,7 +54,7 @@ namespace CinemaApp.Web.Areas.Identity.Controllers
                 }).ToList()
             };
 
-            return this.View(viewModel);
+            return this.View("Details", viewModel);
         }
 
         [HttpGet]
