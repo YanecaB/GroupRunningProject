@@ -1,6 +1,10 @@
 ﻿namespace CinemaApp.Data.Models
 {
+    using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Identity;
+
+    using static CinemaApp.Common.EntityValidationConstants.ApplicationUser;
+    using static CinemaApp.Common.EntityValidationMessages.ApplicationUser;
 
     public class ApplicationUser : IdentityUser<Guid>
     {
@@ -9,12 +13,15 @@
             // ReSharper disable once VirtualMemberCallInConstructor
             this.Id = Guid.NewGuid();
         }
-
+        
+        [MaxLength(BioMaxLength, ErrorMessage = BioMaxLengthMessage)]
         public string? Bio { get; set; }
 
         public bool IsBanned { get; set; } = false;
 
         public int RunnedDistance { get; set; } = 0;
+
+        public string? ProfilePicturePath { get; set; }
 
         public virtual ICollection<Membership> Memberships { get; set; }
             = new HashSet<Membership>();

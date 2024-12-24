@@ -1,5 +1,5 @@
 ﻿@using CinemaApp.Web.ViewModels.User;
-@model ApplicationUserDetailsViewModel
+@model ApplicationUserEditProfileViewModel
 
 @{
     ViewData["Title"] = "Edit Profile";
@@ -125,19 +125,23 @@
         <form method="post" enctype="multipart/form-data">
 
             <!-- Profile Picture Upload
-                <div class="form-group">
-                <label for="ProfilePicture">Change Profile Picture</label>
-                <input type="file" name="ProfilePicture" id="ProfilePicture" accept="image/*">
+        <div class="form-group">
+        <label for="ProfilePicture">Change Profile Picture</label>
+        <input type="file" name="ProfilePicture" id="ProfilePicture" accept="image/*">
+    </div>
+
+        -->
+            <div>                
+                <input type="file" name="file" id="ProfilePicture" accept="image/*" required />
             </div>
 
-                -->
-            <form method="post" enctype="multipart/form-data" asp-controller="Files" asp-action="Upload">
+            @*<form method="post" enctype="multipart/form-data" asp-controller="Files" asp-action="Upload">
                 <div class="form-group">
                     <label for="file">Choose a profile picture:</label>
                     <input type="file" name="file" id="file" accept="image/*" required />
                 </div>
                 <button type="submit" class="btn btn-primary">Upload</button>
-            </form>
+            </form>*@
             <!-- Username Input -->
             <div class="form-group">
                 <label for="Username">Username</label>
@@ -157,7 +161,7 @@
             </div>
 
             <!-- Save Profile Button -->
-            <button type="submit" id="save-profile-btn">Save Profile</button>
+            <button type="submit" id="save-profile-btn">Save changes</button>
         </form>
     </div>
 

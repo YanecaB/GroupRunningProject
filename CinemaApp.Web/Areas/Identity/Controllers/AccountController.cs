@@ -15,17 +15,19 @@ namespace CinemaApp.Web.Areas.Identity.Controllers
     using static CinemaApp.Common.EntityValidationConstants.ApplicationUser;
 
     //[Authorize(Roles = UserRoleName)]
+    [Authorize]
     [Area("Identity")]    
     public class AccountController : BaseController
     {
+        //todo: move this to a service
+
         private readonly UserManager<ApplicationUser> _userManager;
 
         public AccountController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
-
-        //todo: move this to a service
+        
         [HttpGet]
         public async Task<IActionResult> Details(string? id)
         {
@@ -51,7 +53,8 @@ namespace CinemaApp.Web.Areas.Identity.Controllers
                     Email = f.Email,
                     UserName = f.UserName,
                     Id = f.Id.ToString()
-                }).ToList()
+                }).ToList(),
+                ProfilePicturePath = user.ProfilePicturePath
             };
 
             return this.View("Details", viewModel);
@@ -62,24 +65,23 @@ namespace CinemaApp.Web.Areas.Identity.Controllers
         {
             var user = await this._userManager.FindByIdAsync(this.GetCurrectUserGuidId().ToString());
 
-            var viewModel = new ApplicationUserDetailsViewModel
+            var viewModel = new ApplicationUserEditProfileViewModel
             {
                 Id = user.Id,
                 Email = user.Email,
                 Username = user.UserName,
                 Bio = string.IsNullOrEmpty(user.Bio) ? EmptyBioMessage : user.Bio,
-                IsBanned = user.IsBanned,
-                UserEvents = user.ApplicationUserEvents.ToList().Count(),
-                Friends = user.Friends.Select(f => new ApplicationUserViewModel()
-                {
-                    Email = f.Email,
-                    UserName = f.UserName,
-                    Id = f.Id.ToString()
-                }).ToList()
+                ProfilePicturePath = user.ProfilePicturePath
             };
 
             return this.View(viewModel);
         }
+
+        //[HttpPost]
+        //public async Task<IActionResult> Edit(ApplicationUserEditProfileViewModel viewModel)
+        //{
+        //    if ()
+        //}
     }
 }
 

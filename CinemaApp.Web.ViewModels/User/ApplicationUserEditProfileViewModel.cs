@@ -1,9 +1,13 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace CinemaApp.Web.ViewModels.User
 {
-	public class ApplicationUserDetailsViewModel
-	{
+	public class ApplicationUserEditProfileViewModel
+	{        
         public Guid Id { get; set; }
+
+        [Required]
 
         public string Username { get; set; } = null!;
 
@@ -12,12 +16,6 @@ namespace CinemaApp.Web.ViewModels.User
         public string? Email { get; set; }
 
         public string? ProfilePicturePath { get; set; }
-
-        public bool IsBanned { get; set; }
-
-        public int UserEvents { get; set; } = 0;
-
-        public ICollection<ApplicationUserViewModel> Friends { get; set; } = null!;
     }
 }
 

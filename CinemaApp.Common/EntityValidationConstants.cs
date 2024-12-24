@@ -49,6 +49,12 @@
         public static class ApplicationUser
         {
             public const string EmptyBioMessage = "The Bio is empty! :o";
+
+            public const int UsernameMinLength = 1;
+            public const int UsernameMaxLength = 40;
+
+            public const int BioMinLength = 3;
+            public const int BioMaxLength = 150;
         }
     }
 }

@@ -49,5 +49,11 @@
             public const string UserIdRequired = "User ID is required.";
             public const string EventIdRequired = "Event ID is required.";
         }
+
+        public static class ApplicationUser
+        {
+            public const string BioMinLengthMessage = "The Bio must be at least {0} characters long.";
+            public const string BioMaxLengthMessage = "The Bio can be at most {0} characters long.";
+        }
     }
 }

@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using static CinemaApp.Common.EntityValidationConstants.Group;
 using Group = CinemaApp.Data.Models.Group;
 using Event = CinemaApp.Data.Models.Event;
+using ApplicationUser = CinemaApp.Data.Models.ApplicationUser;
 
 namespace CinemaApp.Data.Seeding
 {
