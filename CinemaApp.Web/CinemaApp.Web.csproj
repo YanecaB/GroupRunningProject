@@ -47,6 +47,8 @@
     <None Remove="Views\RankList\" />
     <None Remove="Areas\Identity\Views\" />
     <None Remove="Areas\Identity\Views\Account\" />
+    <None Remove="Areas\Identity\Services\" />
+    <None Remove="Areas\Identity\Services\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Group\" />
@@ -63,5 +65,11 @@
     <Folder Include="Views\RankList\" />
     <Folder Include="Areas\Identity\Views\" />
     <Folder Include="Areas\Identity\Views\Account\" />
+    <Folder Include="Areas\Identity\Services\" />
+    <Folder Include="Areas\Identity\Services\Interfaces\" />
+    <Folder Include="wwwroot\images\profile-pictures\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\images\profile-pictures\" />
   </ItemGroup>
 </Project>

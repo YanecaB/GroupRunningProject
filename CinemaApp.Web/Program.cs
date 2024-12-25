@@ -11,6 +11,8 @@ namespace CinemaApp.Web
     using static Common.ApplicationConstants;
     using CinemaApp.Web.Infrastructure.BackgroundTasks;
     using Microsoft.AspNetCore.Mvc;
+    using CinemaApp.Web.Areas.Identity.Services.Interfaces;
+    using Microsoft.AspNetCore.Http.Features;
 
     public class Program
     {
@@ -51,9 +53,12 @@ namespace CinemaApp.Web
             {
                 cfg.LoginPath = "/Identity/Account/Login";
             });
-
+            
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IGroupService).Assembly);
+            builder.Services.RegisterUserDefinedServices(typeof(CinemaApp.Web.Areas.Identity.Services.Interfaces.IBaseService).Assembly);
+
+            //builder.Services.RegisterUserDefinedServices(typeof(IAccountService).Assembly);
 
             builder.Services.AddControllersWithViews(cfg =>
             {
@@ -65,6 +70,12 @@ namespace CinemaApp.Web
             builder.Services.AddScoped<INotificationService, NotificationService>();
             builder.Services.AddHostedService<NotificationScheduler>();
             builder.Services.AddHostedService<RemovePassedEventsAndAddRunnedDistance>();
+
+            //uploading the files !!!
+            builder.Services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 10485760; // 10MB
+            });
 
             //// Register the notification service
             //builder.Services.AddScoped<INotificationService, NotificationService>();

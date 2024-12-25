@@ -73,6 +73,22 @@ namespace CinemaApp.Web.Infrastructure.Extensions
 
                 services.AddScoped(serviceInterfaceType, serviceType);
             }
+
+            //// Additional block to explicitly register services in the Identity area
+            //var identityServiceAssembly = typeof(CinemaApp.Web.Areas.Identity.Services.Interfaces.IAccountService).Assembly;
+            //var identityServiceInterfaceTypes = identityServiceAssembly.GetTypes().Where(t => t.IsInterface);
+            //var identityServiceTypes = identityServiceAssembly.GetTypes()
+            //    .Where(t => !t.IsInterface && !t.IsAbstract && t.Name.ToLower().EndsWith("service"));
+
+            //foreach (var serviceInterfaceType in identityServiceInterfaceTypes)
+            //{
+            //    var identityServiceType = identityServiceTypes.SingleOrDefault(t =>
+            //        "i" + t.Name.ToLower() == serviceInterfaceType.Name.ToLower());
+            //    if (identityServiceType != null)
+            //    {
+            //        services.AddScoped(serviceInterfaceType, identityServiceType);
+            //    }
+            //}
         }
     }
 }

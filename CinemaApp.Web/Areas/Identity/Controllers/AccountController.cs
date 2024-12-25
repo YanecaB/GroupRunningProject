@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using CinemaApp.Data.Models;
+using CinemaApp.Web.Areas.Identity.Services.Interfaces;
 using CinemaApp.Web.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -21,67 +22,80 @@ namespace CinemaApp.Web.Areas.Identity.Controllers
     {
         //todo: move this to a service
 
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IAccountService accountService;
 
-        public AccountController(UserManager<ApplicationUser> userManager)
+        public AccountController(IAccountService accountService)
         {
-            _userManager = userManager;
+            this.accountService = accountService;
         }
         
         [HttpGet]
         public async Task<IActionResult> Details(string? id)
         {
-            var user = await _userManager.Users
-                .Include(u => u.ApplicationUserEvents)
-                .FirstOrDefaultAsync(u => u.Id.ToString() == id);
-            
-            if (user == null && this.GetCurrectUserGuidId().ToString() != id)
+            Guid guidId = Guid.Empty;
+            bool isIdValid = this.IsGuidValid(id, ref guidId);
+            if (!isIdValid)
             {
-                return NotFound("User not found! :O");
+                return NotFound();
             }
 
-            var viewModel = new ApplicationUserDetailsViewModel
-            {
-                Id = user.Id,
-                Email = user.Email,
-                Username = user.UserName,
-                Bio = string.IsNullOrEmpty(user.Bio) ? EmptyBioMessage : user.Bio,
-                IsBanned = user.IsBanned,
-                UserEvents = user.ApplicationUserEvents.ToList().Count(),
-                Friends = user.Friends.Select(f => new ApplicationUserViewModel()
-                {
-                    Email = f.Email,
-                    UserName = f.UserName,
-                    Id = f.Id.ToString()
-                }).ToList(),
-                ProfilePicturePath = user.ProfilePicturePath
-            };
+            var infoAboutTheUser = await this.accountService.GetDetailsByIdAsync(guidId, this.GetCurrectUserGuidId());
 
-            return this.View("Details", viewModel);
+            return this.View(infoAboutTheUser);
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit()
         {
-            var user = await this._userManager.FindByIdAsync(this.GetCurrectUserGuidId().ToString());
+            Guid id = this.GetCurrectUserGuidId();
+            var viewModelForEdit = await this.accountService.GetInfoForEditProfileByIdAsync(id);
 
-            var viewModel = new ApplicationUserEditProfileViewModel
-            {
-                Id = user.Id,
-                Email = user.Email,
-                Username = user.UserName,
-                Bio = string.IsNullOrEmpty(user.Bio) ? EmptyBioMessage : user.Bio,
-                ProfilePicturePath = user.ProfilePicturePath
-            };
-
-            return this.View(viewModel);
+            return this.View(viewModelForEdit);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Edit(ApplicationUserEditProfileViewModel viewModel)
-        //{
-        //    if ()
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ApplicationUserEditProfileViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
+            var editProfile = await this.accountService.EditProfileByIdAsync(viewModel);
+
+            if (editProfile)
+            {
+                return RedirectToAction(nameof(Details), new { id = viewModel.Id });
+            }
+            else
+            {
+                return View(viewModel);
+            }
+        }
+
+        /*
+
+        user.Email = Input.Email;
+
+                await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
+                var result = await _userManager.CreateAsync(user, Input.Password);
+
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User created a new account with password.");
+
+                    var userId = await _userManager.GetUserIdAsync(user);
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return LocalRedirect(returnUrl);
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+         */
     }
 }
 

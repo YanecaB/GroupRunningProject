@@ -205,7 +205,12 @@
 
     <!-- Profile Section -->
     <div id="profile-section">
-        <img src="https://via.placeholder.com/120" alt="User Profile Picture">
+        @if (!string.IsNullOrEmpty(Model.ProfilePicturePath))
+        {
+            <div class="form-group">                
+                <img src="@Model.ProfilePicturePath" alt="Profile Picture" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;" />
+            </div>
+        }
 
         <div id="profile-info">
             <h2>@Model.Username</h2>
@@ -225,7 +230,7 @@
                 <span>@Model.Friends.Count</span>
                 <p>Friends</p>
             </div>
-        </div>        
+        </div>
 
         <!-- Edit Profile Button -->
         <form action="/Identity/Account/Edit" method="get">

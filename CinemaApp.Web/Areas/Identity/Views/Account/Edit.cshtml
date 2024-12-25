@@ -106,6 +106,14 @@
             #save-profile-btn:hover {
                 background-color: #007bb5;
             }
+
+        img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%; /* Round profile picture */
+            object-fit: cover;
+            border: 3px solid #ddd;
+        }
     </style>
 </head>
 <body>
@@ -119,39 +127,32 @@
     <div id="edit-profile-section">
         <!-- Profile Picture
 
-        <img src="Model.ProfilePictureUrl" alt="Profile Picture" id="profile-img">
-        -->
-        <!-- Profile Edit Form -->
+    <img src="Model.ProfilePictureUrl" alt="Profile Picture" id="profile-img">
+    -->
+        <!-- Profile Edit Form -->                    
         <form method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
 
-            <!-- Profile Picture Upload
-        <div class="form-group">
-        <label for="ProfilePicture">Change Profile Picture</label>
-        <input type="file" name="ProfilePicture" id="ProfilePicture" accept="image/*">
-    </div>
+            <input type="hidden" name="Id" value="@Model.Id" />
 
-        -->
-            <div>                
-                <input type="file" name="file" id="ProfilePicture" accept="image/*" required />
+            <!-- Display Existing Profile Picture -->
+            @if (!string.IsNullOrEmpty(Model.ExistingProfilePicturePath))
+            {
+                <div class="form-group">                    
+                    <img src="@Model.ExistingProfilePicturePath" alt="Profile Picture" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;" />
+                </div>
+            }
+
+            <!-- Upload New Profile Picture -->
+            <div class="form-group">
+                <label for="ProfilePicturePath">Change Profile Picture</label>
+                <input type="file" id="ProfilePicturePath" name="ProfilePicturePath" accept="image/*" />
             </div>
 
-            @*<form method="post" enctype="multipart/form-data" asp-controller="Files" asp-action="Upload">
-                <div class="form-group">
-                    <label for="file">Choose a profile picture:</label>
-                    <input type="file" name="file" id="file" accept="image/*" required />
-                </div>
-                <button type="submit" class="btn btn-primary">Upload</button>
-            </form>*@
             <!-- Username Input -->
             <div class="form-group">
                 <label for="Username">Username</label>
-                <input type="text" id="Username" name="Username" value="@Model.Username" required>
-            </div>
-
-            <!-- Email Input (disabled for editing) -->
-            <div class="form-group">
-                <label for="Email">Email</label>
-                <input type="email" id="Email" name="Email" value="@Model.Email" disabled>
+                <input type="text" id="Username" name="Username" value="@Model.Username" required />
             </div>
 
             <!-- Bio Input -->
@@ -160,10 +161,9 @@
                 <textarea id="Bio" name="Bio">@Model.Bio</textarea>
             </div>
 
-            <!-- Save Profile Button -->
+            <!-- Save Button -->
             <button type="submit" id="save-profile-btn">Save changes</button>
         </form>
-    </div>
-
+</div>
 </body>
 </html>
