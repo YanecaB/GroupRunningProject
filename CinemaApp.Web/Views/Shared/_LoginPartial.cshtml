@@ -4,12 +4,13 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
             <a asp-area="Identity" asp-controller="Account" asp-action="Details" asp-route-id="@UserManager.GetUserId(User).ToString()" type="submit" class="nav-link btn btn-link text-dark border-0">
-                Hello, @UserManager.GetUserName(User)!
+                Profile
             </a>
         </li>
         <li class="nav-item">
@@ -17,9 +18,13 @@
                 <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
             </form>
         </li>
-    }
-    else
-    {
+
+            /*
+             @UserManager.Users.FirstOrDefault(u => u.Id.ToString() == UserManager.GetUserId(User)) TODO: make a small circle with the profile img before the Profile button
+            */
+        }
+        else
+        {
         <li class="nav-item">
             <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>

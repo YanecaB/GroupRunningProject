@@ -87,6 +87,11 @@ namespace CinemaApp.Web.Areas.Identity.Services
                 user.Bio = viewModel.Bio;
             }
 
+            if (this.userManager.Users.Any(u => u.UserName == viewModel.Username))
+            {
+                return false;
+            }
+
             user.UserName = viewModel.Username;
             
             if (viewModel.ProfilePicturePath != null)

@@ -1,4 +1,10 @@
 ﻿@using CinemaApp.Web.ViewModels.User;
+@*@using Microsoft.AspNetCore.Identity
+@using CinemaApp.Data.Models 
+    TODO: USE THIS AND CHECK IF THE PATH IS EMPTY IN THE DATABASE BECAUSE THE PROBLEM IS THAT WHEN WE DON'T ADD NEW IMG THE RELOADING AFTER THE ERROR WILL BE WITH THE EMPTY PATH
+@inject UserManager<ApplicationUser> UserManager*@
+
+
 @model ApplicationUserEditProfileViewModel
 
 @{
@@ -127,9 +133,9 @@
     <div id="edit-profile-section">
         <!-- Profile Picture
 
-    <img src="Model.ProfilePictureUrl" alt="Profile Picture" id="profile-img">
-    -->
-        <!-- Profile Edit Form -->                    
+        <img src="Model.ProfilePictureUrl" alt="Profile Picture" id="profile-img">
+        -->
+        <!-- Profile Edit Form -->
         <form method="post" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
 
@@ -138,7 +144,7 @@
             <!-- Display Existing Profile Picture -->
             @if (!string.IsNullOrEmpty(Model.ExistingProfilePicturePath))
             {
-                <div class="form-group">                    
+                <div class="form-group">
                     <img src="@Model.ExistingProfilePicturePath" alt="Profile Picture" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;" />
                 </div>
             }
@@ -164,6 +170,6 @@
             <!-- Save Button -->
             <button type="submit" id="save-profile-btn">Save changes</button>
         </form>
-</div>
+    </div>
 </body>
 </html>
