@@ -11,9 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaApp.Web.Api.Controllers
 {
-    [Route("[controller]/")]
+    [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class SearchApiController : Controller
     {
         private readonly ISearchService searchService;
@@ -32,7 +31,13 @@ namespace CinemaApp.Web.Api.Controllers
             try
             {
                 var filteredUsers = await this.searchService.SearchUsersByNameAsync(username);
-                return this.Ok(filteredUsers);
+
+                if (filteredUsers.Any())
+                {
+                    return this.Ok(filteredUsers);
+                }
+
+                return NotFound();
             }
             catch
             {
