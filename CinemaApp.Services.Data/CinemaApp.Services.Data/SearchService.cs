@@ -16,8 +16,13 @@ namespace CinemaApp.Services.Data
             this.userManager = userManager;
         }
 
-        public async Task<IEnumerable<SearchUserViewModel>> SearchUsersByNameAsync(string username)
+        public async Task<IEnumerable<SearchUserViewModel>> SearchUsersByNameAsync(string? username)
         {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                return Enumerable.Empty<SearchUserViewModel>();
+            }
+
             return await userManager.Users
                 .Where(u => u.UserName.ToLower().StartsWith(username.ToLower()))
                 .Select(u => new SearchUserViewModel()

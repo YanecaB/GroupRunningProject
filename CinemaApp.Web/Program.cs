@@ -135,7 +135,7 @@ namespace CinemaApp.Web
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages(); // Add routing to Identity Razor Pages
 
-            app.ApplyMigrations();
+            app.ApplyMigrations();            
 
             app.Run();
         }
