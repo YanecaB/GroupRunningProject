@@ -31,13 +31,8 @@ namespace CinemaApp.Web.Api.Controllers
             try
             {
                 var filteredUsers = await this.searchService.SearchUsersByNameAsync(username);
-
-                if (filteredUsers.Any())
-                {
-                    return this.Ok(filteredUsers);
-                }
-
-                return NotFound();
+                
+                return this.Ok(filteredUsers);                               
             }
             catch
             {

@@ -113,7 +113,7 @@ namespace CinemaApp.Web
 
             app.UseAuthorization(); // Second -> What can I do?
 
-            app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
+            //app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
 
             if (app.Environment.IsDevelopment())
             {
@@ -135,7 +135,7 @@ namespace CinemaApp.Web
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages(); // Add routing to Identity Razor Pages
 
-            app.ApplyMigrations();            
+            app.ApplyMigrations();
 
             app.Run();
         }
