@@ -76,6 +76,7 @@ namespace CinemaApp.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ProfilePicturePath")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RunnedDistance")

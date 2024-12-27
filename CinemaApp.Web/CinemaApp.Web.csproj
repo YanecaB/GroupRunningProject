@@ -49,7 +49,6 @@
     <None Remove="Areas\Identity\Views\Account\" />
     <None Remove="Areas\Identity\Services\" />
     <None Remove="Areas\Identity\Services\Interfaces\" />
-    <None Remove="Views\Search\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Group\" />
@@ -69,7 +68,6 @@
     <Folder Include="Areas\Identity\Services\" />
     <Folder Include="Areas\Identity\Services\Interfaces\" />
     <Folder Include="wwwroot\images\profile-pictures\" />
-    <Folder Include="Views\Search\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\images\profile-pictures\" />

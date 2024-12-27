@@ -5,6 +5,7 @@
 
     using static CinemaApp.Common.EntityValidationConstants.ApplicationUser;
     using static CinemaApp.Common.EntityValidationMessages.ApplicationUser;
+    using static CinemaApp.Common.ApplicationConstants;
 
     public class ApplicationUser : IdentityUser<Guid>
     {
@@ -21,7 +22,8 @@
 
         public int RunnedDistance { get; set; } = 0;
 
-        public string? ProfilePicturePath { get; set; }
+        [Required]
+        public string ProfilePicturePath { get; set; } = DefaultProfileImgUrl;
 
         public virtual ICollection<Membership> Memberships { get; set; }
             = new HashSet<Membership>();

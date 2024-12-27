@@ -1,8 +1,8 @@
 ﻿@using CinemaApp.Web.ViewModels.User;
 @*@using Microsoft.AspNetCore.Identity
-@using CinemaApp.Data.Models 
-    TODO: USE THIS AND CHECK IF THE PATH IS EMPTY IN THE DATABASE BECAUSE THE PROBLEM IS THAT WHEN WE DON'T ADD NEW IMG THE RELOADING AFTER THE ERROR WILL BE WITH THE EMPTY PATH
-@inject UserManager<ApplicationUser> UserManager*@
+    @using CinemaApp.Data.Models
+        TODO: USE THIS AND CHECK IF THE PATH IS EMPTY IN THE DATABASE BECAUSE THE PROBLEM IS THAT WHEN WE DON'T ADD NEW IMG THE RELOADING AFTER THE ERROR WILL BE WITH THE EMPTY PATH
+    @inject UserManager<ApplicationUser> UserManager*@
 
 
 @model ApplicationUserEditProfileViewModel
@@ -159,12 +159,14 @@
             <div class="form-group">
                 <label for="Username">Username</label>
                 <input type="text" id="Username" name="Username" value="@Model.Username" required />
+                <span asp-validation-for="Username" class="text-danger"></span>
             </div>
 
             <!-- Bio Input -->
             <div class="form-group">
                 <label for="Bio">Bio</label>
                 <textarea id="Bio" name="Bio">@Model.Bio</textarea>
+                <span asp-validation-for="Bio" class="text-danger"></span>
             </div>
 
             <!-- Save Button -->
@@ -173,3 +175,11 @@
     </div>
 </body>
 </html>
+
+@*
+
+    <label asp-for="Title"></label>
+    <input asp-for="Title" />
+    
+
+*@

@@ -65,3 +65,20 @@ window.addEventListener('click', function (event) {
         searchModal.style.display = 'none';
     }
 });
+
+
+function openSearchModal(username) {
+    fetch(`https://localhost:7018/SearchApi/SearchUsers?username=${encodeURIComponent(query)}`, {
+        method: 'GET',
+        credentials: 'include'
+    })
+        .then(response => response.json())
+        .then(movies => {
+            renderMoviesInModal(movies);
+            $('#manageTicketsModal').modal('show');
+        })
+        .catch(error => {
+            console.error("Error loading movies:", error);
+            alert("An error occurred while loading movies.");
+        });
+}

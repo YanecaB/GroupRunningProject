@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaApp.Data.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    [Migration("20241224083923_AddedRequirementsForTheBio")]
-    partial class AddedRequirementsForTheBio
+    [Migration("20241227093335_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,6 +79,7 @@ namespace CinemaApp.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ProfilePicturePath")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RunnedDistance")

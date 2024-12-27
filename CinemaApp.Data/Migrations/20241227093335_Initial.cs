@@ -30,8 +30,11 @@ namespace CinemaApp.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Bio = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     IsBanned = table.Column<bool>(type: "bit", nullable: false),
                     RunnedDistance = table.Column<int>(type: "int", nullable: false),
+                    ProfilePicturePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -50,6 +53,11 @@ namespace CinemaApp.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -321,6 +329,11 @@ namespace CinemaApp.Data.Migrations
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_ApplicationUserId",
+                table: "AspNetUsers",
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",

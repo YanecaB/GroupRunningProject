@@ -4,6 +4,7 @@ using CinemaApp.Web.Areas.Identity.Services.Interfaces;
 using CinemaApp.Web.ViewModels.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using static CinemaApp.Common.ApplicationConstants;
 
 using static CinemaApp.Common.EntityValidationConstants.ApplicationUser;
 
@@ -87,7 +88,7 @@ namespace CinemaApp.Web.Areas.Identity.Services
                 user.Bio = viewModel.Bio;
             }
 
-            if (this.userManager.Users.Any(u => u.UserName == viewModel.Username))
+            if (this.userManager.Users.Any(u => u.UserName == viewModel.Username) && user.UserName != viewModel.Username)
             {
                 return false;
             }
@@ -108,7 +109,7 @@ namespace CinemaApp.Web.Areas.Identity.Services
                 var fileName = Guid.NewGuid().ToString() + fileExtension;
                 var filePath = Path.Combine(uploadsFolder, fileName);
 
-                if (!string.IsNullOrEmpty(user.ProfilePicturePath))
+                if (!string.IsNullOrEmpty(user.ProfilePicturePath) && user.ProfilePicturePath != DefaultProfileImgUrl)
                 {
                     var oldFilePath = Path.Combine(hostEnvironment.WebRootPath, user.ProfilePicturePath.TrimStart('/'));
                     if (File.Exists(oldFilePath))
