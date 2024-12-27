@@ -140,14 +140,12 @@
             @Html.AntiForgeryToken()
 
             <input type="hidden" name="Id" value="@Model.Id" />
+            <input type="hidden" name="ExistingProfilePicturePath" value="@Model.ExistingProfilePicturePath" />
 
             <!-- Display Existing Profile Picture -->
-            @if (!string.IsNullOrEmpty(Model.ExistingProfilePicturePath))
-            {
-                <div class="form-group">
-                    <img src="@Model.ExistingProfilePicturePath" alt="Profile Picture" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;" />
-                </div>
-            }
+            <div class="form-group">
+                <img src="@Model.ExistingProfilePicturePath" alt="Profile Picture" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;" />
+            </div>
 
             <!-- Upload New Profile Picture -->
             <div class="form-group">

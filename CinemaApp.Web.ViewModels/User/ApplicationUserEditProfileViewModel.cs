@@ -14,15 +14,17 @@ namespace CinemaApp.Web.ViewModels.User
         [MaxLength(UsernameMaxLength)]
         public string Username { get; set; } = null!;
 
+        [Required]
         [MinLength(BioMinLength)]
         [MaxLength(BioMaxLength)]
-        public string? Bio { get; set; }
+        public string Bio { get; set; } = null!;
 
         public string? Email { get; set; }
 
         public IFormFile? ProfilePicturePath { get; set; }
 
-        public string? ExistingProfilePicturePath { get; set; }
+        [Required]
+        public string ExistingProfilePicturePath { get; set; } = null!;
     }
 }
 
