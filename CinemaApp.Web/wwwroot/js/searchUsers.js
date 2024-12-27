@@ -37,11 +37,17 @@
 
                     if (data.length > 0) {
                         data.forEach(user => {
+                            const link = document.createElement('a'); // Create a link element
+                            link.href = `/User/UserProfile/${user.username}`; // Set the link URL
+                            link.className = 'search-result-link';
+                            link.style.textDecoration = 'none'; // Remove underline for better appearance
+                            link.style.color = 'inherit';
+
                             const resultItem = document.createElement('div');
                             resultItem.className = 'search-result-item';
 
                             const profilePic = document.createElement('img');
-                            profilePic.src = user.profilePicturePath || '/default-avatar.jpg';
+                            profilePic.src = user.profilePicturePath;
                             profilePic.alt = 'Profile Picture';
                             profilePic.style.width = '30px';
                             profilePic.style.height = '30px';
@@ -51,12 +57,16 @@
                             profilePic.style.marginRight = '3%';
                             
                             const usernameElement = document.createElement('strong');
-                            usernameElement.textContent = user.username;                           
+                            usernameElement.textContent = user.username;
                             
                             resultItem.appendChild(profilePic);
                             resultItem.appendChild(usernameElement);                            
-
+                            
                             resultsContainer.appendChild(resultItem);
+
+                            link.appendChild(resultItem);
+
+                            resultsContainer.appendChild(link);
                         });
                     } else {
                         resultsContainer.innerHTML = '<p>No users found.</p>';

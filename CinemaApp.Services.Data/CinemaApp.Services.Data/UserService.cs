@@ -6,25 +6,21 @@ using CinemaApp.Services.Data.Interfaces;
 using CinemaApp.Web.ViewModels.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using CinemaApp.Web.ViewModels.Group;
+using CinemaApp.Common;
 
 namespace CinemaApp.Services.Data
 {
 	public class UserService : BaseService, IUserService
 	{
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IRepository<Membership, Guid> membershipRepository;
-        private readonly IRepository<Event, Guid> eventRepository;
-        private readonly IRepository<ApplicationUserEvent, object> userEventRepository;
+        private readonly IRepository<Group, Guid> groupRepository;        
 
         public UserService(UserManager<ApplicationUser> userManager,
-            IRepository<Membership, Guid> membershipRepository,
-            IRepository<Event, Guid> eventRepository,
-            IRepository<ApplicationUserEvent, object> userEventRepository)           
+            IRepository<Group, Guid> groupRepository)
         {
             this.userManager = userManager;
-            this.membershipRepository = membershipRepository;
-            this.eventRepository = eventRepository;
-            this.userEventRepository = userEventRepository;
+            this.groupRepository = groupRepository;
         }
        
         public async Task<IEnumerable<UserManagementViewModel>> GetAllUsersAsync()
@@ -91,6 +87,32 @@ namespace CinemaApp.Services.Data
                 .FindByIdAsync(id.ToString());
 
             return user != null;
-        }        
+        }
+
+        public async Task<UserProfileDetailsViewModel> GetUserProfileDetails(string username)
+        {
+            ApplicationUser? user = await this.userManager.Users.FirstOrDefaultAsync(u => u.UserName == username);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            return new UserProfileDetailsViewModel()
+            {
+                Username = user.UserName,
+                Bio = user.Bio,
+                IsBanned = user.IsBanned,
+                ProfilePicturePath = user.ProfilePicturePath,
+                AdminGroups = await groupRepository.GetAllAttached().Where(g => g.IsDeleted == false && g.ApplicationUser.UserName == username).Select(g => new GroupIndexViewModel()
+                {
+                    Id = g.Id.ToString(),
+                    Description = g.Description,
+                    Location = g.Location,
+                    Name = g.Name,
+                    CreatedDate = g.CreatedDate.ToString(EntityValidationConstants.Group.ReleaseDateFormat)
+                }).ToListAsync()
+            };
+        }
     }
 }

@@ -12,6 +12,8 @@ namespace CinemaApp.Services.Data.Interfaces
         Task<bool> UnBanUserByIdAsync(Guid userId);
 
         Task<bool> UserExistsByIdAsync(Guid id);
+
+		Task<UserProfileDetailsViewModel> GetUserProfileDetails(string username);
     }
 }
 

@@ -1,0 +1,287 @@
+﻿@using CinemaApp.Web.ViewModels.User;
+@model UserProfileDetailsViewModel
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <!-- Use modern fonts like Helvetica or system font stack -->
+    <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fafafa; /* Instagram-like background */
+            color: #333;
+        }
+
+        /* Header Styling */
+        #page-header {
+            background-color: #fff;
+            color: #333;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+            #page-header h1 {
+                font-size: 2.2em;
+                font-weight: 700;
+                margin: 0;
+            }
+
+        /* Profile Section Styling */
+        #profile-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 40px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+            #profile-section img {
+                width: 120px;
+                height: 120px;
+                border-radius: 50%; /* Round profile picture */
+                object-fit: cover;
+                border: 3px solid #ddd;
+            }
+
+        #profile-info {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+            #profile-info h2 {
+                font-size: 1.8em;
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
+
+            #profile-info p {
+                color: #888;
+                font-size: 1.1em;
+                margin-bottom: 10px;
+            }
+
+        .bio {
+            font-size: 1.1em;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        /* Stats Section */
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+            .profile-stats div {
+                text-align: center;
+            }
+
+                .profile-stats div span {
+                    font-size: 1.3em;
+                    font-weight: 700;
+                    display: block;
+                }
+
+        /* Buttons */
+        #edit-profile-btn {
+            background-color: #0095f6; /* Instagram Blue */
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            #edit-profile-btn:hover {
+                background-color: #007bb5;
+            }
+
+        /* Info Section (Events, Friends, etc.) */
+        .info-section {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+            .info-section h3 {
+                font-size: 1.5em;
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 15px;
+            }
+
+            .info-section ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
+
+                .info-section ul li {
+                    padding: 12px;
+                    background-color: #f2f2f2;
+                    margin-bottom: 10px;
+                    border-radius: 5px;
+                }
+
+        /* Navigation Bar */
+        #nav-bar {
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #fff;
+            color: #333;
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+            #nav-bar ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            #nav-bar li {
+                display: inline;
+                margin: 0 20px;
+            }
+
+            #nav-bar a {
+                color: #333;
+                text-decoration: none;
+                font-size: 1.1em;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+                #nav-bar a:hover {
+                    text-decoration: underline;
+                }
+
+        /* Footer Styling */
+        #footer {
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #fff;
+            color: #333;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 5px 10px;
+            font-size: 0.9rem;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .btn-info {
+            background-color: #3498db;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="page-header">
+        <h1>User Profile</h1>
+    </header>
+
+    <!-- Profile Section -->
+    <div id="profile-section">
+        @if (!string.IsNullOrEmpty(Model.ProfilePicturePath))
+        {
+            <div class="form-group">
+                <img src="@Model.ProfilePicturePath" alt="Profile Picture" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;" />
+            </div>
+        }
+
+        <div id="profile-info">
+            <h2>@Model.Username</h2>            
+            <div class="bio">
+                <strong>Bio: </strong> @Model.Bio
+            </div>
+        </div>
+
+        <!-- Profile Stats Section -->
+        @*<div class="profile-stats">
+            <div>
+                <span>@Model.UserEvents</span>
+                <p>Events</p>
+            </div>
+            <div>
+                <span>@Model.Friends.Count</span>
+                <p>Friends</p>
+            </div>
+        </div>*@
+
+        <!-- Edit Profile Button -->
+        <form action="" method="get">
+            <button type="submit" id="edit-profile-btn">Became Friends</button>
+        </form>
+    </div>
+
+    <!-- Friends Section -->
+    <div class="info-section">
+        <h3>Created Groups</h3>
+        @if (Model.AdminGroups.Any())
+        {
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Location</th>
+                    <th>Created Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var group in Model.AdminGroups)
+                {
+                    <tr>
+                        <td>@group.Name</td>
+                        <td>@group.Description</td>
+                        <td>@group.Location</td>
+                        <td>@group.CreatedDate</td>
+                        <td>
+                            <a href="@Url.Action("Details", "Group", new { id = group.Id })" class="btn btn-info">Details</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        }
+        else
+        {
+            <p>No friends yet.</p>
+        }
+    </div>
+</body>
+</html>
