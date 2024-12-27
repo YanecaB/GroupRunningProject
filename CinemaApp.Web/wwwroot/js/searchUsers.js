@@ -5,29 +5,25 @@
     const searchContent = document.getElementById('searchContent');
     const searchInput = document.getElementById('searchInput');
 
-    // Open the search modal
     searchButton.addEventListener('click', function (event) {
         event.preventDefault();
-        searchModal.style.display = 'block';  // Show the modal
+        searchModal.style.display = 'block'; 
     });
 
-    // Close the search modal
     closeSearch.addEventListener('click', function () {
-       searchModal.style.display = 'none';  // Hide the modal
+        searchModal.style.display = 'none'; 
     });
 
-    // Close modal when clicking outside
     window.addEventListener('click', function (event) {
         if (event.target === searchModal) {
             searchModal.style.display = 'none';
         }
     });
 
-    // Handle search input event
     searchInput.addEventListener('input', function () {
         const query = searchInput.value;
 
-        if (query.length > 0) {  // Start searching after 3 characters
+        if (query.length > 0) {
             fetch(`https://localhost:7018/api/SearchApi/SearchUsers?username=${encodeURIComponent(query)}`)
                 .then(response => {
                     if (!response.ok) {
@@ -37,17 +33,29 @@
                 })
                 .then(data => {
                     const resultsContainer = document.getElementById('searchResults');
-                    resultsContainer.innerHTML = '';  // Clear previous results
+                    resultsContainer.innerHTML = ''; 
 
                     if (data.length > 0) {
                         data.forEach(user => {
                             const resultItem = document.createElement('div');
                             resultItem.className = 'search-result-item';
-                            resultItem.innerHTML = `
-                                <strong>${user.username}</strong>
-                                <img src="${user.profilePicturePath}" 
-                                     alt="Profile Picture" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 0.5px solid #ddd; margin-left:3%;" />
-                            `;
+
+                            const profilePic = document.createElement('img');
+                            profilePic.src = user.profilePicturePath || '/default-avatar.jpg';
+                            profilePic.alt = 'Profile Picture';
+                            profilePic.style.width = '30px';
+                            profilePic.style.height = '30px';
+                            profilePic.style.borderRadius = '50%';
+                            profilePic.style.objectFit = 'cover';
+                            profilePic.style.border = '0.5px solid #ddd';
+                            profilePic.style.marginRight = '3%';
+                            
+                            const usernameElement = document.createElement('strong');
+                            usernameElement.textContent = user.username;                           
+                            
+                            resultItem.appendChild(profilePic);
+                            resultItem.appendChild(usernameElement);                            
+
                             resultsContainer.appendChild(resultItem);
                         });
                     } else {
