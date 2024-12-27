@@ -45,8 +45,8 @@
                             resultItem.className = 'search-result-item';
                             resultItem.innerHTML = `
                                 <strong>${user.username}</strong>
-                                <img src="${user.profilePicturePath || '/default-avatar.jpg'}" 
-                                     alt="Profile Picture" width="40" height="40" style="margin-left: 10px;" />
+                                <img src="${user.profilePicturePath}" 
+                                     alt="Profile Picture" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 0.5px solid #ddd; margin-left:3%;" />
                             `;
                             resultsContainer.appendChild(resultItem);
                         });

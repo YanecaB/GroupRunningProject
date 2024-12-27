@@ -113,7 +113,7 @@ namespace CinemaApp.Web
 
             app.UseAuthorization(); // Second -> What can I do?
 
-            //app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
+            app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
 
             if (app.Environment.IsDevelopment())
             {
