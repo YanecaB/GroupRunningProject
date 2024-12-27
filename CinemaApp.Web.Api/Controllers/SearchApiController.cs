@@ -22,7 +22,8 @@ namespace CinemaApp.Web.Api.Controllers
             this.searchService = searchService;
         }
 
-        [HttpGet("[action]/{username?}")]
+        //[HttpGet("[action]/{username?}")]
+        [HttpGet("SearchUsers")]
         [ProducesResponseType(typeof(SearchUserViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]        

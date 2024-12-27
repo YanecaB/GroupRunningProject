@@ -1,84 +1,62 @@
-﻿// Get references to modal elements
-const searchButton = document.getElementById('searchButton');
-const searchModal = document.getElementById('searchModal');
-const closeSearch = document.getElementById('closeSearch');
-const searchContent = document.getElementById('searchContent');
+﻿document.addEventListener('DOMContentLoaded', function () {
+    const searchButton = document.getElementById('searchButton');
+    const searchModal = document.getElementById('searchModal');
+    const closeSearch = document.getElementById('closeSearch');
+    const searchContent = document.getElementById('searchContent');
+    const searchInput = document.getElementById('searchInput');
 
-// Prevent navigation for the Search button
-document.getElementById('searchButton').addEventListener('click', function (event) {
-    event.preventDefault(); // Prevent default link behavior
-    document.getElementById('searchModal').style.display = 'block';
-});
+    // Open the search modal
+    searchButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        searchModal.style.display = 'block';  // Show the modal
+    });
 
+    // Close the search modal
+    closeSearch.addEventListener('click', function () {
+       searchModal.style.display = 'none';  // Hide the modal
+    });
 
-// Open the search modal
-searchButton.addEventListener('click', function () {
-    // Show the modal
-    searchModal.style.display = 'block';
+    // Close modal when clicking outside
+    window.addEventListener('click', function (event) {
+        if (event.target === searchModal) {
+            searchModal.style.display = 'none';
+        }
+    });
 
-    // Dynamically load the partial view content into the modal
-    fetch('/Shared/_SearchPartial') // Replace with your controller/action if different
-        .then(response => response.text())
-        .then(html => {
-            searchContent.innerHTML = html;
+    // Handle search input event
+    searchInput.addEventListener('input', function () {
+        const query = searchInput.value;
 
-            // Add event listener to the search input after loading the content
-            const searchInput = document.getElementById('searchInput');
-            searchInput.addEventListener('input', function () {
-                const query = searchInput.value;
+        if (query.length > 0) {  // Start searching after 3 characters
+            fetch(`https://localhost:7018/api/SearchApi/SearchUsers?username=${encodeURIComponent(query)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to load search results.");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const resultsContainer = document.getElementById('searchResults');
+                    resultsContainer.innerHTML = '';  // Clear previous results
 
-                if (query.length > 2) { // Start searching after 3 characters
-                    fetch(`https://localhost:7018/SearchApi/SearchUsers?username=${encodeURIComponent(query)}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            const resultsContainer = document.getElementById('searchResults');
-                            resultsContainer.innerHTML = ''; // Clear previous results
-
-                            if (data.length > 0) {
-                                data.forEach(user => {
-                                    const resultItem = document.createElement('div');
-                                    resultItem.className = 'search-result-item';
-                                    resultItem.innerHTML = `
-                                        <strong>${user.username}</strong>
-                                        <img src="${user.profilePicturePath || '/default-avatar.jpg'}" 
-                                             alt="Profile Picture" width="40" height="40" style="margin-left: 10px;" />
-                                    `;
-                                    resultsContainer.appendChild(resultItem);
-                                });
-                            } else {
-                                resultsContainer.innerHTML = '<p>No users found.</p>';
-                            }
+                    if (data.length > 0) {
+                        data.forEach(user => {
+                            const resultItem = document.createElement('div');
+                            resultItem.className = 'search-result-item';
+                            resultItem.innerHTML = `
+                                <strong>${user.username}</strong>
+                                <img src="${user.profilePicturePath || '/default-avatar.jpg'}" 
+                                     alt="Profile Picture" width="40" height="40" style="margin-left: 10px;" />
+                            `;
+                            resultsContainer.appendChild(resultItem);
                         });
-                }
-            });
-        });
+                    } else {
+                        resultsContainer.innerHTML = '<p>No users found.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error("Error loading search results:", error);
+                });
+        }
+    });
 });
-
-// Close the modal
-closeSearch.addEventListener('click', function () {
-    searchModal.style.display = 'none';
-});
-
-// Close the modal when clicking outside the modal content
-window.addEventListener('click', function (event) {
-    if (event.target === searchModal) {
-        searchModal.style.display = 'none';
-    }
-});
-
-
-function openSearchModal(username) {
-    fetch(`https://localhost:7018/SearchApi/SearchUsers?username=${encodeURIComponent(query)}`, {
-        method: 'GET',
-        credentials: 'include'
-    })
-        .then(response => response.json())
-        .then(movies => {
-            renderMoviesInModal(movies);
-            $('#manageTicketsModal').modal('show');
-        })
-        .catch(error => {
-            console.error("Error loading movies:", error);
-            alert("An error occurred while loading movies.");
-        });
-}
