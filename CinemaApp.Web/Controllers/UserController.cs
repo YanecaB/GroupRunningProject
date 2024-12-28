@@ -17,7 +17,7 @@ namespace CinemaApp.Web.Controllers
         {
             this.userService = userService;
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> UserProfile(string username)
         {

@@ -37,10 +37,10 @@
 
                     if (data.length > 0) {
                         data.forEach(user => {
-                            const link = document.createElement('a'); // Create a link element
-                            link.href = `/User/UserProfile/${user.username}`; // Set the link URL
+                            const link = document.createElement('a');
+                            link.href = `/User/UserProfile?username=${encodeURIComponent(user.username)}`;
                             link.className = 'search-result-link';
-                            link.style.textDecoration = 'none'; // Remove underline for better appearance
+                            link.style.textDecoration = 'none';
                             link.style.color = 'inherit';
 
                             const resultItem = document.createElement('div');
@@ -60,9 +60,7 @@
                             usernameElement.textContent = user.username;
                             
                             resultItem.appendChild(profilePic);
-                            resultItem.appendChild(usernameElement);                            
-                            
-                            resultsContainer.appendChild(resultItem);
+                            resultItem.appendChild(usernameElement);                                                                                    
 
                             link.appendChild(resultItem);
 
