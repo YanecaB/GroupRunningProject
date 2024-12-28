@@ -36,6 +36,8 @@
 
         public virtual DbSet<Notification> Notifications { get; set; } = null!;
 
+        public DbSet<FriendRequest> FriendRequests { get; set; } = null!;
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -85,6 +87,23 @@
                 .HasOne(ue => ue.Event)
                 .WithMany(e => e.UsersEvents)
                 .HasForeignKey(ue => ue.EventId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<FriendRequest>().HasKey(fr => fr.Id);
+
+            modelBuilder.Entity<FriendRequest>()
+                .HasIndex(fr => new { fr.ReceiverId, fr.SenderId }).IsUnique();
+
+            modelBuilder.Entity<FriendRequest>()
+               .HasOne(fr => fr.Sender)
+               .WithMany(f => f.SendFriendRequests)
+               .HasForeignKey(ue => ue.SenderId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<FriendRequest>()
+                .HasOne(fr => fr.Receiver)
+                .WithMany(r => r.ReceiveFriendRequests)
+                .HasForeignKey(fr => fr.ReceiverId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

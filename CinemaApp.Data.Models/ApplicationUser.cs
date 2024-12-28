@@ -36,5 +36,11 @@
 
         public virtual ICollection<ApplicationUser> Friends { get; set; }
             = new HashSet<ApplicationUser>();
+
+        public virtual ICollection<FriendRequest> SendFriendRequests { get; set; }
+            = new HashSet<FriendRequest>();
+
+        public virtual ICollection<FriendRequest> ReceiveFriendRequests { get; set; }
+            = new HashSet<FriendRequest>();
     }
 }

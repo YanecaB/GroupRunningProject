@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CinemaApp.Services.Data.Interfaces;
+using CinemaApp.Web.Controllers;
 using CinemaApp.Web.ViewModels.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ namespace CinemaApp.Web.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SearchApiController : Controller
+    public class SearchApiController : BaseController
     {
         private readonly ISearchService searchService;
 
@@ -38,6 +39,24 @@ namespace CinemaApp.Web.Api.Controllers
             catch
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpPost("SendFriendRequest")]
+        [ProducesResponseType(typeof(SearchUserViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> SendFriendRequest(string? username)
+        {            
+            bool isSent = await this.searchService.SendFriendRequestAsync(username, GetCurrectUserGuidId());
+
+            if (isSent)
+            {
+                return this.Ok();
+            }
+            else
+            {
+                return this.StatusCode(StatusCodes.Status404NotFound);
             }
         }
     }

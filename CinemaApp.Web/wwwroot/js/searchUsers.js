@@ -7,11 +7,11 @@
 
     searchButton.addEventListener('click', function (event) {
         event.preventDefault();
-        searchModal.style.display = 'block'; 
+        searchModal.style.display = 'block';
     });
 
     closeSearch.addEventListener('click', function () {
-        searchModal.style.display = 'none'; 
+        searchModal.style.display = 'none';
     });
 
     window.addEventListener('click', function (event) {
@@ -33,7 +33,7 @@
                 })
                 .then(data => {
                     const resultsContainer = document.getElementById('searchResults');
-                    resultsContainer.innerHTML = ''; 
+                    resultsContainer.innerHTML = '';
 
                     if (data.length > 0) {
                         data.forEach(user => {
@@ -55,12 +55,12 @@
                             profilePic.style.objectFit = 'cover';
                             profilePic.style.border = '0.5px solid #ddd';
                             profilePic.style.marginRight = '3%';
-                            
+
                             const usernameElement = document.createElement('strong');
                             usernameElement.textContent = user.username;
-                            
+
                             resultItem.appendChild(profilePic);
-                            resultItem.appendChild(usernameElement);                                                                                    
+                            resultItem.appendChild(usernameElement);
 
                             link.appendChild(resultItem);
 
