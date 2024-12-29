@@ -13,6 +13,7 @@ namespace CinemaApp.Web
     using Microsoft.AspNetCore.Mvc;
     using CinemaApp.Web.Areas.Identity.Services.Interfaces;
     using Microsoft.AspNetCore.Http.Features;
+    using CinemaApp.Web.Controllers;
 
     public class Program
     {
@@ -64,6 +65,11 @@ namespace CinemaApp.Web
             {
                 cfg.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
+
+            builder.Services.AddControllers()
+                .AddApplicationPart(typeof(FriendRequestApiController).Assembly);
+
+
             builder.Services.AddRazorPages();
 
             // Register the background task as a hosted service
@@ -77,10 +83,21 @@ namespace CinemaApp.Web
                 options.MultipartBodyLengthLimit = 10485760; // 10MB
             });
 
+            builder.Services.AddSwaggerGen();
             //// Register the notification service
             //builder.Services.AddScoped<INotificationService, NotificationService>();
             WebApplication app = builder.Build();
-           
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Web API v1");
+                });
+            }
+            
+
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -93,6 +110,27 @@ namespace CinemaApp.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            //builder.Services.AddCors(cfg =>
+            //{
+            //    cfg.AddPolicy("AllowAll", policyBld =>
+            //    {
+            //        policyBld.AllowAnyHeader()
+            //                  .AllowAnyMethod()
+            //                  .AllowAnyOrigin();
+            //    });
+            //});
+
+            app.UseCors("AllowMyServer");//app.UseCors("AllowAll");
+
+            //if (!string.IsNullOrWhiteSpace(webAppOrigin))
+            //{
+            //    app.UseCors("AllowMyServer");
+            //}
+            //else
+            //{
+            //    app.UseCors("AllowAll");
+            //}
 
             // Authorization can work only if we know who uses the application -> We need Authentication
             app.UseAuthentication(); // First -> Who am I?
@@ -123,6 +161,8 @@ namespace CinemaApp.Web
                 app.SeedMemberships(membershipsJsonPath);
                 app.SeedEvents(eventsJsonPath);
             }
+
+            app.MapControllers();
 
             app.MapControllerRoute(
                name: "Areas",

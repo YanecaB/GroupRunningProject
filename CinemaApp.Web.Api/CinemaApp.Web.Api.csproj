@@ -30,8 +30,5 @@
     <ProjectReference Include="..\CinemaApp.Services.Data\CinemaApp.Services.Data\CinemaApp.Services.Data.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\CinemaApp.Web\CinemaApp.Web.csproj">
-      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
-    </ProjectReference>
   </ItemGroup>
 </Project>

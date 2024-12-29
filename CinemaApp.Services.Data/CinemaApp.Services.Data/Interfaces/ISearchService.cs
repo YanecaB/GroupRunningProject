@@ -5,9 +5,7 @@ namespace CinemaApp.Services.Data.Interfaces
 {
 	public interface ISearchService
 	{
-		Task<IEnumerable<SearchUserViewModel>> SearchUsersByNameAsync(string? username);
-
-		Task<bool> SendFriendRequestAsync(string? username, Guid senderId);
+		Task<IEnumerable<SearchUserViewModel>> SearchUsersByNameAsync(string? username);		
 	}
 }
 

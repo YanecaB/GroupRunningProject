@@ -35,31 +35,7 @@ namespace CinemaApp.Services.Data
                     ProfilePicturePath = u.ProfilePicturePath
                 })
                 .ToArrayAsync();
-        }
-
-        public async Task<bool> SendFriendRequestAsync(string? username, Guid senderId)
-        {
-            if (string.IsNullOrEmpty(username))
-            {
-                return false;
-            }
-
-            var receiver = await this.userManager.Users.FirstOrDefaultAsync(u => u.UserName.ToLower() == username.ToLower());
-
-            if (receiver == null || receiver.IsBanned)
-            {
-                return false;
-            }
-
-            await this.friendRequestRepository.AddAsync(new FriendRequest()
-            {
-                Id = Guid.NewGuid(),
-                Receiver = receiver,
-                SenderId = senderId
-            });
-
-            return true;
-        }
+        }        
     }
 }
 

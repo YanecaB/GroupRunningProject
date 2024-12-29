@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using CinemaApp.Services.Data.Interfaces;
-using CinemaApp.Web.Controllers;
+using CinemaApp.Web.ViewModels.FriendRequest;
 using CinemaApp.Web.ViewModels.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ namespace CinemaApp.Web.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SearchApiController : BaseController
+    public class SearchApiController : Controller
     {
         private readonly ISearchService searchService;
 
@@ -22,8 +23,7 @@ namespace CinemaApp.Web.Api.Controllers
         {
             this.searchService = searchService;
         }
-
-        //[HttpGet("[action]/{username?}")]
+        
         [HttpGet("SearchUsers")]
         [ProducesResponseType(typeof(SearchUserViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -40,28 +40,7 @@ namespace CinemaApp.Web.Api.Controllers
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError);
             }
-        }
-
-        [HttpPost("SendFriendRequest")]
-        [ProducesResponseType(typeof(SearchUserViewModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //[Authorize]
-        public async Task<IActionResult> SendFriendRequest([FromQuery] string? username)
-        {
-            Guid currentUserId = GetCurrectUserGuidId();
-
-            bool isSent = await this.searchService.SendFriendRequestAsync(username, currentUserId);
-
-            if (isSent)
-            {
-                return this.Ok();
-            }
-            else
-            {
-                return this.StatusCode(StatusCodes.Status404NotFound);
-            }
-        }
+        }        
     }
 }
 
