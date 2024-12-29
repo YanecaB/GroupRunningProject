@@ -5,15 +5,9 @@
         becomeFriendsButton.addEventListener('click', function () {
             const query = becomeFriendsButton.getAttribute('data-username');
 
-            fetch('https://localhost:7015/api/FriendRequestApi/SendFriendRequest', {
-                method: 'POST',  // Change to POST for sending data in the body
-                credentials: 'include',  // Ensure cookies are sent if authentication is required
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'  // Set Content-Type for form data
-                },
-                body: new URLSearchParams({
-                    'username': query  // Send the 'username' as form data
-                })
+            fetch(`https://localhost:7015/api/FriendRequestApi/SendFriendRequest?username=${encodeURIComponent(query)}`, {
+                method: 'Get',
+                credentials: 'include'
             })
                 .then(response => {
                     if (!response.ok) {

@@ -24,14 +24,14 @@ namespace CinemaApp.Web.Controllers
             this.friendRequestService = friendRequestService;
         }
 
-        [HttpPost("SendFriendRequest")]
+        [HttpGet("SendFriendRequest")]
         [ProducesResponseType(typeof(SearchUserViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         //[Authorize]
-        public async Task<IActionResult> SendFriendRequest([FromForm] string? username)
+        public async Task<IActionResult> SendFriendRequest([FromQuery] string? username) // make view model where will be the username and make the action post and use [FromBody]
         {
             if (string.IsNullOrEmpty(username))
             {
