@@ -55,7 +55,7 @@ namespace CinemaApp.Services.Data
             {
                 Id = Guid.NewGuid(),
                 Receiver = receiver,
-                SenderId = senderId                
+                SenderId = senderId
             });
 
             return true;

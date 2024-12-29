@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CinemaApp.Services.Data;
 using CinemaApp.Services.Data.Interfaces;
 using CinemaApp.Web.ViewModels.RankList;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using static CinemaApp.Common.EntityValidationConstants.RankList;
@@ -12,6 +13,7 @@ using static CinemaApp.Common.EntityValidationConstants.RankList;
 
 namespace CinemaApp.Web.Controllers
 {
+    [Authorize]
     public class RankListController : BaseController
     {
         private readonly IRankListService rankListService;

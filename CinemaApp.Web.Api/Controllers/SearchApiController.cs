@@ -46,9 +46,12 @@ namespace CinemaApp.Web.Api.Controllers
         [ProducesResponseType(typeof(SearchUserViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> SendFriendRequest(string? username)
-        {            
-            bool isSent = await this.searchService.SendFriendRequestAsync(username, GetCurrectUserGuidId());
+        //[Authorize]
+        public async Task<IActionResult> SendFriendRequest([FromQuery] string? username)
+        {
+            Guid currentUserId = GetCurrectUserGuidId();
+
+            bool isSent = await this.searchService.SendFriendRequestAsync(username, currentUserId);
 
             if (isSent)
             {

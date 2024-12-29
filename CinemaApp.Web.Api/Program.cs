@@ -6,21 +6,30 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using CinemaApp.Web.Infrastructure.Extensions;
+    using Microsoft.IdentityModel.Tokens;
+    using System.Text;
+    using Microsoft.OpenApi.Models;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
 
     public class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
             string connectionString = builder.Configuration.GetConnectionString("Server=localhost;Database=GroupRunning;User ID=sa;Password=awesome1&;Pooling=false;Encrypt=False;")!;
             string? webAppOrigin = builder.Configuration.GetValue<string>("Client Origins:WebApp");
+            string jwtSecretKey = builder.Configuration.GetValue<string>("JWT:SecretKey")!;
+            string jwtIssuer = builder.Configuration.GetValue<string>("JWT:Issuer")!;
+            string jwtAudience = builder.Configuration.GetValue<string>("JWT:Audience")!;
 
-            builder.Services
-                           .AddDbContext<CinemaDbContext>(options =>
-                           {
-                               options.UseSqlServer(connectionString);
-                           });
+            // Configure DbContext
+            builder.Services.AddDbContext<CinemaDbContext>(options =>
+            {
+                options.UseSqlServer(connectionString);
+            });
 
+            // Configure Identity
             builder.Services
                 .AddIdentity<ApplicationUser, IdentityRole<Guid>>(cfg =>
                 {
@@ -29,22 +38,59 @@
                 .AddEntityFrameworkStores<CinemaDbContext>()
                 .AddRoles<IdentityRole<Guid>>()
                 .AddSignInManager<SignInManager<ApplicationUser>>()
-                .AddUserManager<UserManager<ApplicationUser>>();
+                .AddUserManager<UserManager<ApplicationUser>>()
+                .AddDefaultTokenProviders();
 
-            builder.Services.ConfigureApplicationCookie(cfg =>
+            // Configure JWT Authentication
+            builder.Services.AddAuthentication(options =>
             {
-                cfg.LoginPath = "/Identity/Account/Login";
+                options.DefaultAuthenticateScheme = "JwtBearer";
+                options.DefaultChallengeScheme = "JwtBearer";
+            })
+            .AddJwtBearer("JwtBearer", options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtIssuer,
+                    ValidAudience = jwtAudience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey))
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+                        return Task.CompletedTask;
+                    },
+                    OnTokenValidated = context =>
+                    {
+                        Console.WriteLine("Token successfully validated");
+                        return Task.CompletedTask;
+                    }
+                };
             });
+
 
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IGroupService).Assembly);
-            // Add services to the container.
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            // Configure Cookies to return 401 for API endpoints
+            builder.Services.ConfigureApplicationCookie(cfg =>
+            {
+                cfg.LoginPath = "/Identity/Account/Login";
+                cfg.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return Task.CompletedTask;
+                };
+            });
 
+            // Configure CORS
             builder.Services.AddCors(cfg =>
             {
                 cfg.AddPolicy("AllowAll", policyBld =>
@@ -55,7 +101,7 @@
                         .AllowAnyOrigin();
                 });
 
-                if (!String.IsNullOrWhiteSpace(webAppOrigin))
+                if (!string.IsNullOrWhiteSpace(webAppOrigin))
                 {
                     cfg.AddPolicy("AllowMyServer", policyBld =>
                     {
@@ -68,9 +114,40 @@
                 }
             });
 
+            builder.Services.AddAuthorization(); // Add Authorization services
+
+            builder.Services.AddControllers();
+
+            // Configure Swagger for JWT Authentication
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please insert JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
+            });
+
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // Configure the HTTP request pipeline
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -79,17 +156,21 @@
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
-
-            if (!String.IsNullOrWhiteSpace(webAppOrigin))
+            if (!string.IsNullOrWhiteSpace(webAppOrigin))
             {
                 app.UseCors("AllowMyServer");
             }
+            else
+            {
+                app.UseCors("AllowAll");
+            }
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllers();
 
             app.Run();
-
         }
 
         private static void ConfigureIdentity(WebApplicationBuilder builder, IdentityOptions cfg)
@@ -117,5 +198,5 @@
             cfg.User.RequireUniqueEmail =
                 builder.Configuration.GetValue<bool>("Identity:User:RequireUniqueEmail");
         }
-    }    
+    }
 }

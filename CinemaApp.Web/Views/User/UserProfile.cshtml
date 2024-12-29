@@ -11,7 +11,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Details</title>
-    <!-- Use modern fonts like Helvetica or system font stack -->
     <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* Global Styles */
@@ -210,12 +209,10 @@
 </head>
 <body>
 
-    <!-- Header -->
     <header id="page-header">
         <h1>User Profile</h1>
     </header>
 
-    <!-- Profile Section -->
     <div id="profile-section">
         @if (!string.IsNullOrEmpty(Model.ProfilePicturePath))
         {
@@ -225,31 +222,15 @@
         }
 
         <div id="profile-info">
-            <h2>@Model.Username</h2>            
+            <h2>@Model.Username</h2>
             <div class="bio">
                 <strong>Bio: </strong> @Model.Bio
             </div>
         </div>
-
-        <!-- Profile Stats Section -->
-        @*<div class="profile-stats">
-            <div>
-                <span>@Model.UserEvents</span>
-                <p>Events</p>
-            </div>
-            <div>
-                <span>@Model.Friends.Count</span>
-                <p>Friends</p>
-            </div>
-        </div>*@
-
-        <!-- Edit Profile Button -->
-        <form action="" method="get">
-            <button type="submit" id="edit-profile-btn">Become Friends</button>
-        </form>
+        
+        <button type="button" data-username="@Model.Username" id ="becomeFriend" class="btn btn-info">Become Friends</button>
     </div>
 
-    <!-- Friends Section -->
     <div class="info-section">
         <h3>Created Groups</h3>
         @if (Model.AdminGroups.Any())
@@ -284,8 +265,10 @@
         }
         else
         {
-        <p>No friends yet.</p>
+            <p>No friends yet.</p>
         }
     </div>
+
+    <script src="~/js/friendRequest.js" asp-append-version="true"></script>
 </body>
 </html>

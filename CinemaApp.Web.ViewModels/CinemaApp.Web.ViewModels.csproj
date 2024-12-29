@@ -18,6 +18,7 @@
     <None Remove="Notification\" />
     <None Remove="RankList\" />
     <None Remove="Search\" />
+    <None Remove="FriendRequest\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Group\" />
@@ -27,6 +28,7 @@
     <Folder Include="Notification\" />
     <Folder Include="RankList\" />
     <Folder Include="Search\" />
+    <Folder Include="FriendRequest\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.0" />
