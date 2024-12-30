@@ -36,12 +36,37 @@
 
         public virtual DbSet<Notification> Notifications { get; set; } = null!;
 
-        public DbSet<FriendRequest> FriendRequests { get; set; } = null!;
+        public virtual DbSet<FriendRequest> FriendRequests { get; set; } = null!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Notification>()
+                .HasDiscriminator<string>("NotificationType")
+                .HasValue<Notification>("Base") // Optional for base type
+                .HasValue<EventNotification>("Event")
+                .HasValue<FriendRequestNotification>("FriendRequest");
+
+            // Example: Prevent cascading deletes for EventNotification relationships
+            modelBuilder.Entity<EventNotification>()
+                .HasOne(e => e.Event)
+                .WithMany()
+                .HasForeignKey(e => e.EventId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<EventNotification>()
+                .HasOne(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<FriendRequestNotification>()
+                .HasOne(f => f.FriendRequest)
+                .WithMany()
+                .HasForeignKey(f => f.FriendRequestId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Configure relationship between Event and ApplicationUser (Organizer)
             modelBuilder.Entity<Event>()

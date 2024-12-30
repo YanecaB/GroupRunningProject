@@ -86,14 +86,28 @@
 
         @foreach (var notification in Model)
         {
-            <a href="@Url.Action("Details", "Event", new { id = notification.EventId })"
-               class="btn text-white">
-                <div class="notification">
-                    <h4>Event: @notification.EventName</h4>
-                    <p>@notification.Message</p>
-                    <div class="notification-date">@notification.Date</div>
-                </div>
-            </a>
+            @if (notification.EventId != null) // Event Notification
+            {
+                <a href="@Url.Action("Details", "Event", new { id = notification.EventId })"
+                   class="btn text-white">
+                    <div class="notification">
+                        <h4>Event: @notification.EventName</h4>
+                        <p>@notification.Message</p>
+                        <div class="notification-date">@notification.Date</div>
+                    </div>
+                </a>
+            }
+            else // FriendRequest notification
+            {
+                <a href="@Url.Action("UserProfile", "User", new { username = notification.SenderUserName })"
+                   class="btn text-white">
+                    <div class="notification">
+                        <h4>Sender: @notification.SenderUserName</h4>
+                        <p>@notification.Message</p>
+                        <div class="notification-date">@notification.Date</div>
+                    </div>
+                </a>
+            }
         }
     </div>
 </body>

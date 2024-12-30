@@ -6,7 +6,7 @@ using static CinemaApp.Common.EntityValidationMessages.Notification;
 
 namespace CinemaApp.Data.Models
 {
-	public class Notification
+	public abstract class Notification
 	{
         [Key]
         public Guid Id { get; set; }
@@ -22,11 +22,6 @@ namespace CinemaApp.Data.Models
         public Guid UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public ApplicationUser User { get; set; } = null!;
-
-        [Required(ErrorMessage = EventIdRequired)]
-        public Guid EventId { get; set; }
-        [ForeignKey(nameof(EventId))]
-        public Event Event { get; set; } = null!;
     }
 }
 

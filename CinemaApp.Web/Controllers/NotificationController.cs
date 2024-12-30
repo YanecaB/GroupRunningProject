@@ -20,6 +20,7 @@ namespace CinemaApp.Web.Controllers
             this.notificationService = notificationService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             Guid? userGuid = GetCurrectUserGuidId();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using CinemaApp.Data.Models;
 using CinemaApp.Data.Repository.Interfaces;
 using CinemaApp.Services.Data.Interfaces;
@@ -11,19 +12,26 @@ namespace CinemaApp.Services.Data
     public class NotificationService : BaseService, INotificationService
     {
         private readonly IRepository<Event, Guid> eventRepository;
-        private readonly IRepository<ApplicationUserEvent, object> userEventRepository;
-        private readonly IRepository<Notification, Guid> notificationRepository;
+        private readonly IRepository<ApplicationUserEvent, object> userEventRepository;        
+        private readonly IRepository<FriendRequest, Guid> friendRequestRepository;
+
+        private readonly IRepository<FriendRequestNotification, Guid> friendRequestNotificationRepository;
+        private readonly IRepository<EventNotification, Guid> eventNotificationRepository;
 
         public NotificationService(IRepository<Event, Guid> eventRepository,
-            IRepository<ApplicationUserEvent, object> userEventRepository,
-            IRepository<Notification, Guid> notificationRepository)
+            IRepository<ApplicationUserEvent, object> userEventRepository,            
+            IRepository<FriendRequest, Guid> friendRequestRepository,
+            IRepository<FriendRequestNotification, Guid> friendRequestNotificationRepository,
+            IRepository<EventNotification, Guid> eventNotificationRepository)
         {
             this.eventRepository = eventRepository;
-            this.userEventRepository = userEventRepository;
-            this.notificationRepository = notificationRepository;
+            this.userEventRepository = userEventRepository;            
+            this.friendRequestRepository = friendRequestRepository;
+            this.friendRequestNotificationRepository = friendRequestNotificationRepository;
+            this.eventNotificationRepository = eventNotificationRepository;
         }
 
-        public async Task GenerateNotificationsAsync()
+        public async Task GenerateEventNotificationsAsync()
         {
             var upcomingEvents = await this.eventRepository
                 .GetAllAttached()
@@ -40,32 +48,53 @@ namespace CinemaApp.Services.Data
 
                 foreach (var userId in joinedUsers)
                 {
-                    if (await this.notificationRepository.FirstOrDefaultAsync(n => n.EventId == eventEntity.Id && n.UserId == userId) != null)
+                    if (await this.eventNotificationRepository
+                        .GetAllAttached()
+                        //.OfType<EventNotification>()
+                        .FirstOrDefaultAsync(n => n.EventId == eventEntity.Id && n.UserId == userId) != null)
                     {
                         continue;
                     }
 
-                    var notification = new Notification
+                    var notification = new EventNotification
                     {
                         Id = Guid.NewGuid(),
-                        Message = string.Format(Message, eventEntity.Title),
+                        Message = string.Format(MessageForEvents, eventEntity.Title),
                         Date = DateTime.Now,
                         UserId = userId,
-                        EventId = eventEntity.Id
+                        EventId = eventEntity.Id                        
                     };
 
-                    await this.notificationRepository.AddAsync(notification);
+                    await this.eventNotificationRepository.AddAsync(notification);
                 }
             }
         }
 
+        public async Task GenerateFriendRequestNotificationsAsync(FriendRequest friendRequest)
+        {
+                    
+            var senderName = (await this.friendRequestRepository.GetAllAttached().Include(fr => fr.Sender).FirstOrDefaultAsync(frn => frn.Id == friendRequest.Id)).Sender.UserName;
+
+            var notification = new FriendRequestNotification
+            {
+                Id = Guid.NewGuid(),
+                Message = string.Format(MessageForFriendRequests, friendRequest.Sender.UserName),
+                Date = friendRequest.SendRequestDate,
+                UserId = friendRequest.ReceiverId,
+                FriendRequest = friendRequest
+            };
+
+            await this.friendRequestNotificationRepository.AddAsync(notification);            
+        }
+
         public async Task<IEnumerable<NotificationViewModel>> GetNotificationsByUserIdAsync(Guid userId)
         {
-            var allNotificationOfTheCurrentUser = await this.notificationRepository
+            var eventNotifications = await this.eventNotificationRepository
                 .GetAllAttached()
+                //.OfType<EventNotification>()
                 .Include(n => n.Event)
                 .Where(n => n.UserId == userId && n.Event.IsDeleted == false)
-                .OrderByDescending(n => n.Date)
+                //.OrderByDescending(n => n.Date)
                 .Select(n => new NotificationViewModel()
                 {
                     Message = n.Message,
@@ -74,9 +103,25 @@ namespace CinemaApp.Services.Data
                     EventName = n.Event.Title,
                     EventId = n.EventId.ToString()
                 })                
-                .ToArrayAsync();
+                .ToListAsync();
 
-            return allNotificationOfTheCurrentUser;
+            var friendRequestNotifications = await this.friendRequestNotificationRepository
+                .GetAllAttached()
+                //.OfType<FriendRequestNotification>()
+                .Include(n => n.FriendRequest)
+                .ThenInclude(fr => fr.Sender)
+                .Where(n => n.UserId == userId && n.FriendRequest.IsDeleted == false)
+                .Select(n => new NotificationViewModel()
+                {
+                    Message = n.Message,
+                    Date = n.Date.ToString(DateFormat),
+                    Id = n.Id.ToString(),
+                    SenderUserName = n.FriendRequest.Sender.UserName
+                })
+                .ToListAsync();                
+            
+            return eventNotifications.Concat(friendRequestNotifications)
+                .OrderByDescending(n => DateTime.ParseExact(n.Date, DateFormat, CultureInfo.InvariantCulture));
         }
     }
 }

@@ -12,11 +12,15 @@ namespace CinemaApp.Services.Data
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IRepository<FriendRequest, Guid> friendRequestRepository;
 
+        private readonly INotificationService notificationService;
+
         public FriendRequestService(UserManager<ApplicationUser> userManager,
-            IRepository<FriendRequest, Guid> friendRequestRepository)
+            IRepository<FriendRequest, Guid> friendRequestRepository,
+            INotificationService notificationService)
         {
             this.userManager = userManager;
             this.friendRequestRepository = friendRequestRepository;
+            this.notificationService = notificationService;
         }
 
         public async Task<bool> SendFriendRequestAsync(string? username, Guid senderId)
@@ -33,12 +37,16 @@ namespace CinemaApp.Services.Data
                 return false;
             }
 
-            await this.friendRequestRepository.AddAsync(new FriendRequest()
+            var newFriendRequest = new FriendRequest()
             {
                 Id = Guid.NewGuid(),
                 Receiver = receiver,
                 SenderId = senderId
-            });
+            };
+
+            await this.friendRequestRepository.AddAsync(newFriendRequest);
+
+            await this.notificationService.GenerateFriendRequestNotificationsAsync(newFriendRequest);
 
             return true;
         }

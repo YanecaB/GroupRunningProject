@@ -29,7 +29,7 @@ namespace CinemaApp.Web.Infrastructure.BackgroundTasks
             using (var scope = _serviceProvider.CreateScope())
             {
                 var notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
-                await notificationService.GenerateNotificationsAsync();
+                await notificationService.GenerateEventNotificationsAsync();
             }
         }
 

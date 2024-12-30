@@ -9,9 +9,11 @@ namespace CinemaApp.Web.ViewModels.Notification
 
         public string Date { get; set; } = null!;
 
-        public string EventName { get; set; } = null!;
+        public string? EventName { get; set; }
 
-        public string EventId { get; set; } = null!;
+        public string? EventId { get; set; }
+
+        public string? SenderUserName { get; set; }
     }
 }
 

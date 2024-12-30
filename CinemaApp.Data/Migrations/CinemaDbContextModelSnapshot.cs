@@ -262,27 +262,35 @@ namespace CinemaApp.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("EventId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("NotificationType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Notifications");
+
+                    b.HasDiscriminator<string>("NotificationType").HasValue("Base");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -416,6 +424,30 @@ namespace CinemaApp.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CinemaApp.Data.Models.EventNotification", b =>
+                {
+                    b.HasBaseType("CinemaApp.Data.Models.Notification");
+
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasIndex("EventId");
+
+                    b.HasDiscriminator().HasValue("Event");
+                });
+
+            modelBuilder.Entity("CinemaApp.Data.Models.FriendRequestNotification", b =>
+                {
+                    b.HasBaseType("CinemaApp.Data.Models.Notification");
+
+                    b.Property<Guid>("FriendRequestId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasIndex("FriendRequestId");
+
+                    b.HasDiscriminator().HasValue("FriendRequest");
+                });
+
             modelBuilder.Entity("CinemaApp.Data.Models.ApplicationUser", b =>
                 {
                     b.HasOne("CinemaApp.Data.Models.ApplicationUser", null)
@@ -512,19 +544,15 @@ namespace CinemaApp.Data.Migrations
 
             modelBuilder.Entity("CinemaApp.Data.Models.Notification", b =>
                 {
-                    b.HasOne("CinemaApp.Data.Models.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("CinemaApp.Data.Models.ApplicationUser", null)
+                        .WithMany("Notifications")
+                        .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("CinemaApp.Data.Models.ApplicationUser", "User")
-                        .WithMany("Notifications")
+                        .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Event");
 
                     b.Navigation("User");
                 });
@@ -578,6 +606,28 @@ namespace CinemaApp.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CinemaApp.Data.Models.EventNotification", b =>
+                {
+                    b.HasOne("CinemaApp.Data.Models.Event", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+                });
+
+            modelBuilder.Entity("CinemaApp.Data.Models.FriendRequestNotification", b =>
+                {
+                    b.HasOne("CinemaApp.Data.Models.FriendRequest", "FriendRequest")
+                        .WithMany()
+                        .HasForeignKey("FriendRequestId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("FriendRequest");
                 });
 
             modelBuilder.Entity("CinemaApp.Data.Models.ApplicationUser", b =>

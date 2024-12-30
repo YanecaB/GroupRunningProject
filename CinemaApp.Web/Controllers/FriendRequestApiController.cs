@@ -24,14 +24,14 @@ namespace CinemaApp.Web.Controllers
             this.friendRequestService = friendRequestService;
         }
 
-        [HttpGet("SendFriendRequest")]
-        [ProducesResponseType(typeof(SearchUserViewModel), StatusCodes.Status200OK)]
+        [HttpGet("[action]")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //[Authorize]
-        public async Task<IActionResult> SendFriendRequest([FromQuery] string? username) // make view model where will be the username and make the action post and use [FromBody]
+        [Authorize]
+        public async Task<IActionResult> SendFriendRequest([FromQuery] string? username) // todo: make view model where will be the username and make the action post and use [FromBody]
         {
             if (string.IsNullOrEmpty(username))
             {
@@ -44,20 +44,12 @@ namespace CinemaApp.Web.Controllers
 
             if (isSent)
             {
-                return this.Ok();
+                return this.Ok("The Friend Request is sent :)");
             }
             else
             {
                 return this.StatusCode(StatusCodes.Status404NotFound);
             }
-        }
-
-        [HttpGet("Test")]
-        public IActionResult Test()
-        {
-            Guid currentUserId = GetCurrectUserGuidId();
-
-            return Ok("Controller is working");
         }
     }
 }
