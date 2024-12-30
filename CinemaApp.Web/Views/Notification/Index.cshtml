@@ -3,7 +3,7 @@
 
 @{
     ViewData["Title"] = "Notifications";
-    ViewData["Message"] = "Your upcoming event reminders!";
+    ViewData["Message"] = "Your upcoming event reminders and friend requests!";
 }
 
 <!DOCTYPE html>
@@ -76,6 +76,28 @@
             color: #888;
             text-align: right;
         }
+
+        .notification-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .notification {
+            flex-grow: 1;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 10px; /* Adjust the spacing between the buttons */
+            align-items: center;
+        }
+
+            .notification-actions button {
+                padding: 5px 10px;
+            }
+
     </style>
 </head>
 <body>
@@ -99,14 +121,21 @@
             }
             else // FriendRequest notification
             {
-                <a href="@Url.Action("UserProfile", "User", new { username = notification.SenderUserName })"
-                   class="btn text-white">
+                <div class="notification-wrapper">
                     <div class="notification">
-                        <h4>Sender: @notification.SenderUserName</h4>
-                        <p>@notification.Message</p>
-                        <div class="notification-date">@notification.Date</div>
+                        <a href="@Url.Action("UserProfile", "User", new { username = notification.SenderUserName })" class="text-decoration-none">
+                            <h4>Sender: @notification.SenderUserName</h4>
+                            <p>@notification.Message</p>
+                            <div class="notification-date">@notification.Date</div>
+                        </a>
+
+                        <!-- Action Buttons inside the same notification -->
+                        <div class="notification-actions">
+                            <button type="button" data-username="@notification.SenderUserName" id="confirm" class="btn btn-success confirm-friend-request">Confirm</button>
+                            <button type="button" data-username="@notification.SenderUserName" id="delete" class="btn btn-danger delete-friend-request">Delete</button>
+                        </div>
                     </div>
-                </a>
+                </div>
             }
         }
     </div>
