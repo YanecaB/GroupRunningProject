@@ -2,6 +2,7 @@
 using CinemaApp.Data.Models;
 using CinemaApp.Data.Repository.Interfaces;
 using CinemaApp.Services.Data.Interfaces;
+using CinemaApp.Web.ViewModels.FriendRequest;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,7 +23,7 @@ namespace CinemaApp.Services.Data
             this.friendRequestRepository = friendRequestRepository;
             this.notificationService = notificationService;
         }
-
+       
         public async Task<bool> SendFriendRequestAsync(string? username, Guid senderId)
         {
             if (string.IsNullOrEmpty(username))
@@ -48,6 +49,27 @@ namespace CinemaApp.Services.Data
 
             await this.notificationService.GenerateFriendRequestNotificationsAsync(newFriendRequest);
 
+            return true;
+        }
+
+        public async Task<bool> ConfirmFriendRequestAsync(ConfirmFriendRequestViewModel viewModel)
+        {
+            var currentUser = await this.userManager.Users.FirstOrDefaultAsync(u => u.UserName == viewModel.CurrentUserUsername);
+            var sender = await this.userManager.Users.FirstOrDefaultAsync(u => u.UserName == viewModel.SenderUsername);
+
+            if (currentUser == null || sender == null)
+            {
+                return false;
+            }
+
+            currentUser.Friends.Add(sender);
+            sender.Friends.Add(currentUser);
+
+            await this.friendRequestRepository.SaveChangesAsync();
+
+            //var currentUser2 = await this.userManager.Users.FirstOrDefaultAsync(u => u.UserName == viewModel.CurrentUserUsername);
+
+            //todo: add savechanges 
             return true;
         }
     }

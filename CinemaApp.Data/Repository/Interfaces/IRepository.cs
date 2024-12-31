@@ -36,6 +36,10 @@ namespace CinemaApp.Data.Repository.Interfaces
 
         Task<bool> UpdateAsync(TType item);
 
+        Task SaveChangesAsync();
+
+        void SaveChanges();
+
         //void FirstOrDefaultAsync(Func<Membership, bool> func);
     }
 }

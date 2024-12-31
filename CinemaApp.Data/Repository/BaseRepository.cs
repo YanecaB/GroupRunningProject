@@ -135,6 +135,16 @@ namespace CinemaApp.Data.Repository
                 return false;
             }
         }
+
+        public async Task SaveChangesAsync()
+        {
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public void SaveChanges()
+        {
+            this.dbContext.SaveChanges();
+        }
     }
 }
 

@@ -23,14 +23,22 @@ namespace CinemaApp.Web.Areas.Identity.Services
        
         public async Task<ApplicationUserDetailsViewModel> GetDetailsByIdAsync(Guid id, Guid currentId)
         {
-            var user = await userManager.Users
+            var user = await userManager.Users                
                 .Include(u => u.ApplicationUserEvents)
+                .Include(u => u.Friends)
                 .FirstOrDefaultAsync(u => u.Id.ToString() == id.ToString());
 
             if (user == null && currentId.ToString() != id.ToString())
             {
                 return null;
             }
+
+            var friends = user.Friends.Select(f => new ApplicationUserViewModel()
+            {
+                Email = f.Email,
+                UserName = f.UserName,
+                Id = f.Id.ToString()
+            }).ToList();
 
             var viewModel = new ApplicationUserDetailsViewModel
             {
@@ -40,12 +48,7 @@ namespace CinemaApp.Web.Areas.Identity.Services
                 Bio = string.IsNullOrEmpty(user.Bio) ? EmptyBioMessage : user.Bio,
                 IsBanned = user.IsBanned,
                 UserEvents = user.ApplicationUserEvents.ToList().Count(),
-                Friends = user.Friends.Select(f => new ApplicationUserViewModel()
-                {
-                    Email = f.Email,
-                    UserName = f.UserName,
-                    Id = f.Id.ToString()
-                }).ToList(),
+                Friends = friends,
                 ProfilePicturePath = user.ProfilePicturePath
             };
 

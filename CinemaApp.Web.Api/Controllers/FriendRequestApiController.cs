@@ -27,7 +27,15 @@ namespace CinemaApp.Web.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ConfirmRequest([FromBody] ConfirmFriendRequestViewModel viewModel)
         {
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
+
+            var confirmRequest = await this.friendRequestService.ConfirmFriendRequestAsync(viewModel);
+            
+            //TODO: MAKE THE USERS FRIENDS and SEND NOTIFICATION TO THE SENDER
+            return confirmRequest ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 }
