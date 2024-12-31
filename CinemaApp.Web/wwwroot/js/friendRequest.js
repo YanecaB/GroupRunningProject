@@ -6,7 +6,7 @@
             const query = becomeFriendsButton.getAttribute('data-username');
 
             fetch(`https://localhost:7015/api/FriendRequestApi/SendFriendRequest?username=${encodeURIComponent(query)}`, {
-                method: 'Get',
+                method: 'GET',
                 credentials: 'include'
             })
                 .then(response => {

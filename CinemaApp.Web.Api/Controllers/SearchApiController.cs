@@ -15,7 +15,7 @@ namespace CinemaApp.Web.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SearchApiController : Controller
+    public class SearchApiController : ControllerBase
     {
         private readonly ISearchService searchService;
 
