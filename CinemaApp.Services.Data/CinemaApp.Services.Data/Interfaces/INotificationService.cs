@@ -11,6 +11,8 @@ namespace CinemaApp.Services.Data.Interfaces
 		Task<IEnumerable<NotificationViewModel>> GetNotificationsByUserIdAsync(Guid userId);
 
 		Task GenerateFriendRequestNotificationsAsync(FriendRequest friendRequest);
+
+		Task GenerateConfirmedRequestNotificationsAsync(ApplicationUser currentUser, ApplicationUser receiver);
     }
 }
 

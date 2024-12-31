@@ -66,10 +66,9 @@ namespace CinemaApp.Services.Data
             sender.Friends.Add(currentUser);
 
             await this.friendRequestRepository.SaveChangesAsync();
-
-            //var currentUser2 = await this.userManager.Users.FirstOrDefaultAsync(u => u.UserName == viewModel.CurrentUserUsername);
-
-            //todo: add savechanges 
+            
+            await this.notificationService.GenerateConfirmedRequestNotificationsAsync(currentUser, sender);
+            
             return true;
         }
     }

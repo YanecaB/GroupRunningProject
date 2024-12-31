@@ -4,31 +4,48 @@ using CinemaApp.Data.Models;
 using CinemaApp.Data.Repository.Interfaces;
 using CinemaApp.Services.Data.Interfaces;
 using CinemaApp.Web.ViewModels.Notification;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using static CinemaApp.Common.EntityValidationConstants.Notification;
 
 namespace CinemaApp.Services.Data
 {
     public class NotificationService : BaseService, INotificationService
-    {
+    {        
         private readonly IRepository<Event, Guid> eventRepository;
         private readonly IRepository<ApplicationUserEvent, object> userEventRepository;        
-        private readonly IRepository<FriendRequest, Guid> friendRequestRepository;
+        private readonly IRepository<FriendRequest, Guid> friendRequestRepository;        
 
         private readonly IRepository<FriendRequestNotification, Guid> friendRequestNotificationRepository;
         private readonly IRepository<EventNotification, Guid> eventNotificationRepository;
+        private readonly IRepository<ConfirmedRequestNotification, Guid> confirmedRequestNotificationRepository;
 
         public NotificationService(IRepository<Event, Guid> eventRepository,
             IRepository<ApplicationUserEvent, object> userEventRepository,            
             IRepository<FriendRequest, Guid> friendRequestRepository,
             IRepository<FriendRequestNotification, Guid> friendRequestNotificationRepository,
-            IRepository<EventNotification, Guid> eventNotificationRepository)
+            IRepository<EventNotification, Guid> eventNotificationRepository,
+            IRepository<ConfirmedRequestNotification, Guid> confirmedRequestNotificationRepository)
         {
             this.eventRepository = eventRepository;
             this.userEventRepository = userEventRepository;            
             this.friendRequestRepository = friendRequestRepository;
             this.friendRequestNotificationRepository = friendRequestNotificationRepository;
             this.eventNotificationRepository = eventNotificationRepository;
+            this.confirmedRequestNotificationRepository = confirmedRequestNotificationRepository;            
+        }
+
+        public async Task GenerateConfirmedRequestNotificationsAsync(ApplicationUser currentUser, ApplicationUser receiver)
+        {            
+            var confirmedRequestNotification = new ConfirmedRequestNotification()
+            {
+                Id = Guid.NewGuid(), //MessageForConfirmedRequests
+                Message = string.Format(MessageForConfirmedRequests, currentUser.UserName),
+                NewFriend = currentUser,
+                User = receiver                
+            };
+
+            await this.confirmedRequestNotificationRepository.AddAsync(confirmedRequestNotification);
         }
 
         public async Task GenerateEventNotificationsAsync()

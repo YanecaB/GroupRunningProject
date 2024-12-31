@@ -40,6 +40,8 @@
             public const string MessageForEvents = "Reminder: The event {0} is happening tomorrow!";
 
             public const string MessageForFriendRequests = "Friend Request: {0} wants you to become friends!";
+
+            public const string MessageForConfirmedRequests = "{0} confirmed your friend request!";
         }
 
         public static class RankList

@@ -34,7 +34,7 @@ namespace CinemaApp.Web.Api.Controllers
 
             var confirmRequest = await this.friendRequestService.ConfirmFriendRequestAsync(viewModel);
             
-            //TODO: MAKE THE USERS FRIENDS and SEND NOTIFICATION TO THE SENDER
+            //TODO: SEND NOTIFICATION TO THE SENDER
             return confirmRequest ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
