@@ -1,12 +1,13 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
     const confirmButton = document.getElementById('confirm');
     const deleteButton = document.getElementById('delete');
-
+    
     const currentUserUsername = window.currentUsername;
 
     if (confirmButton) {
         confirmButton.addEventListener('click', function () {
-            const senderUsername = confirmButton.getAttribute('data-username');            
+            const senderUsername = confirmButton.getAttribute('data-username');
+            const parentNotification = this.closest('.notification-wrapper');
 
             fetch(`https://localhost:7018/api/FriendRequestApi/ConfirmRequest`, {
                 method: 'POST',
@@ -23,6 +24,10 @@
                         throw new Error("Failed to confirm friend request.");
                     }
 
+                    if (parentNotification) {
+                        parentNotification.style.display = 'none';
+                    }
+
                     alert('The friend request confirmed successfully!');
                 })
                 .catch(error => {
@@ -36,7 +41,8 @@
 
     if (deleteButton) {
         deleteButton.addEventListener('click', function () {
-            const senderUsername = deleteButton.getAttribute('data-username');            
+            const senderUsername = deleteButton.getAttribute('data-username');
+            const parentNotification = this.closest('.notification-wrapper');
 
             fetch(`https://localhost:7018/api/FriendRequestApi/DeleteRequest`, {
                 method: 'POST',
@@ -51,6 +57,10 @@
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("Failed to delete the friend request.");
+                    }
+
+                    if (parentNotification) {
+                        parentNotification.style.display = 'none';
                     }
 
                     alert('The friend request deleted successfully!');
