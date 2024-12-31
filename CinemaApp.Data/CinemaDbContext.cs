@@ -116,8 +116,8 @@
 
             modelBuilder.Entity<FriendRequest>().HasKey(fr => fr.Id);
 
-            modelBuilder.Entity<FriendRequest>()
-                .HasIndex(fr => new { fr.ReceiverId, fr.SenderId }).IsUnique();
+            //modelBuilder.Entity<FriendRequest>()
+            //    .HasIndex(fr => new { fr.ReceiverId, fr.SenderId }).IsUnique();
 
             modelBuilder.Entity<FriendRequest>()
                .HasOne(fr => fr.Sender)
