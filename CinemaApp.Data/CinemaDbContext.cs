@@ -55,18 +55,18 @@
                 .WithMany()
                 .HasForeignKey(e => e.EventId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<EventNotification>()
-                .HasOne(e => e.User)
-                .WithMany()
-                .HasForeignKey(e => e.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
-
+           
             modelBuilder.Entity<FriendRequestNotification>()
                 .HasOne(f => f.FriendRequest)
                 .WithMany()
                 .HasForeignKey(f => f.FriendRequestId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ConfirmedRequestNotification>()
+               .HasOne(cr => cr.NewFriend)
+               .WithMany()
+               .HasForeignKey(cr => cr.NewFriendId)
+               .OnDelete(DeleteBehavior.Restrict);
 
             // Configure relationship between Event and ApplicationUser (Organizer)
             modelBuilder.Entity<Event>()
