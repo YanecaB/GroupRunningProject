@@ -39,7 +39,7 @@ namespace CinemaApp.Services.Data
         {            
             var confirmedRequestNotification = new ConfirmedRequestNotification()
             {
-                Id = Guid.NewGuid(), //MessageForConfirmedRequests
+                Id = Guid.NewGuid(),
                 Message = string.Format(MessageForConfirmedRequests, currentUser.UserName),
                 NewFriend = currentUser,
                 User = receiver                
@@ -127,7 +127,7 @@ namespace CinemaApp.Services.Data
                 //.OfType<FriendRequestNotification>()
                 .Include(n => n.FriendRequest)
                 .ThenInclude(fr => fr.Sender)
-                .Where(n => n.UserId == userId && n.FriendRequest.IsDeleted == false)
+                .Where(n => n.UserId == userId && n.FriendRequest.IsDeleted == false && n.IsDeleted == false)
                 .Select(n => new NotificationViewModel()
                 {
                     Message = n.Message,
@@ -135,9 +135,24 @@ namespace CinemaApp.Services.Data
                     Id = n.Id.ToString(),
                     SenderUserName = n.FriendRequest.Sender.UserName
                 })
-                .ToListAsync();                
-            
-            return eventNotifications.Concat(friendRequestNotifications)
+                .ToListAsync();
+
+            var confirmedRequestNotifications = await this.confirmedRequestNotificationRepository
+                .GetAllAttached()
+                .Include(cr => cr.NewFriend)
+                .Where(n => n.UserId == userId && n.IsDeleted == false)
+                .Select(n => new NotificationViewModel()
+                {
+                    Message = n.Message,
+                    Date = n.Date.ToString(DateFormat),
+                    Id = n.Id.ToString(),
+                    NewFriendUsername = n.NewFriend.UserName
+                })
+                .ToListAsync();
+
+            return eventNotifications
+                .Concat(friendRequestNotifications)
+                .Concat(confirmedRequestNotifications)
                 .OrderByDescending(n => DateTime.ParseExact(n.Date, DateFormat, CultureInfo.InvariantCulture));
         }
     }

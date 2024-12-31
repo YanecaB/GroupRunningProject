@@ -111,7 +111,7 @@
             @if (notification.EventId != null) // Event Notification
             {
                 <a href="@Url.Action("Details", "Event", new { id = notification.EventId })"
-                   class="btn text-white">
+                    class="btn text-white">
                     <div class="notification">
                         <h4>Event: @notification.EventName</h4>
                         <p>@notification.Message</p>
@@ -119,7 +119,7 @@
                     </div>
                 </a>
             }
-            else // FriendRequest notification
+            else if (notification.SenderUserName != null) // FriendRequest notification
             {
                 <div class="notification-wrapper">
                     <div class="notification">
@@ -128,12 +128,23 @@
                             <p>@notification.Message</p>
                             <div class="notification-date">@notification.Date</div>
                         </a>
-
-                        <!-- Action Buttons inside the same notification -->
+                        
                         <div class="notification-actions">
                             <button type="button" data-username="@notification.SenderUserName" id="confirm" class="btn btn-success confirm-friend-request">Confirm</button>
                             <button type="button" data-username="@notification.SenderUserName" id="delete" class="btn btn-danger delete-friend-request">Delete</button>
                         </div>
+                    </div>
+                </div>
+            }
+            else // Confirmed Request Notification
+            {
+                <div class="notification-wrapper">
+                    <div class="notification">
+                        <a href="@Url.Action("UserProfile", "User", new { username = notification.NewFriendUsername })" class="text-decoration-none">
+                            <h4>New friend!</h4>
+                            <p>@notification.Message</p>
+                            <div class="notification-date">@notification.Date</div>
+                        </a>
                     </div>
                 </div>
             }

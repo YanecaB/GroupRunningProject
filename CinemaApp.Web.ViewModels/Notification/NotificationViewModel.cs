@@ -14,6 +14,8 @@ namespace CinemaApp.Web.ViewModels.Notification
         public string? EventId { get; set; }
 
         public string? SenderUserName { get; set; }
+
+        public string? NewFriendUsername { get; set; }
     }
 }
 
