@@ -7,7 +7,9 @@ namespace CinemaApp.Services.Data.Interfaces
 	{
         Task<bool> SendFriendRequestAsync(string? username, Guid senderId);
 
-        Task<bool> ConfirmFriendRequestAsync(ConfirmFriendRequestViewModel viewModel);
+        Task<bool> ConfirmFriendRequestAsync(ReplyOnFriendRequestViewModel viewModel);
+
+        Task<bool> DeleteFriendRequestAsync(ReplyOnFriendRequestViewModel viewModel);
     }
 }
 

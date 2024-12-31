@@ -25,7 +25,7 @@ namespace CinemaApp.Web.Api.Controllers
         [HttpPost("[action]")]
         [ProducesResponseType(typeof(SearchUserViewModel), StatusCodes.Status200OK)]        
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> ConfirmRequest([FromBody] ConfirmFriendRequestViewModel viewModel)
+        public async Task<IActionResult> ConfirmRequest([FromBody] ReplyOnFriendRequestViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -36,6 +36,21 @@ namespace CinemaApp.Web.Api.Controllers
             
             //TODO: SEND NOTIFICATION TO THE SENDER
             return confirmRequest ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
+        [HttpPost("[action]")]
+        [ProducesResponseType(typeof(SearchUserViewModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteRequest([FromBody] ReplyOnFriendRequestViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
+
+            var deleteRequest = await this.friendRequestService.DeleteFriendRequestAsync(viewModel);
+
+            return deleteRequest ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 }
