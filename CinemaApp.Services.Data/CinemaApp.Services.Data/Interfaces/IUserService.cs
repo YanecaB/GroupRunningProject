@@ -13,7 +13,7 @@ namespace CinemaApp.Services.Data.Interfaces
 
         Task<bool> UserExistsByIdAsync(Guid id);
 
-		Task<UserProfileDetailsViewModel> GetUserProfileDetails(string username);
+		Task<UserProfileDetailsViewModel> GetUserProfileDetails(string username, Guid currentUserId);
     }
 }
 

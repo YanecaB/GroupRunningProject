@@ -14,13 +14,16 @@ namespace CinemaApp.Services.Data
 	public class UserService : BaseService, IUserService
 	{
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IRepository<Group, Guid> groupRepository;        
+        private readonly IRepository<Group, Guid> groupRepository;
+        private readonly IRepository<FriendRequest, Guid> friendRequestRepository;
 
         public UserService(UserManager<ApplicationUser> userManager,
-            IRepository<Group, Guid> groupRepository)
+            IRepository<Group, Guid> groupRepository,
+            IRepository<FriendRequest, Guid> friendRequestRepository)
         {
             this.userManager = userManager;
             this.groupRepository = groupRepository;
+            this.friendRequestRepository = friendRequestRepository;
         }
        
         public async Task<IEnumerable<UserManagementViewModel>> GetAllUsersAsync()
@@ -89,19 +92,30 @@ namespace CinemaApp.Services.Data
             return user != null;
         }
 
-        public async Task<UserProfileDetailsViewModel> GetUserProfileDetails(string username)
+        public async Task<UserProfileDetailsViewModel> GetUserProfileDetails(string username, Guid currentUserId)
         {
             ApplicationUser? user = await this.userManager.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            var currentUser = await this.userManager.Users.FirstAsync(u => u.Id == currentUserId);
 
-            if (user == null)
+            if (user == null || currentUser == null)
             {
                 return null;
+            }
+
+            // todo: check if there is a friend request with isDeleted == false and if yes, add true in the ViewModel
+            var sentFriendRequest = await this.friendRequestRepository.FirstOrDefaultAsync(fr => fr.Sender == currentUser && fr.Receiver == user && fr.IsDeleted == false);
+
+            bool sendButtonOrDeleteButton = true;
+            if (sentFriendRequest != null)
+            {
+                sendButtonOrDeleteButton = false;
             }
 
             return new UserProfileDetailsViewModel()
             {
                 Username = user.UserName,
                 Bio = user.Bio,
+                SendButtonOrDeleteButton = sendButtonOrDeleteButton,
                 IsBanned = user.IsBanned,
                 ProfilePicturePath = user.ProfilePicturePath,
                 AdminGroups = await groupRepository.GetAllAttached().Where(g => g.IsDeleted == false && g.ApplicationUser.UserName == username).Select(g => new GroupIndexViewModel()

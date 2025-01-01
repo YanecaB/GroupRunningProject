@@ -36,7 +36,9 @@ namespace CinemaApp.Services.Data
 
             var receiver = await this.userManager.Users.FirstOrDefaultAsync(u => u.UserName.ToLower() == username.ToLower());
 
-            if (receiver == null || receiver.IsBanned)
+            var alreadySentRequest = await this.friendRequestRepository.FirstOrDefaultAsync(fr => fr.Receiver == receiver && senderId == senderId && fr.IsDeleted == false);
+
+            if (receiver == null || receiver.IsBanned || alreadySentRequest != null)
             {
                 return false;
             }
@@ -67,9 +69,7 @@ namespace CinemaApp.Services.Data
 
             currentUser.Friends.Add(sender);
             sender.Friends.Add(currentUser);
-
-            // todo: Make message that you are friends now :)
-
+            
             await this.friendRequestRepository.SaveChangesAsync();
             
             await this.notificationService.GenerateConfirmedRequestNotificationsAsync(currentUser, sender);

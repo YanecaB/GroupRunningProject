@@ -51,6 +51,33 @@ namespace CinemaApp.Web.Controllers
                 return this.StatusCode(StatusCodes.Status404NotFound);
             }
         }
+
+        [HttpGet("[action]")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize]
+        public async Task<IActionResult> DeleteFriendRequest([FromQuery] string? username)
+        {
+            var myUsername = this.User.Identity.Name;
+
+            var deleteRequest = await this.friendRequestService.DeleteFriendRequestAsync(new ReplyOnFriendRequestViewModel()
+            {
+                CurrentUserUsername = username,
+                SenderUsername = myUsername // My name
+            });
+
+            if (deleteRequest)
+            {
+                return this.Ok();
+            }
+            else
+            {
+                return this.StatusCode(StatusCodes.Status404NotFound);
+            }            
+        }
     }
 }
 

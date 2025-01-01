@@ -205,6 +205,11 @@
             background-color: #3498db;
             color: #fff;
         }
+
+        .btn-info-delete {
+            background-color: #e74c3c;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -227,8 +232,18 @@
                 <strong>Bio: </strong> @Model.Bio
             </div>
         </div>
-        
-        <button type="button" data-username="@Model.Username" id ="becomeFriend" class="btn btn-info">Become Friends</button>
+
+        <div id="friend-buttons">
+            <button type="button" data-username="@Model.Username" id="becomeFriend"
+                    class="btn btn-info" style="display: @(Model.SendButtonOrDeleteButton ? "block" : "none");">
+                Become Friends
+            </button>
+            <button type="button" data-username="@Model.Username" id="deleteFriendRequest"
+                    class="btn btn-info-delete" style="display: @(Model.SendButtonOrDeleteButton ? "none" : "block");">
+                Delete Friend Request
+            </button>
+        </div>
+
     </div>
 
     <div class="info-section">

@@ -13,6 +13,8 @@ namespace CinemaApp.Web.ViewModels.User
 
         public bool IsBanned { get; set; }
 
+        public bool SendButtonOrDeleteButton { get; set; } = true;
+
         public ICollection<GroupIndexViewModel> AdminGroups { get; set; } = null!;
     }
 }

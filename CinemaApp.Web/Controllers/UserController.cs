@@ -23,7 +23,14 @@ namespace CinemaApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> UserProfile(string username)
         {
-            var getUsersProfileInfo = await this.userService.GetUserProfileDetails(username);
+            Guid? userGuid = GetCurrectUserGuidId();
+
+            if (!userGuid.HasValue)
+            {
+                return Unauthorized();
+            }
+
+            var getUsersProfileInfo = await this.userService.GetUserProfileDetails(username, userGuid.Value);
 
             if (getUsersProfileInfo == null)
             {
