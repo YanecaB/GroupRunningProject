@@ -8,19 +8,24 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a asp-area="Identity" asp-controller="Account" asp-action="Details" asp-route-id="@UserManager.GetUserId(User).ToString()" type="submit" class="nav-link btn btn-link text-dark border-0">
+            <a asp-area="Identity" asp-controller="Account" asp-action="Details" asp-route-id="@UserManager.GetUserId(User).ToString()" type="submit" class="nav-link text-dark">
                 <img src="@UserManager.Users.FirstOrDefault(u => u.Id.ToString() == UserManager.GetUserId(User)).ProfilePicturePath"
                      alt="Profile Picture" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 0.5px solid #ddd;" /> Profile
             </a>
         </li>
+        <!--<li class="nav-item">-->
+            @*<form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">*@
+            <!--<a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
+               id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</a>-->
+            @*</form>*@
+        <!--</li>-->
+
         <li class="nav-item">
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
-            </form>
+            <a asp-area="Identity" asp-page="/Account/Logout" id="logout" type="submit" class="nav-link text-dark">Logout</a>
         </li>
-        }
-        else
-        {
+    }
+    else
+    {
         <li class="nav-item">
             <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>

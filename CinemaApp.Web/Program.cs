@@ -69,7 +69,6 @@ namespace CinemaApp.Web
             builder.Services.AddControllers()
                 .AddApplicationPart(typeof(FriendRequestApiController).Assembly);
 
-
             builder.Services.AddRazorPages();
 
             // Register the background task as a hosted service
